@@ -7,17 +7,10 @@ export const homeData = {
     desc: 'Our latest web design tips, tricks, insights, and resources, hot offthe presses.',
     // 相关介绍的图片及文字
     projectList: [{
-            id: 1,
-            // 图片路径
-            img: './static/testimg.png',
-            name: 'Name1',
-            intro: 'This is ……'
-        },
-        {
-            id: 2,
-            img: './static/testimg2.png',
-            name: 'Name2',
-            intro: 'This is ……'
-        }
-    ],
+        id: 1,
+        // 图片路径
+        img: './static/testimg.png',
+        name: 'Name1',
+        intro: 'This is ……'
+    }, ],
 }

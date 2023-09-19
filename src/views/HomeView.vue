@@ -9,13 +9,13 @@
       </section>
       <section class="project-list">
         <el-row :gutter="32">
-          <el-col class="peoject-container" :span="12" v-for="item in homeData.projectList" :key="item.id">
+          <el-col class="peoject-container" v-for="item in homeData.projectList" :key="item.id">
             <section class="project-item">
               <div>
                 <img :src="item.img" alt="" srcset="" width="100%">
               </div>
-              <h3>{{ item.name }}</h3>
-              <p>{{ item.intro }}</p>
+              <!-- <h3>{{ item.name }}</h3>
+              <p>{{ item.intro }}</p> -->
             </section>
           </el-col>
         </el-row>
@@ -40,10 +40,12 @@ export default {
 .home-content {
   max-width: 1280px;
   margin: auto;
+  padding-bottom: 48px;
 }
 .introduction {
   padding-top: 120px;
-  padding-bottom: 120px;
+  // padding-bottom: 120px;
+  padding-bottom: 36px;
   text-align: left;
   width: 60%;
   h1 {
@@ -57,22 +59,22 @@ export default {
   }
 }
 .project-item {
-  padding: 18px;
-  text-align: left;
-  &:hover {
-    border: 1px solid #000;
-    cursor: pointer;
-  }
-  h3 {
-    font-size: 22px;
-    font-weight: 600;
-    margin: 24px 0;
-  }
+  // padding: 18px;
+  // text-align: left;
+  // &:hover {
+  //   border: 1px solid #000;
+  //   cursor: pointer;
+  // }
+  // h3 {
+  //   font-size: 22px;
+  //   font-weight: 600;
+  //   margin: 24px 0;
+  // }
 }
 .peoject-container {
-  margin-bottom: 36px;
-  &:nth-child(2n - 1) {
-    padding-top: 64px;
-  }
+  // margin-bottom: 36px;
+  // &:nth-child(2n - 1) {
+  //   padding-top: 64px;
+  // }
 }
 </style>
