@@ -656,7 +656,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
       padding: 32px 0;
-      border-bottom: 1px solid #004d4c;
+      border-bottom: 1px solid #ddd;
       &:last-child {
         border: none;
       }
