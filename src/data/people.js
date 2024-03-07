@@ -102,7 +102,7 @@ export const peopleData = {
         {
             id: 15,
             name: "尹晓晗",
-            pic: "./static/people/s-15.jpg",
+            pic: "./static/testpeople.png",
             grade: "本科 音频降噪、多模态语音识别",
             homepage: "https://github.com/LuckySJTU",
         },
