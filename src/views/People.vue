@@ -3,21 +3,7 @@
     <div class="people-content">
       <el-collapse v-model="activeNames">
         <!-- 在这里修改类目名称，如将“Name 1”改为“students” -->
-        <el-collapse-item title="Name 1" name="1">
-          <ul class="s-list">
-            <li
-              class="s-item"
-              v-for="(item, index) in peopleData.studentsList"
-              :key="index"
-            >
-              <img :src="item.pic" alt="" srcset="" width="100%"/>
-              <h3 class="s-name">{{ item.name }}</h3>
-              <p>{{ item.grade }}</p>
-            </li>
-          </ul>
-        </el-collapse-item>
-         <!-- 在这里修改类目名称，如将“Name 1”改为“students” -->
-        <el-collapse-item title="Name 2" name="2">
+        <el-collapse-item title="Teachers" name="1">
           <ul class="s-list">
             <li
               class="s-item"
@@ -31,11 +17,11 @@
           </ul>
         </el-collapse-item>
          <!-- 在这里修改类目名称，如将“Name 1”改为“students” -->
-        <el-collapse-item title="Name 3" name="3">
+        <el-collapse-item title="Students" name="2">
           <ul class="s-list">
             <li
               class="s-item"
-              v-for="(item, index) in studentsList"
+              v-for="(item, index) in peopleData.studentsList"
               :key="index"
             >
               <img :src="item.pic" alt="" srcset="" width="100%"/>
@@ -55,7 +41,7 @@ export default {
   data() {
     return {
       peopleData: peopleData,
-      activeNames: "1",
+      activeNames: ["1", "2"],
     };
   },
 };
@@ -69,11 +55,14 @@ export default {
     width: 100%; // 默认宽度
     margin: 20px auto; // 剧中
     columns: 4; // 默认列数
-    column-gap: 30px; // 列间距
+    column-gap: 48px; // 列间距
     .s-item {
       width: 100%;
       break-inside: avoid;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
+      img {
+        border-radius: 12px;
+      }
     }
     .s-name {
         font-size: 18px;

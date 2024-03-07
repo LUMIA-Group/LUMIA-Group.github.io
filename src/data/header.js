@@ -2,7 +2,7 @@
 // 按规则修改和添加内容即可，请不要更改数据结构以及变量命名
 export const headerData = {
     // 网站名称
-    name: 'Name',
+    name: 'LUMIA实验室',
     // logo图片路径
     logo: '',
     // header中的每一个tab
@@ -22,7 +22,7 @@ export const headerData = {
         },
         {
             // 若需要链接到外部网站，需要加一个type: "link"，则在value中填入链接的URL
-            value: "http://github",
+            value: "https://github.com/LUMIA-Group",
             label: "Github",
             type: "link",
         },

@@ -36,7 +36,7 @@ export default {
     }
   }
   p {
-    line-height: 20px;
+    line-height: 24px;
     margin-bottom: 12px;
     text-align: justify;
   }
