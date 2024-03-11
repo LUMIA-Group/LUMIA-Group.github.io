@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-header/>
+    <app-header v-show="!hideHeaderList.includes($route.name)"/>
     <router-view />
   </div>
 </template>
@@ -9,6 +9,11 @@ import appHeader from '@/components/Header.vue'
 export default {
   components: {
     appHeader
+  },
+  data() {
+    return {
+      hideHeaderList: []
+    }
   }
 }
 </script>

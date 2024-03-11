@@ -5,7 +5,7 @@ import People from "../views/People.vue";
 import Research from "../views/Research.vue";
 import News from "../views/News.vue";
 import Contact from "../views/Contact.vue";
-
+import Application from "../views/Application.vue"
 Vue.use(VueRouter);
 
 const routes = [{
@@ -32,6 +32,12 @@ const routes = [{
         name: "contact",
         component: Contact,
     },
+    {
+        path: "/application",
+        name: "application",
+        component: Application,
+
+    }
 ];
 
 const router = new VueRouter({

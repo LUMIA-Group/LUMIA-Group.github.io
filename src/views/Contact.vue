@@ -6,20 +6,34 @@
         v-for="(item, index) in contactData.contactList"
         :key="index"
       >
-        <h2>{{ item.header }}</h2>
+        <h2>
+          <span>
+            {{ item.header }}
+          </span>
+          <img :src="applicationLogo" @click="gotoApplication"/>
+        </h2>
         <p v-for="(l, lindex) in item.list" :key="lindex + 'l'">{{ l }}</p>
       </section>
     </div>
   </div>
 </template>
 <script>
-import { contactData } from '@/data/contact'
+import { contactData } from "@/data/contact";
+import applicationLogo from "@/assets/application.svg";
 export default {
   data() {
     return {
-      contactData: contactData
+      contactData: contactData,
+      applicationLogo,
     };
   },
+  methods: {
+    gotoApplication() {
+      this.$router.push({
+        name: 'application',
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -32,7 +46,7 @@ export default {
     padding: 32px 0;
     border-bottom: 1px solid #004d4c;
     &:last-child {
-        border: none;
+      border: none;
     }
   }
   p {
@@ -45,6 +59,13 @@ export default {
     font-weight: 600;
     margin-bottom: 18px;
     color: #004d4c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img {
+      width: 32px;
+      cursor: pointer;
+    }
   }
 }
 </style>
