@@ -1,32 +1,31 @@
 <template>
   <div class="people-page">
-    <section class="mila-section people-hero">
-      <div class="mila-container">
-        <p class="mila-eyebrow mila-fade-up" style="--delay: 80ms">Directory</p>
-        <h1 class="mila-title mila-fade-up" style="--delay: 120ms">People</h1>
-        <p class="mila-subtitle mila-fade-up" style="--delay: 160ms">
-          Researchers, students, and collaborators pushing language intelligence
-          and trustworthy AI forward.
+    <section class="lumia-section people-hero">
+      <div class="lumia-container">
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">{{ text.eyebrow }}</p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">{{ text.title }}</h1>
+        <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
+          {{ text.subtitle }}
         </p>
       </div>
     </section>
 
     <section
       v-for="(section, sectionIndex) in peopleSections"
-      :key="section.title"
-      class="people-section mila-section"
+      :key="section.key"
+      class="people-section lumia-section"
     >
-      <div class="mila-container">
-        <div class="section-head mila-fade-up" :style="{ '--delay': `${80 + sectionIndex * 50}ms` }">
-          <h2>{{ section.title }}</h2>
-          <p>{{ section.list.length }} members</p>
+      <div class="lumia-container">
+        <div class="section-head lumia-fade-up" :style="{ '--delay': `${80 + sectionIndex * 50}ms` }">
+          <h2>{{ section.displayTitle }}</h2>
+          <p>{{ memberCountText(section.list.length) }}</p>
         </div>
 
         <ul class="people-grid">
           <li
             v-for="(item, index) in section.list"
-            :key="`${section.title}-${index}`"
-            class="people-card mila-fade-up"
+            :key="`${section.key}-${index}`"
+            class="people-card lumia-fade-up"
             :style="{ '--delay': `${120 + index * 45}ms` }"
           >
             <div class="avatar-wrap">
@@ -45,21 +44,83 @@
 import { peopleData } from "@/data/people";
 import defaultImg from "@/assets/default.jpg";
 
+const I18N = {
+  en: {
+    eyebrow: "Directory",
+    title: "People",
+    subtitle:
+      "Researchers, students, and collaborators pushing language intelligence and trustworthy AI forward.",
+    members: "members",
+    sectionTitles: {
+      Faculty: "Faculty",
+      PhD: "PhD Students",
+      Master: "Master Students",
+      Undergrads: "Undergraduate Students",
+      Alumni: "Alumni",
+    },
+  },
+  zh: {
+    eyebrow: "成员目录",
+    title: "成员",
+    subtitle: "推动语言智能与可信 AI 研究前沿的教师、学生与合作伙伴。",
+    members: "名成员",
+    sectionTitles: {
+      Faculty: "教师",
+      PhD: "博士生",
+      Master: "硕士生",
+      Undergrads: "本科生",
+      Alumni: "校友",
+    },
+  },
+};
+
 export default {
   data() {
     return {
       peopleData,
       defaultImg,
+      currentLanguage: "zh",
     };
   },
   computed: {
+    text() {
+      return I18N[this.currentLanguage] || I18N.zh;
+    },
     peopleSections() {
       return Object.entries(this.peopleData)
         .filter(([, value]) => Array.isArray(value) && value.length > 0)
-        .map(([title, list]) => ({ title, list }));
+        .map(([title, list]) => ({
+          key: title,
+          displayTitle: this.text.sectionTitles[title] || title,
+          list,
+        }));
     },
   },
+  mounted() {
+    this.initLanguage();
+    window.addEventListener("lumia-language-change", this.onLanguageChange);
+  },
+  beforeDestroy() {
+    window.removeEventListener("lumia-language-change", this.onLanguageChange);
+  },
   methods: {
+    initLanguage() {
+      const saved = localStorage.getItem("lumia_lang");
+      if (saved === "en" || saved === "zh") {
+        this.currentLanguage = saved;
+      }
+    },
+    onLanguageChange(event) {
+      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+        this.currentLanguage = event.detail;
+      }
+    },
+    memberCountText(count) {
+      if (this.currentLanguage === "zh") {
+        return `${count} ${this.text.members}`;
+      }
+      return `${count} ${this.text.members}`;
+    },
     goto(url) {
       if (url) {
         window.open(url, "_blank");
@@ -72,7 +133,7 @@ export default {
 <style lang="less" scoped>
 .people-hero {
   padding-top: 76px;
-  border-bottom: 1px solid var(--mila-border);
+  border-bottom: 1px solid var(--lumia-border);
 }
 
 .people-section {
@@ -116,7 +177,7 @@ export default {
 }
 
 .people-card {
-  background: var(--mila-white);
+  background: var(--lumia-white);
   border: 1px solid rgba(102, 46, 125, 0.18);
   border-radius: 24px;
   padding: 16px;
@@ -171,7 +232,7 @@ export default {
     transition: text-decoration-color 0.25s ease;
 
     &:hover {
-      text-decoration-color: var(--mila-primary);
+      text-decoration-color: var(--lumia-primary);
     }
   }
 

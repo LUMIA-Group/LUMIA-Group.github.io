@@ -1,20 +1,64 @@
 <template>
   <div class="research-container">
-    <section class="mila-section research-hero">
-      <div class="mila-container">
-        <p class="mila-eyebrow mila-fade-up" style="--delay: 80ms">Publications</p>
-        <h1 class="mila-title mila-fade-up" style="--delay: 120ms">Research</h1>
-        <p class="mila-subtitle mila-fade-up" style="--delay: 160ms">
-          Selected papers on language modeling, multimodal learning, graph
-          neural networks, and trustworthy AI.
+    <section class="lumia-section research-hero">
+      <div class="lumia-container">
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">{{ text.eyebrow }}</p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">{{ text.title }}</h1>
+        <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
+          {{ text.subtitle }}
         </p>
+        <div class="repo-entry lumia-fade-up" style="--delay: 200ms">
+          <span>{{ text.repoLabel }}</span>
+          <a
+            href="https://github.com/LUMIA-Group"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ text.repoLink }}
+          </a>
+        </div>
       </div>
     </section>
 
-    <section class="mila-section research-content">
-      <div class="mila-container">
-        <section id="publications" class="section-item">
-        <section class="research-section">
+    <section class="lumia-section research-content">
+      <div class="lumia-container">
+        <div class="research-toolbar">
+          <label class="search-box" for="paper-search">
+            <span>{{ text.searchLabel }}</span>
+            <input
+              id="paper-search"
+              v-model.trim="searchKeyword"
+              type="text"
+              :placeholder="text.searchPlaceholder"
+            />
+          </label>
+          <div class="view-switch" role="group" aria-label="paper view switch">
+            <button
+              type="button"
+              class="switch-btn"
+              :class="{ active: viewMode === 'detailed' }"
+              @click="setViewMode('detailed')"
+            >
+              {{ text.detailedView }}
+            </button>
+            <button
+              type="button"
+              class="switch-btn"
+              :class="{ active: viewMode === 'compact' }"
+              @click="setViewMode('compact')"
+            >
+              {{ text.compactView }}
+            </button>
+          </div>
+        </div>
+        <p class="result-count">{{ filteredPapers.length }} {{ text.results }}</p>
+
+        <section
+          id="publications"
+          class="section-item"
+          v-show="viewMode === 'detailed'"
+        >
+        <section class="research-section" ref="detailedSection">
           <!-- research 1 -->
           <div class="row">
             <div class="col-xs-12 col-sm-4">
@@ -643,29 +687,319 @@
           <!-- <div class="row">……</div> -->
         </section>
       </section>
+      <p
+        v-if="viewMode === 'detailed' && !filteredPapers.length"
+        class="empty-state"
+      >
+        {{ text.noResultsPrefix }} "{{ searchKeyword }}"{{ text.noResultsSuffix }}
+      </p>
+
+      <section v-show="viewMode === 'compact'" class="compact-section">
+        <article
+          v-for="paper in filteredPapers"
+          :key="paper.id"
+          class="compact-item"
+        >
+          <h3>{{ paper.title }}</h3>
+          <p>{{ paper.venue }}</p>
+        </article>
+        <p v-if="!filteredPapers.length" class="empty-state">
+          {{ text.noResultsPrefix }} "{{ searchKeyword }}"{{ text.noResultsSuffix }}
+        </p>
+      </section>
       </div>
     </section>
   </div>
 </template>
 <script>
-import { researchData } from "@/data/research";
+const I18N = {
+  en: {
+    eyebrow: "Publications",
+    title: "Research",
+    subtitle:
+      "Selected papers on language modeling, multimodal learning, graph neural networks, and trustworthy AI.",
+    repoLabel: "Code Repository",
+    repoLink: "Visit LUMIA Group on Github",
+    searchLabel: "Search",
+    searchPlaceholder: "Search paper titles...",
+    detailedView: "Detailed View",
+    compactView: "Compact View",
+    results: "results",
+    noResultsPrefix: "No papers found for",
+    noResultsSuffix: ".",
+  },
+  zh: {
+    eyebrow: "论文成果",
+    title: "研究",
+    subtitle: "展示实验室在语言建模、多模态学习、图神经网络和可信 AI 方向的代表性论文。",
+    repoLabel: "代码仓库",
+    repoLink: "访问 LUMIA Group Github",
+    searchLabel: "搜索",
+    searchPlaceholder: "按论文标题关键词搜索...",
+    detailedView: "详细视图",
+    compactView: "简要视图",
+    results: "条结果",
+    noResultsPrefix: "未找到与",
+    noResultsSuffix: "相关的论文。",
+  },
+};
+
 export default {
   data() {
     return {
-      researchData: researchData,
+      currentLanguage: "zh",
+      searchKeyword: "",
+      viewMode: "detailed",
+      papers: [],
     };
+  },
+  computed: {
+    text() {
+      return I18N[this.currentLanguage] || I18N.zh;
+    },
+    normalizedKeyword() {
+      return this.searchKeyword.toLowerCase().trim();
+    },
+    filteredPapers() {
+      if (!this.normalizedKeyword) {
+        return this.papers;
+      }
+      return this.papers.filter((paper) =>
+        paper.title.toLowerCase().includes(this.normalizedKeyword)
+      );
+    },
+  },
+  watch: {
+    searchKeyword() {
+      this.applyDetailedFilter();
+    },
+  },
+  mounted() {
+    this.initLanguage();
+    window.addEventListener("lumia-language-change", this.onLanguageChange);
+    this.$nextTick(() => {
+      this.capturePapers();
+      this.applyDetailedFilter();
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("lumia-language-change", this.onLanguageChange);
+  },
+  methods: {
+    initLanguage() {
+      const saved = localStorage.getItem("lumia_lang");
+      if (saved === "en" || saved === "zh") {
+        this.currentLanguage = saved;
+      }
+    },
+    onLanguageChange(event) {
+      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+        this.currentLanguage = event.detail;
+      }
+    },
+    setViewMode(mode) {
+      this.viewMode = mode === "compact" ? "compact" : "detailed";
+      if (this.viewMode === "detailed") {
+        this.$nextTick(() => this.applyDetailedFilter());
+      }
+    },
+    capturePapers() {
+      const rows = Array.from(
+        this.$el.querySelectorAll(".research-section .row")
+      );
+      this.papers = rows.map((row, index) => {
+        const titleNode = row.querySelector("h4");
+        const venueNode = row.querySelector(".link-list span");
+        const title = titleNode
+          ? titleNode.textContent.replace(/\s+/g, " ").trim()
+          : `Paper ${index + 1}`;
+        const venue = venueNode
+          ? venueNode.textContent.replace(/\s+/g, " ").trim()
+          : "Unknown Venue";
+        return {
+          id: `paper-${index}`,
+          title,
+          venue,
+        };
+      });
+    },
+    applyDetailedFilter() {
+      const rows = Array.from(
+        this.$el.querySelectorAll(".research-section .row")
+      );
+      const keyword = this.normalizedKeyword;
+      rows.forEach((row, index) => {
+        const paper = this.papers[index];
+        const title = paper ? paper.title.toLowerCase() : "";
+        const isMatch = !keyword || title.includes(keyword);
+        row.style.display = isMatch ? "" : "none";
+      });
+    },
   },
 };
 </script>
 <style lang="less" scoped>
 .research-hero {
   padding-top: 76px;
-  border-bottom: 1px solid var(--mila-border);
+  border-bottom: 1px solid var(--lumia-border);
+
+  .repo-entry {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(102, 46, 125, 0.22);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    padding: 8px 10px 8px 16px;
+
+    span {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--lumia-primary);
+      color: var(--lumia-primary);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease;
+
+      &:hover {
+        color: #fff;
+        background: var(--lumia-primary);
+      }
+    }
+  }
 }
 
 .research-content {
   padding-top: 46px;
   text-align: left;
+
+  .research-toolbar {
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .search-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: min(560px, 100%);
+
+    span {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(102, 46, 125, 0.24);
+      padding: 0 14px;
+      background: rgba(255, 255, 255, 0.88);
+      font-size: 15px;
+      color: var(--lumia-text);
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+      &:focus {
+        border-color: rgba(102, 46, 125, 0.56);
+        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+      }
+    }
+  }
+
+  .view-switch {
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid rgba(102, 46, 125, 0.24);
+    background: rgba(255, 255, 255, 0.8);
+    gap: 6px;
+  }
+
+  .switch-btn {
+    border: none;
+    background: transparent;
+    color: var(--lumia-text);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+
+    &.active {
+      background: var(--lumia-primary);
+      color: #fff;
+    }
+  }
+
+  .result-count {
+    margin-bottom: 18px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .compact-section {
+    display: grid;
+    gap: 12px;
+
+    .compact-item {
+      padding: 16px 18px;
+      border: 1px solid rgba(102, 46, 125, 0.18);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+
+      h3 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(20px, 2vw, 26px);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+
+      p {
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 14px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.72;
+      }
+    }
+  }
+
+  .empty-state {
+    margin-top: 12px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px dashed rgba(102, 46, 125, 0.28);
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    opacity: 0.82;
+  }
 
   .research-section {
     .row {
@@ -711,7 +1045,7 @@ export default {
         text-underline-offset: 0.25em;
         transition: text-decoration-color 0.25s ease;
         &:hover {
-          text-decoration-color: var(--mila-primary);
+          text-decoration-color: var(--lumia-primary);
         }
       }
     }
@@ -754,6 +1088,10 @@ export default {
 
 @media (max-width: 999px) {
   .research-content {
+    .search-box {
+      min-width: 100%;
+    }
+
     .research-section {
       .row {
         grid-template-columns: 1fr;
@@ -768,6 +1106,15 @@ export default {
 
 @media (max-width: 649px) {
   .research-content {
+    .view-switch {
+      width: 100%;
+      justify-content: space-between;
+
+      .switch-btn {
+        flex: 1;
+      }
+    }
+
     .research-section {
       .row {
         padding: 16px;

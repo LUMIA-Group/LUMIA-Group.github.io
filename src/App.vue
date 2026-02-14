@@ -5,22 +5,22 @@
       <router-view />
     </main>
     <footer v-if="!hideHeaderList.includes($route.name)" class="site-footer">
-      <div class="mila-container">
-        <div class="footer-top mila-fade-up" style="--delay: 80ms">
+      <div class="lumia-container">
+        <div class="footer-top lumia-fade-up" style="--delay: 80ms">
           <div>
-            <p class="mila-eyebrow">LUMIA Group</p>
-            <h2>Machine Learning, Language Intelligence, and Applications</h2>
+            <p class="lumia-eyebrow">{{ text.groupName }}</p>
+            <h2>{{ text.footerHeadline }}</h2>
           </div>
           <a
-            class="mila-link"
+            class="lumia-link"
             href="https://github.com/LUMIA-Group"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Visit Github
+            {{ text.visitGithub }}
           </a>
         </div>
-        <ul class="footer-links mila-fade-up" style="--delay: 160ms">
+        <ul class="footer-links lumia-fade-up" style="--delay: 160ms">
           <li
             v-for="item in footerLinks"
             :key="item.value"
@@ -29,7 +29,7 @@
             {{ item.label }}
           </li>
         </ul>
-        <p class="footer-note">© 2026 LUMIA Group</p>
+        <p class="footer-note">© 2026 {{ text.groupName }}</p>
       </div>
     </footer>
   </div>
@@ -38,6 +38,27 @@
 <script>
 import appHeader from "@/components/Header.vue";
 
+const I18N = {
+  en: {
+    groupName: "LUMIA Group",
+    footerHeadline: "Machine Learning, Language Intelligence, and Applications",
+    visitGithub: "Visit Github",
+    home: "Home",
+    people: "People",
+    research: "Research",
+    contact: "Contact",
+  },
+  zh: {
+    groupName: "LUMIA实验室",
+    footerHeadline: "机器学习、语言智能与应用",
+    visitGithub: "访问 Github",
+    home: "主页",
+    people: "成员",
+    research: "研究",
+    contact: "联系我们",
+  },
+};
+
 export default {
   components: {
     appHeader,
@@ -45,21 +66,41 @@ export default {
   data() {
     return {
       hideHeaderList: [],
-      footerLinks: [
-        { value: "home", label: "Home" },
-        { value: "people", label: "People" },
-        { value: "research", label: "Research" },
-        { value: "news", label: "News" },
-        { value: "contact", label: "Contact" },
-        {
-          value: "https://github.com/LUMIA-Group",
-          label: "Github",
-          type: "link",
-        },
-      ],
+      currentLanguage: "zh",
     };
   },
+  computed: {
+    text() {
+      return I18N[this.currentLanguage] || I18N.zh;
+    },
+    footerLinks() {
+      return [
+        { value: "home", label: this.text.home },
+        { value: "people", label: this.text.people },
+        { value: "research", label: this.text.research },
+        { value: "contact", label: this.text.contact },
+      ];
+    },
+  },
+  mounted() {
+    this.initLanguage();
+    window.addEventListener("lumia-language-change", this.onLanguageChange);
+  },
+  beforeDestroy() {
+    window.removeEventListener("lumia-language-change", this.onLanguageChange);
+  },
   methods: {
+    initLanguage() {
+      const saved = localStorage.getItem("lumia_lang");
+      if (saved === "en" || saved === "zh") {
+        this.currentLanguage = saved;
+      }
+    },
+    onLanguageChange(event) {
+      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+        this.currentLanguage = event.detail;
+      }
+    },
     go(item) {
       if (item.type === "link") {
         window.open(item.value, "_blank");
@@ -80,7 +121,7 @@ export default {
 
 <style lang="less">
 #app {
-  color: var(--mila-text);
+  color: var(--lumia-text);
 }
 
 .site-main {
@@ -89,8 +130,8 @@ export default {
 
 .site-footer {
   margin-top: 90px;
-  border-top: 1px solid var(--mila-border);
-  border-bottom: 1px solid var(--mila-border);
+  border-top: 1px solid var(--lumia-border);
+  border-bottom: 1px solid var(--lumia-border);
   padding: 54px 0 34px;
 
   .footer-top {
@@ -127,7 +168,7 @@ export default {
       transition: text-decoration-color 0.25s ease;
 
       &:hover {
-        text-decoration-color: var(--mila-primary);
+        text-decoration-color: var(--lumia-primary);
       }
     }
   }
