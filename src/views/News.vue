@@ -1,22 +1,22 @@
 <template>
   <div class="news-page">
-    <section class="mila-section news-hero">
-      <div class="mila-container">
-        <p class="mila-eyebrow mila-fade-up" style="--delay: 80ms">Updates</p>
-        <h1 class="mila-title mila-fade-up" style="--delay: 120ms">News</h1>
-        <p class="mila-subtitle mila-fade-up" style="--delay: 160ms">
+    <section class="lumia-section news-hero">
+      <div class="lumia-container">
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">Updates</p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">News</h1>
+        <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
           Recent publications, awards, and lab milestones.
         </p>
       </div>
     </section>
 
-    <section class="mila-section news-listing">
-      <div class="mila-container">
+    <section class="lumia-section news-listing">
+      <div class="lumia-container">
         <ol class="timeline">
           <li
             v-for="(item, index) in newsData.newsList"
             :key="`${index}-${item}`"
-            class="timeline-item mila-fade-up"
+            class="timeline-item lumia-fade-up"
             :style="{ '--delay': `${100 + index * 70}ms` }"
           >
             <div class="timeline-marker">{{ index + 1 }}</div>
@@ -43,7 +43,7 @@ export default {
 <style lang="less" scoped>
 .news-hero {
   padding-top: 76px;
-  border-bottom: 1px solid var(--mila-border);
+  border-bottom: 1px solid var(--lumia-border);
 }
 
 .news-listing {
@@ -54,7 +54,7 @@ export default {
   }
 
   .timeline-item {
-    background: var(--mila-white);
+    background: var(--lumia-white);
     border: 1px solid rgba(102, 46, 125, 0.18);
     border-radius: 20px;
     padding: 18px 20px;
@@ -79,7 +79,7 @@ export default {
       width: 40px;
       height: 40px;
       border-radius: 999px;
-      background: var(--mila-primary);
+      background: var(--lumia-primary);
       color: #fff;
       font-size: 13px;
       font-weight: 700;

@@ -17,16 +17,6 @@ export const headerData = {
             label: "Research",
         },
         {
-            value: "news",
-            label: "News",
-        },
-        {
-            // 若需要链接到外部网站，需要加一个type: "link"，则在value中填入链接的URL
-            value: "https://github.com/LUMIA-Group",
-            label: "Github",
-            type: "link",
-        },
-        {
             value: "contact",
             label: "Contact",
         },
