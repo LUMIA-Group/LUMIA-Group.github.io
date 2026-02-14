@@ -1,7 +1,19 @@
 <template>
   <div class="research-container">
-    <div class="research-content">
-      <section id="publications" class="section-item">
+    <section class="mila-section research-hero">
+      <div class="mila-container">
+        <p class="mila-eyebrow mila-fade-up" style="--delay: 80ms">Publications</p>
+        <h1 class="mila-title mila-fade-up" style="--delay: 120ms">Research</h1>
+        <p class="mila-subtitle mila-fade-up" style="--delay: 160ms">
+          Selected papers on language modeling, multimodal learning, graph
+          neural networks, and trustworthy AI.
+        </p>
+      </div>
+    </section>
+
+    <section class="mila-section research-content">
+      <div class="mila-container">
+        <section id="publications" class="section-item">
         <section class="research-section">
           <!-- research 1 -->
           <div class="row">
@@ -631,7 +643,8 @@
           <!-- <div class="row">……</div> -->
         </section>
       </section>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -645,50 +658,126 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.research-hero {
+  padding-top: 76px;
+  border-bottom: 1px solid var(--mila-border);
+}
+
 .research-content {
-  max-width: 1280px;
-  margin: auto;
-  padding-top: 40px;
+  padding-top: 46px;
   text-align: left;
+
   .research-section {
     .row {
-      margin-top: 24px !important;
-      display: flex;
-      flex-wrap: wrap;
-      padding: 32px 0;
-      border-bottom: 1px solid #ddd;
-      &:last-child {
-        border: none;
+      margin-top: 0 !important;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: minmax(220px, 320px) 1fr;
+      gap: 22px;
+      padding: 18px;
+      border: 1px solid rgba(102, 46, 125, 0.18);
+      border-radius: 22px;
+      background: linear-gradient(160deg, #ffffff 0%, #fdf6ff 100%);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(102, 46, 125, 0.12);
+      }
+
+      &:nth-child(3n + 2) {
+        background: linear-gradient(160deg, #ffffff 0%, #eef8fc 100%);
+      }
+
+      &:nth-child(3n + 3) {
+        background: linear-gradient(160deg, #ffffff 0%, #fff7e8 100%);
       }
     }
+
     .author {
       margin-bottom: 8px;
-      text-align: justify;
+      line-height: 1.55;
+      font-size: 15px;
+      opacity: 0.92;
     }
+
     .link-list {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+
+      a {
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 0.25em;
+        transition: text-decoration-color 0.25s ease;
+        &:hover {
+          text-decoration-color: var(--mila-primary);
+        }
+      }
     }
+
     article {
       font-size: 15px;
-      text-align: justify;
-      line-height: 24px;
+      line-height: 1.62;
+      opacity: 0.95;
     }
+
     .col-sm-4 {
-        flex: 0 0 auto;
-        width: 33.33333333%;
-        
+      width: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        min-height: 180px;
+        object-fit: cover;
+        display: block;
+      }
     }
+
     .col-sm-8 {
-      flex: 0 0 auto;
-      width: 66.66666667%;
-      padding-left: 24px;
+      width: 100%;
+      padding-left: 0;
       box-sizing: border-box;
     }
+
     h4 {
-        font-size: 19px;
-        line-height: 28px;
-        font-weight: 600;
-        margin-bottom: 16px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(23px, 2.4vw, 34px);
+      line-height: 1.15;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+  }
+}
+
+@media (max-width: 999px) {
+  .research-content {
+    .research-section {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      h4 {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+@media (max-width: 649px) {
+  .research-content {
+    .research-section {
+      .row {
+        padding: 16px;
+      }
+
+      article,
+      .author,
+      .link-list {
+        font-size: 14px;
+      }
     }
   }
 }

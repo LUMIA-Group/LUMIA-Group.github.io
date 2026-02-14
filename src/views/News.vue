@@ -1,75 +1,115 @@
 <template>
-  <div class="news-container">
-    <div class="news-content">
-      <ul class="row">
-        <li>
-          Sep 2023:
-          <a href="https://openreview.net/pdf?id=t2hEZadBBk">One paper</a> got
-          accepted at NeurIPS 2023!
-        </li>
-        <li>
-          May 2023: Two papers (<a
-            href="https://aclanthology.org/2023.acl-long.281/"
-            >[1]</a
-          ><a href="https://aclanthology.org/2023.findings-acl.570/">[2]</a>)
-          are accepted at ACL 2023!
-        </li>
-        <li>
-          Mar. 2023:
-          <a href="https://scholar.google.com/citations?user=C-TqDNsAAAAJ"
-            >Yunchong Song</a
+  <div class="news-page">
+    <section class="mila-section news-hero">
+      <div class="mila-container">
+        <p class="mila-eyebrow mila-fade-up" style="--delay: 80ms">Updates</p>
+        <h1 class="mila-title mila-fade-up" style="--delay: 120ms">News</h1>
+        <p class="mila-subtitle mila-fade-up" style="--delay: 160ms">
+          Recent publications, awards, and lab milestones.
+        </p>
+      </div>
+    </section>
+
+    <section class="mila-section news-listing">
+      <div class="mila-container">
+        <ol class="timeline">
+          <li
+            v-for="(item, index) in newsData.newsList"
+            :key="`${index}-${item}`"
+            class="timeline-item mila-fade-up"
+            :style="{ '--delay': `${100 + index * 70}ms` }"
           >
-          has got the ICLR Travel Award, congratuations!
-        </li>
-        <li>
-          Feb. 2023: Two papers (<a href="https://arxiv.org/abs/2302.09509"
-            >[1]</a
-          ><a href="https://arxiv.org/abs/2304.05361">[2]</a>) are accepted at
-          ICASSP 2023!
-        </li>
-        <li>
-          Jan. 2023:
-          <a href="https://openreview.net/forum?id=wKPmPBHSnT6">One paper</a> is
-          accepted at ICLR 2023!
-        </li>
-        <li>
-          Oct. 2022: Three papers (<a
-            href="https://aclanthology.org/2022.emnlp-main.211/"
-            >[1]</a
-          ><a href="https://aclanthology.org/2022.findings-emnlp.173/">[2]</a
-          ><a href="https://aclanthology.org/2022.findings-emnlp.114//">[3]</a>)
-          are accepted at EMNLP 2022!
-        </li>
-        <li>
-          Feb. 2022: Two papers (<a
-            href="https://aclanthology.org/2022.acl-long.308/"
-            >[1]</a
-          ><a href="https://aclanthology.org/2022.acl-long.502/">[2]</a>) are
-          accepted at ACL 2022!
-        </li>
-      </ul>
-    </div>
+            <div class="timeline-marker">{{ index + 1 }}</div>
+            <p>{{ item }}</p>
+          </li>
+        </ol>
+      </div>
+    </section>
   </div>
 </template>
+
 <script>
 import { newsData } from "@/data/news";
+
 export default {
   data() {
     return {
-      newsData: newsData,
+      newsData,
     };
   },
 };
 </script>
+
 <style lang="less" scoped>
-.news-content {
-  max-width: 1280px;
-  margin: auto;
-  padding-top: 80px;
-  text-align: left;
-  li {
-    list-style: circle;
-    line-height: 36px;
+.news-hero {
+  padding-top: 76px;
+  border-bottom: 1px solid var(--mila-border);
+}
+
+.news-listing {
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .timeline-item {
+    background: var(--mila-white);
+    border: 1px solid rgba(102, 46, 125, 0.18);
+    border-radius: 20px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    align-items: center;
+
+    &:nth-child(3n + 1) {
+      background: linear-gradient(150deg, #ffffff 0%, #fff6df 100%);
+    }
+
+    &:nth-child(3n + 2) {
+      background: linear-gradient(150deg, #ffffff 0%, #eef8fd 100%);
+    }
+
+    &:nth-child(3n + 3) {
+      background: linear-gradient(150deg, #ffffff 0%, #fff0f5 100%);
+    }
+
+    .timeline-marker {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: var(--mila-primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.04em;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.55;
+    }
+  }
+}
+
+@media (max-width: 999px) {
+  .news-listing {
+    .timeline-item {
+      grid-template-columns: 38px 1fr;
+
+      .timeline-marker {
+        width: 32px;
+        height: 32px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
   }
 }
 </style>

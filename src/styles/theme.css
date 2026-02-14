@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+:root {
+  --mila-primary: #662e7d;
+  --mila-primary-strong: #4f1d63;
+  --mila-text: #662e7d;
+  --mila-ink: #271f2c;
+  --mila-bg: #f4f5f1;
+  --mila-white: #ffffff;
+  --mila-border: #ceb3d3;
+  --mila-muted: #e6d9e9;
+  --mila-card-a: #f4da92;
+  --mila-card-b: #a1d9e8;
+  --mila-card-c: #f1c7d8;
+  --mila-shadow: 0 18px 40px rgba(102, 46, 125, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--mila-bg);
+  color: var(--mila-text);
+  font-family: "Plus Jakarta Sans", "TT Norms Pro", "Avenir Next", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+.mila-container {
+  width: 100%;
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.mila-section {
+  padding: 72px 0;
+}
+
+.mila-eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.mila-title {
+  margin: 12px 0 20px;
+  font-family: "Space Grotesk", "Brockmann", sans-serif;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.mila-subtitle {
+  max-width: 980px;
+  font-size: clamp(18px, 2.2vw, 28px);
+  line-height: 1.5;
+  color: rgba(102, 46, 125, 0.9);
+}
+
+.mila-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.3em;
+  font-weight: 600;
+  transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+}
+
+.mila-link::after {
+  content: "↗";
+  font-size: 12px;
+  transform: translate(0, -1px);
+  transition: transform 0.25s ease;
+}
+
+.mila-link:hover,
+.mila-link:focus {
+  opacity: 0.75;
+  text-decoration-color: currentColor;
+}
+
+.mila-link:hover::after,
+.mila-link:focus::after {
+  transform: translate(4px, -3px);
+}
+
+.mila-btn {
+  border: 1.5px solid var(--mila-primary);
+  background: var(--mila-primary);
+  color: var(--mila-white);
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.mila-btn:hover,
+.mila-btn:focus {
+  background: var(--mila-primary-strong);
+  transform: translateY(-1px);
+}
+
+.mila-btn.ghost {
+  background: transparent;
+  color: var(--mila-primary);
+}
+
+.mila-card {
+  background: var(--mila-white);
+  border: 1px solid rgba(102, 46, 125, 0.16);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: var(--mila-shadow);
+}
+
+.mila-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.mila-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.mila-fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: milaFadeUp 0.7s ease forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes milaFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1279px) {
+  .mila-container {
+    max-width: 100%;
+    padding: 0 30px;
+  }
+
+  .mila-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 999px) {
+  .mila-section {
+    padding: 56px 0;
+  }
+
+  .mila-grid-2,
+  .mila-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .mila-subtitle {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 649px) {
+  .mila-container {
+    padding: 0 22px;
+  }
+
+  .mila-title {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+}

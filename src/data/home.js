@@ -4,7 +4,7 @@ export const homeData = {
     // 实验室网站名称
     name: 'LUMIA实验室',
     // 实验室介绍
-    desc: 'Our latest web design tips, tricks, insights, and resources, hot offthe presses.',
+    desc: 'We build machine intelligence systems that acquire, reason, and interact with abstract concepts from data.',
     // 相关介绍的图片及文字
     projectList: [{
         id: 1,
