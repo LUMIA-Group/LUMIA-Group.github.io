@@ -2,8 +2,12 @@
   <div class="contact-page">
     <section class="lumia-section contact-hero">
       <div class="lumia-container">
-        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">{{ text.eyebrow }}</p>
-        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">{{ text.title }}</h1>
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
+          {{ text.eyebrow }}
+        </p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">
+          {{ text.title }}
+        </h1>
         <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
           {{ text.subtitle }}
         </p>
@@ -20,12 +24,15 @@
         >
           <header>
             <h2>{{ item.header }}</h2>
-            <button class="apply-trigger" @click="gotoApplication">
+            <button class="apply-trigger" @click="gotoApplication(item.applyMode)">
               <img :src="applicationLogo" alt="application" />
               <span>{{ text.apply }}</span>
             </button>
           </header>
-          <p v-for="(line, lineIndex) in item.list" :key="`${index}-${lineIndex}`">
+          <p
+            v-for="(line, lineIndex) in item.list"
+            :key="`${index}-${lineIndex}`"
+          >
             {{ line }}
           </p>
         </article>
@@ -84,10 +91,15 @@ export default {
       return I18N[this.currentLanguage] || I18N.zh;
     },
     sectionList() {
+      const attachMode = (list = []) =>
+        list.map((item, index) => ({
+          ...item,
+          applyMode: index === 1 ? "industry" : "graduate",
+        }));
       if (this.currentLanguage === "en") {
-        return I18N.en.sections;
+        return attachMode(I18N.en.sections);
       }
-      return this.contactData.contactList;
+      return attachMode(this.contactData.contactList);
     },
   },
   mounted() {
@@ -105,12 +117,17 @@ export default {
       }
     },
     onLanguageChange(event) {
-      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+      if (
+        event &&
+        event.detail &&
+        (event.detail === "en" || event.detail === "zh")
+      ) {
         this.currentLanguage = event.detail;
       }
     },
-    gotoApplication() {
-      this.$router.push({ name: "application" });
+    gotoApplication(mode) {
+      const query = mode === "industry" ? { type: "industry" } : {};
+      this.$router.push({ name: "application", query });
     },
   },
 };
