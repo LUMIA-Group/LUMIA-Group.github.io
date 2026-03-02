@@ -14,3 +14,17 @@ new Vue({
     store,
     render: (h) => h(App),
 }).$mount("#app");
+
+if (typeof window !== "undefined") {
+    const emitMounted = () => {
+        if (typeof window.dispatchEvent === "function") {
+            window.dispatchEvent(new CustomEvent("lumia-app-mounted"));
+        }
+    };
+
+    if (typeof window.requestAnimationFrame === "function") {
+        window.requestAnimationFrame(emitMounted);
+    } else {
+        window.setTimeout(emitMounted, 0);
+    }
+}
