@@ -2,8 +2,12 @@
   <div class="people-page">
     <section class="lumia-section people-hero">
       <div class="lumia-container">
-        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">{{ text.eyebrow }}</p>
-        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">{{ text.title }}</h1>
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
+          {{ text.eyebrow }}
+        </p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">
+          {{ text.title }}
+        </h1>
         <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
           {{ text.subtitle }}
         </p>
@@ -16,7 +20,10 @@
       class="people-section lumia-section"
     >
       <div class="lumia-container">
-        <div class="section-head lumia-fade-up" :style="{ '--delay': `${80 + sectionIndex * 50}ms` }">
+        <div
+          class="section-head lumia-fade-up"
+          :style="{ '--delay': `${80 + sectionIndex * 50}ms` }"
+        >
           <h2>{{ section.displayTitle }}</h2>
           <p>{{ memberCountText(section.list.length) }}</p>
         </div>
@@ -111,7 +118,11 @@ export default {
       }
     },
     onLanguageChange(event) {
-      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+      if (
+        event &&
+        event.detail &&
+        (event.detail === "en" || event.detail === "zh")
+      ) {
         this.currentLanguage = event.detail;
       }
     },
