@@ -5,8 +5,13 @@
         <div class="hero-copy lumia-fade-up" style="--delay: 80ms">
           <p class="lumia-eyebrow">{{ text.siteLabel }}</p>
           <h1 class="lumia-title">{{ text.labName }}</h1>
-          <p class="lumia-subtitle">
-            {{ text.heroDesc }}
+          <p class="lumia-subtitle hero-desc-typing">
+            <span>{{ displayedHeroDesc }}</span>
+            <span
+              v-if="isTypingHeroDesc"
+              class="hero-typing-cursor"
+              aria-hidden="true"
+            ></span>
           </p>
           <div class="hero-actions">
             <button class="hero-action-btn" type="button" @click="go('research')">
@@ -156,6 +161,10 @@ export default {
     return {
       homeData,
       currentLanguage: "zh",
+      displayedHeroDesc: "",
+      isTypingHeroDesc: false,
+      typingTimer: null,
+      typingIndex: 0,
     };
   },
   computed: {
@@ -306,11 +315,102 @@ export default {
   mounted() {
     this.initLanguage();
     window.addEventListener("lumia-language-change", this.onLanguageChange);
+    window.addEventListener("lumia-preloader-hidden", this.onPreloaderHidden);
+
+    if (this.shouldDeferHeroDescTyping()) {
+      this.displayedHeroDesc = "";
+      this.isTypingHeroDesc = false;
+      return;
+    }
+
+    this.startHeroDescTyping();
   },
   beforeDestroy() {
+    this.stopHeroDescTyping();
     window.removeEventListener("lumia-language-change", this.onLanguageChange);
+    window.removeEventListener("lumia-preloader-hidden", this.onPreloaderHidden);
   },
   methods: {
+    shouldDeferHeroDescTyping() {
+      if (typeof window === "undefined" || typeof document === "undefined") {
+        return false;
+      }
+
+      if (window.__lumiaPreloaderHidden === true) {
+        return false;
+      }
+
+      const preloader = document.getElementById("lumia-preloader");
+      if (!preloader) {
+        return false;
+      }
+
+      if (
+        preloader.dataset.hidden === "true" ||
+        preloader.classList.contains("is-hidden")
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+    onPreloaderHidden() {
+      this.startHeroDescTyping();
+    },
+    stopHeroDescTyping() {
+      if (this.typingTimer !== null) {
+        clearTimeout(this.typingTimer);
+        this.typingTimer = null;
+      }
+    },
+    startHeroDescTyping() {
+      this.stopHeroDescTyping();
+
+      const sentence = (this.text && this.text.heroDesc) || "";
+      const chars = Array.from(sentence);
+      this.displayedHeroDesc = "";
+      this.typingIndex = 0;
+
+      if (!chars.length) {
+        this.isTypingHeroDesc = false;
+        return;
+      }
+
+      const reduceMotion =
+        typeof window !== "undefined" &&
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion) {
+        this.displayedHeroDesc = sentence;
+        this.isTypingHeroDesc = false;
+        return;
+      }
+
+      this.isTypingHeroDesc = true;
+
+      const typeNext = () => {
+        if (this.typingIndex >= chars.length) {
+          this.isTypingHeroDesc = false;
+          this.typingTimer = null;
+          return;
+        }
+
+        const char = chars[this.typingIndex];
+        this.displayedHeroDesc += char;
+        this.typingIndex += 1;
+
+        let delay = 34;
+        if (/[，。,\.!?！？；;：:]/.test(char)) {
+          delay = 110;
+        } else if (/\s/.test(char)) {
+          delay = 18;
+        }
+
+        this.typingTimer = setTimeout(typeNext, delay);
+      };
+
+      this.typingTimer = setTimeout(typeNext, 120);
+    },
     initLanguage() {
       const saved = localStorage.getItem("lumia_lang");
       if (saved === "en" || saved === "zh") {
@@ -324,6 +424,7 @@ export default {
         (event.detail === "en" || event.detail === "zh")
       ) {
         this.currentLanguage = event.detail;
+        this.startHeroDescTyping();
       }
     },
     go(name) {
@@ -377,6 +478,19 @@ export default {
 }
 
 .hero-copy {
+  .hero-desc-typing {
+    min-height: 3.2em;
+  }
+
+  .hero-typing-cursor {
+    display: inline-block;
+    width: 0.52ch;
+    margin-left: 2px;
+    border-right: 2px solid rgba(102, 46, 125, 0.65);
+    animation: heroTypingBlink 0.9s steps(1, end) infinite;
+    transform: translateY(2px);
+  }
+
   .hero-actions {
     margin-top: 30px;
     display: flex;
@@ -408,6 +522,17 @@ export default {
       color: var(--lumia-white);
       box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
     }
+  }
+}
+
+@keyframes heroTypingBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  46%,
+  100% {
+    opacity: 0;
   }
 }
 

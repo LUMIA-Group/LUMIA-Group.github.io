@@ -158,10 +158,34 @@
         .lumia-preloader-brand {
           font-size: clamp(26px, 8vw, 32px);
         }
-      }</style><script defer="defer" src="/js/chunk-vendors.63372b7d.js"></script><script defer="defer" src="/js/app.39a51721.js"></script><link href="/css/chunk-vendors.10dd4e95.css" rel="stylesheet"><link href="/css/app.9713c556.css" rel="stylesheet"></head><body><div id="lumia-preloader" aria-hidden="true"><div class="lumia-preloader-logo-shell"><img class="lumia-preloader-logo base" src="/loading-logo.png" alt="" fetchpriority="high"/><div class="lumia-preloader-logo-fill"><img class="lumia-preloader-logo color" src="/loading-logo.png" alt="" fetchpriority="high"/></div></div><div class="lumia-preloader-progress" role="progressbar" aria-label="Loading"><div class="lumia-preloader-progress-value"></div></div><p class="lumia-preloader-brand">LUMIA Lab</p></div><noscript><style>#lumia-preloader { display: none !important; }</style><strong>We're sorry but LUMIA-Group doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script>(function () {
+      }</style><script defer="defer" src="/js/chunk-vendors.63372b7d.js"></script><script defer="defer" src="/js/app.d9f1f3b4.js"></script><link href="/css/chunk-vendors.10dd4e95.css" rel="stylesheet"><link href="/css/app.ffb93925.css" rel="stylesheet"></head><body><div id="lumia-preloader" aria-hidden="true"><div class="lumia-preloader-logo-shell"><img class="lumia-preloader-logo base" src="/loading-logo.png" alt="" fetchpriority="high"/><div class="lumia-preloader-logo-fill"><img class="lumia-preloader-logo color" src="/loading-logo.png" alt="" fetchpriority="high"/></div></div><div class="lumia-preloader-progress" role="progressbar" aria-label="Loading"><div class="lumia-preloader-progress-value"></div></div><p class="lumia-preloader-brand">LUMIA Lab</p></div><noscript><style>#lumia-preloader { display: none !important; }</style><strong>We're sorry but LUMIA-Group doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script>(function () {
         var preloaderId = "lumia-preloader";
         var preloader = document.getElementById(preloaderId);
-        if (!preloader) return;
+        var hiddenEventEmitted = false;
+
+        if (typeof window !== "undefined") {
+          window.__lumiaPreloaderHidden = false;
+        }
+
+        function emitPreloaderHidden() {
+          if (hiddenEventEmitted) return;
+          hiddenEventEmitted = true;
+
+          if (typeof window === "undefined") return;
+          window.__lumiaPreloaderHidden = true;
+
+          if (typeof window.dispatchEvent !== "function") return;
+          try {
+            window.dispatchEvent(new CustomEvent("lumia-preloader-hidden"));
+          } catch (error) {
+            // no-op: CustomEvent can be unavailable on very old browsers
+          }
+        }
+
+        if (!preloader) {
+          emitPreloaderHidden();
+          return;
+        }
 
         var logoShell = preloader.querySelector(".lumia-preloader-logo-shell");
         var logoFill = preloader.querySelector(".lumia-preloader-logo-fill");
@@ -302,6 +326,7 @@
 
             preloader.dataset.hidden = "true";
             preloader.classList.add("is-hidden");
+            emitPreloaderHidden();
             window.setTimeout(function () {
               if (preloader && preloader.parentNode) {
                 preloader.parentNode.removeChild(preloader);
