@@ -21,11 +21,7 @@
           </a>
         </div>
         <ul class="footer-links lumia-fade-up" style="--delay: 160ms">
-          <li
-            v-for="item in footerLinks"
-            :key="item.value"
-            @click="go(item)"
-          >
+          <li v-for="item in footerLinks" :key="item.value" @click="go(item)">
             {{ item.label }}
           </li>
         </ul>
@@ -97,7 +93,11 @@ export default {
       }
     },
     onLanguageChange(event) {
-      if (event && event.detail && (event.detail === "en" || event.detail === "zh")) {
+      if (
+        event &&
+        event.detail &&
+        (event.detail === "en" || event.detail === "zh")
+      ) {
         this.currentLanguage = event.detail;
       }
     },
