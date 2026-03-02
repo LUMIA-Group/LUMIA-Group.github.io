@@ -1,0 +1,11 @@
+<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title-03">
+  <title id="title-03">Partner 03 placeholder logo</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="110" cy="110" r="72" stroke="#c8b8d3" stroke-width="7" />
+    <path d="M110 38 A72 72 0 0 1 182 110" stroke="#5b7f91" stroke-width="7" />
+    <path d="M110 182 A72 72 0 0 1 38 110" stroke="#d7cbdf" stroke-width="7" />
+    <path d="M72 110 H148" stroke="#8f79a2" stroke-width="5" />
+  </g>
+  <text x="110" y="103" text-anchor="middle" font-family="'Space Grotesk', 'Arial', sans-serif" font-size="25" font-weight="700" fill="#55356d">P03</text>
+  <text x="110" y="128" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Arial', sans-serif" font-size="12" font-weight="600" letter-spacing="1.5" fill="#6c5a7a">PARTNER</text>
+</svg>
