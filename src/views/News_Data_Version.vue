@@ -10,11 +10,11 @@
   </div>
 </template>
 <script>
-import { newsData } from '@/data/news'
+import { newsData } from "@/data/news";
 export default {
   data() {
     return {
-      newsData: newsData
+      newsData: newsData,
     };
   },
 };
