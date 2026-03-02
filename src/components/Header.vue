@@ -59,10 +59,13 @@
               :class="{
                 active: isActive(item),
                 hasChildren: item.children && item.children.length,
-                isFeedback: item.type === 'feedback',
               }"
             >
-              <button class="menu-link" type="button" @click="clickHeader(item)">
+              <button
+                class="menu-link"
+                type="button"
+                @click="clickHeader(item)"
+              >
                 {{ item.label }}
               </button>
 
@@ -82,79 +85,15 @@
               </ul>
             </li>
           </ul>
-
         </nav>
       </div>
     </div>
 
-    <div
-      v-if="feedbackOpen"
-      class="feedback-modal"
-      @click.self="closeFeedback"
-    >
-      <div class="feedback-panel">
-        <div class="panel-head">
-          <h2>{{ localeText.feedbackTitle }}</h2>
-          <button
-            type="button"
-            class="panel-close"
-            :disabled="feedbackSubmitting"
-            @click="closeFeedback"
-          >
-            {{ localeText.close }}
-          </button>
-        </div>
-        <p class="panel-subtitle">{{ localeText.feedbackSubtitle }}</p>
-
-        <label class="field">
-          <span>{{ localeText.feedbackEmail }}</span>
-          <input
-            v-model.trim="feedbackForm.email"
-            type="email"
-            :placeholder="localeText.feedbackEmailPlaceholder"
-            autocomplete="email"
-          />
-        </label>
-
-        <label class="field">
-          <span>{{ localeText.feedbackMessage }}</span>
-          <textarea
-            v-model.trim="feedbackForm.message"
-            rows="5"
-            :placeholder="localeText.feedbackMessagePlaceholder"
-          ></textarea>
-        </label>
-
-        <p
-          v-if="feedbackStatus"
-          class="feedback-status"
-          :class="feedbackStatusType"
-        >
-          {{ feedbackStatus }}
-        </p>
-
-        <div class="panel-actions">
-          <button
-            type="button"
-            class="submit-btn"
-            :disabled="feedbackSubmitting"
-            @click="submitFeedback"
-          >
-            {{
-              feedbackSubmitting
-                ? localeText.feedbackSubmitting
-                : localeText.feedbackSubmit
-            }}
-          </button>
-        </div>
-      </div>
-    </div>
   </header>
 </template>
 
 <script>
 import { headerData } from "@/data/header";
-import lumiaLogo from "@/assets/lumia-logo.svg";
 
 const I18N = {
   en: {
@@ -167,19 +106,6 @@ const I18N = {
     menu: "Menu",
     close: "Close",
     labName: "LUMIA Lab",
-    feedback: "Beta Test Feedback",
-    feedbackTitle: "Beta Feedback",
-    feedbackSubtitle: "Share your experience, issues, or suggestions.",
-    feedbackEmail: "Email (optional)",
-    feedbackEmailPlaceholder: "you@example.com (optional)",
-    feedbackMessage: "Feedback",
-    feedbackMessagePlaceholder: "Describe your experience or suggestion.",
-    feedbackSubmit: "Send Feedback",
-    feedbackSubmitting: "Sending...",
-    feedbackSuccess: "Thanks. Your feedback has been received.",
-    feedbackError: "Could not send feedback. Please try again later.",
-    feedbackRequired: "Please enter your feedback message first.",
-    feedbackEmailInvalid: "Please enter a valid email address.",
   },
   zh: {
     home: "主页",
@@ -191,19 +117,6 @@ const I18N = {
     menu: "菜单",
     close: "关闭",
     labName: "LUMIA实验室",
-    feedback: "Beta测试反馈",
-    feedbackTitle: "Beta 反馈",
-    feedbackSubtitle: "欢迎反馈使用体验、问题与改进建议。",
-    feedbackEmail: "邮箱（可选）",
-    feedbackEmailPlaceholder: "你的邮箱（可选）",
-    feedbackMessage: "反馈内容",
-    feedbackMessagePlaceholder: "请描述你的体验、问题或建议。",
-    feedbackSubmit: "提交反馈",
-    feedbackSubmitting: "提交中...",
-    feedbackSuccess: "已收到你的反馈，感谢支持。",
-    feedbackError: "反馈提交失败，请稍后重试。",
-    feedbackRequired: "请先填写反馈内容。",
-    feedbackEmailInvalid: "邮箱格式不正确，请检查后重试。",
   },
 };
 
@@ -211,18 +124,10 @@ export default {
   data() {
     return {
       headerData,
-      defaultLogo: lumiaLogo,
+      defaultLogo: `${process.env.BASE_URL || "/"}loading-logo.png`,
       mobileMenuOpen: false,
       isScrolled: false,
       currentLanguage: "zh",
-      feedbackOpen: false,
-      feedbackSubmitting: false,
-      feedbackStatus: "",
-      feedbackStatusType: "",
-      feedbackForm: {
-        email: "",
-        message: "",
-      },
     };
   },
   computed: {
@@ -238,7 +143,6 @@ export default {
         { value: "people", label: this.localeText.people },
         { value: "research", label: this.localeText.research },
         { value: "contact", label: this.localeText.contact },
-        { value: "feedback", label: this.localeText.feedback, type: "feedback" },
       ];
     },
     utilityMenu() {
@@ -252,12 +156,10 @@ export default {
   mounted() {
     this.initLanguage();
     window.addEventListener("scroll", this.handleScroll, { passive: true });
-    window.addEventListener("keydown", this.handleKeydown);
     this.handleScroll();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
-    window.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
     initLanguage() {
@@ -293,13 +195,8 @@ export default {
     handleScroll() {
       this.isScrolled = window.scrollY > 12;
     },
-    handleKeydown(event) {
-      if (event.key === "Escape" && this.feedbackOpen && !this.feedbackSubmitting) {
-        this.closeFeedback();
-      }
-    },
     isActive(item) {
-      if (item.type === "link" || item.type === "feedback") {
+      if (item.type === "link") {
         return false;
       }
       if (this.$route.name === item.value) {
@@ -315,67 +212,10 @@ export default {
     clickHeader(item) {
       if (item.type === "link") {
         window.open(item.value, "_blank");
-      } else if (item.type === "feedback") {
-        this.openFeedback();
       } else if (this.$route.name !== item.value) {
         this.$router.push({ name: item.value });
       }
       this.mobileMenuOpen = false;
-    },
-    openFeedback() {
-      this.feedbackOpen = true;
-      this.feedbackStatus = "";
-      this.feedbackStatusType = "";
-    },
-    closeFeedback() {
-      this.feedbackOpen = false;
-      this.feedbackStatus = "";
-      this.feedbackStatusType = "";
-    },
-    async submitFeedback() {
-      const message = this.feedbackForm.message.trim();
-      const email = this.feedbackForm.email.trim();
-      if (!message) {
-        this.feedbackStatus = this.localeText.feedbackRequired;
-        this.feedbackStatusType = "error";
-        return;
-      }
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        this.feedbackStatus = this.localeText.feedbackEmailInvalid;
-        this.feedbackStatusType = "error";
-        return;
-      }
-      this.feedbackSubmitting = true;
-      this.feedbackStatus = "";
-      this.feedbackStatusType = "";
-      try {
-        const response = await fetch("/api/feedback", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            message,
-            language: this.currentLanguage,
-            page: window.location.href,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("feedback submit failed");
-        }
-        this.feedbackStatus = this.localeText.feedbackSuccess;
-        this.feedbackStatusType = "success";
-        this.feedbackForm = {
-          email: "",
-          message: "",
-        };
-      } catch (error) {
-        this.feedbackStatus = this.localeText.feedbackError;
-        this.feedbackStatusType = "error";
-      } finally {
-        this.feedbackSubmitting = false;
-      }
     },
   },
 };
@@ -394,151 +234,6 @@ export default {
   &.scrolled {
     border-bottom-color: rgba(102, 46, 125, 0.22);
     box-shadow: 0 8px 25px rgba(102, 46, 125, 0.12);
-  }
-}
-
-.feedback-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(25, 19, 29, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 140;
-}
-
-.feedback-panel {
-  width: min(560px, 100%);
-  max-height: calc(100vh - 40px);
-  overflow: auto;
-  border-radius: 22px;
-  border: 1px solid rgba(102, 46, 125, 0.24);
-  background: linear-gradient(160deg, #ffffff 0%, #fdf6ff 100%);
-  box-shadow: 0 26px 56px rgba(33, 18, 43, 0.28);
-  padding: 22px;
-}
-
-.panel-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  h2 {
-    margin: 0;
-    font-family: "Space Grotesk", sans-serif;
-    font-size: clamp(24px, 3vw, 34px);
-    color: var(--lumia-primary);
-  }
-
-  .panel-close {
-    border: none;
-    background: transparent;
-    color: var(--lumia-primary);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    padding: 0;
-  }
-}
-
-.panel-subtitle {
-  margin-top: 8px;
-  margin-bottom: 18px;
-  opacity: 0.82;
-  line-height: 1.5;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 14px;
-
-  span {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--lumia-primary);
-  }
-
-  input,
-  textarea {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid rgba(102, 46, 125, 0.26);
-    border-radius: 12px;
-    background: #fff;
-    appearance: none;
-    -webkit-appearance: none;
-    padding: 10px 12px;
-    font-size: 14px;
-    color: var(--lumia-text);
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-    &::placeholder {
-      color: rgba(102, 46, 125, 0.56);
-      opacity: 1;
-    }
-
-    &:focus {
-      border-color: rgba(102, 46, 125, 0.5);
-      box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
-    }
-  }
-
-  textarea {
-    min-height: 140px;
-  }
-}
-
-.feedback-status {
-  margin-top: 4px;
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  line-height: 1.45;
-
-  &.success {
-    background: rgba(32, 160, 94, 0.12);
-    color: #1e7f4d;
-  }
-
-  &.error {
-    background: rgba(226, 83, 83, 0.12);
-    color: #b13c3c;
-  }
-}
-
-.panel-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.submit-btn {
-  border: 1px solid var(--lumia-primary);
-  background: var(--lumia-primary);
-  color: #fff;
-  border-radius: 999px;
-  padding: 9px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-
-  &:hover {
-    background: var(--lumia-primary-strong);
-    border-color: var(--lumia-primary-strong);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
   }
 }
 
@@ -616,7 +311,7 @@ export default {
     gap: 24px;
   }
 
-  .brand {
+    .brand {
     border: none;
     background: transparent;
     display: inline-flex;
@@ -626,10 +321,11 @@ export default {
     color: var(--lumia-primary);
 
     .logo {
-      width: 46px;
-      height: 46px;
+      width: 52px;
+      height: 52px;
       object-fit: contain;
       object-position: center;
+      filter: drop-shadow(0 3px 10px rgba(244, 194, 57, 0.3));
     }
 
     .name {
@@ -683,30 +379,6 @@ export default {
       &:hover .menu-link,
       &.active .menu-link {
         text-decoration-color: var(--lumia-primary);
-      }
-
-      &.isFeedback {
-        .menu-link {
-          border: 1.5px solid var(--lumia-primary);
-          border-radius: 999px;
-          padding: 8px 14px;
-          text-decoration: none;
-          background: rgba(255, 255, 255, 0.82);
-          line-height: 1;
-          transition:
-            background-color 0.25s ease,
-            color 0.25s ease,
-            box-shadow 0.25s ease,
-            border-color 0.25s ease;
-        }
-
-        &:hover .menu-link,
-        &.active .menu-link {
-          color: #fff;
-          background: var(--lumia-primary);
-          border-color: var(--lumia-primary);
-          box-shadow: 0 9px 18px rgba(102, 46, 125, 0.18);
-        }
       }
 
       .submenu {
@@ -790,12 +462,6 @@ export default {
           font-size: 20px;
         }
 
-        &.isFeedback {
-          .menu-link {
-            font-size: 16px;
-          }
-        }
-
         .submenu {
           position: static;
           opacity: 1;
@@ -852,8 +518,8 @@ export default {
     }
 
     .brand .logo {
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
     }
 
     .main-nav {
