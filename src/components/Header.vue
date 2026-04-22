@@ -224,7 +224,7 @@ export default {
   .main-inner {
     min-height: 84px;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     gap: 24px;
   }
@@ -234,6 +234,7 @@ export default {
     background: transparent;
     display: inline-flex;
     align-items: center;
+    align-self: center;
     gap: 12px;
     cursor: pointer;
     color: rgba(255, 255, 255, 0.96);
@@ -258,6 +259,7 @@ export default {
     display: none;
     border: none;
     background: transparent;
+    align-self: center;
     color: rgba(255, 255, 255, 0.94);
     font-size: 15px;
     font-weight: 600;
@@ -268,23 +270,32 @@ export default {
 
   .main-nav {
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    align-self: stretch;
     gap: 24px;
 
     > ul {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       gap: 28px;
+      height: 100%;
     }
 
     .menu-node {
       position: relative;
+      display: flex;
+      align-items: stretch;
+      height: 100%;
 
       .menu-link {
         cursor: pointer;
         border: none;
         background: transparent;
-        padding: 0;
+        padding: 0 2px;
+        height: 100%;
+        min-height: 100%;
+        display: inline-flex;
+        align-items: center;
         font-size: 18px;
         font-weight: 600;
         color: rgba(255, 255, 255, 0.9);
@@ -292,8 +303,7 @@ export default {
         text-decoration-color: transparent;
         text-decoration-thickness: 1.4px;
         text-underline-offset: 0.25em;
-        transition: text-decoration-color 0.25s ease,
-          text-decoration-thickness 0.25s ease, opacity 0.25s ease;
+        transition: opacity 0.15s ease;
       }
 
       &:hover .menu-link {
