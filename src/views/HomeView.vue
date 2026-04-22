@@ -31,6 +31,25 @@
       </div>
     </section>
 
+    <section class="lumia-section news-preview">
+      <div class="lumia-container preview-grid">
+        <div class="preview-left lumia-fade-up" style="--delay: 80ms">
+          <p class="lumia-eyebrow">{{ text.updates }}</p>
+          <h2 class="section-title">{{ text.labNews }}</h2>
+        </div>
+        <div class="preview-list">
+          <article
+            v-for="(news, index) in newsItems"
+            :key="`news-${index}`"
+            class="news-item lumia-fade-up"
+            :style="{ '--delay': `${120 + index * 70}ms` }"
+          >
+            <p v-html="news"></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="lumia-section featured-section">
       <div class="lumia-container">
         <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
@@ -52,25 +71,6 @@
             <button class="lumia-link" @click="goToResearchTag(item.id)">
               {{ text.readProjects }}
             </button>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="lumia-section news-preview">
-      <div class="lumia-container preview-grid">
-        <div class="preview-left lumia-fade-up" style="--delay: 80ms">
-          <p class="lumia-eyebrow">{{ text.updates }}</p>
-          <h2 class="section-title">{{ text.labNews }}</h2>
-        </div>
-        <div class="preview-list">
-          <article
-            v-for="(news, index) in newsItems"
-            :key="`news-${index}`"
-            class="news-item lumia-fade-up"
-            :style="{ '--delay': `${120 + index * 70}ms` }"
-          >
-            <p v-html="news"></p>
           </article>
         </div>
       </div>
@@ -584,10 +584,14 @@ export default {
   }
 }
 
+.featured-section,
+.news-preview,
 .partners-section {
   padding-top: 56px;
   border-top: 1px solid var(--lumia-border);
+}
 
+.partners-section {
   .section-title {
     margin: 12px 0 30px;
   }
@@ -718,7 +722,6 @@ export default {
 }
 
 .featured-section {
-  border-top: 1px solid var(--lumia-border);
   border-bottom: 1px solid var(--lumia-border);
 
   .lumia-grid-3 {
@@ -785,7 +788,7 @@ export default {
   }
 
   .section-title {
-    margin: 10px 0 22px;
+    margin: 12px 0 22px;
   }
 
   .preview-list {
