@@ -78,10 +78,13 @@
 
     <section class="lumia-section partners-section">
       <div class="lumia-container">
-        <div class="partners-panel lumia-fade-up" style="--delay: 120ms">
-          <p class="lumia-eyebrow partners-eyebrow">
-            {{ text.partnerEyebrow }}
-          </p>
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
+          {{ text.partnerEyebrow }}
+        </p>
+        <h2 class="section-title lumia-fade-up" style="--delay: 120ms">
+          {{ text.partnerTitle }}
+        </h2>
+        <div class="partners-panel lumia-fade-up" style="--delay: 160ms">
           <div
             class="partners-orbit"
             role="list"
@@ -135,6 +138,7 @@ const I18N = {
     latestNewsLink: "Lab News",
     contactUs: "Contact Us (Collab/Admissions)",
     partnerEyebrow: "Partners",
+    partnerTitle: "Academic & Industry Collaborators",
   },
   zh: {
     siteLabel: "上海交通大学",
@@ -154,6 +158,7 @@ const I18N = {
     latestNewsLink: "实验室新闻",
     contactUs: "联系我们（合作/招生）",
     partnerEyebrow: "合作伙伴",
+    partnerTitle: "学术与产业合作网络",
   },
 };
 
@@ -540,7 +545,7 @@ export default {
   border-radius: 26px;
   background: linear-gradient(165deg, #ffffff 0%, #faf7fd 100%);
   min-height: 520px;
-  padding: 24px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -577,20 +582,18 @@ export default {
     );
     pointer-events: none;
   }
-
-  .partners-eyebrow {
-    opacity: 0.74;
-    margin-bottom: 14px;
-    position: relative;
-    z-index: 1;
-  }
 }
 
 .partners-section {
-  padding-top: 0;
+  padding-top: 56px;
+  border-top: 1px solid var(--lumia-border);
+
+  .section-title {
+    margin: 12px 0 30px;
+  }
 
   .partners-panel {
-    margin-top: 8px;
+    margin-top: 0;
   }
 }
 
@@ -628,11 +631,19 @@ export default {
 }
 
 .partner-bubble {
+  --bubble-scale: 1;
+  --bubble-hover-scale: 1.08;
+  --bubble-render-size: calc(var(--size) * var(--bubble-scale));
+  --bubble-hover-size: calc(
+    var(--size) * var(--bubble-scale) * var(--bubble-hover-scale)
+  );
+  --bubble-safe-x: calc((var(--bubble-hover-size) * 0.5) + var(--sway) + 16px);
+  --bubble-safe-y: calc((var(--bubble-hover-size) * 0.5) + var(--lift) + 18px);
   position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  height: var(--size);
+  left: clamp(var(--bubble-safe-x), var(--x), calc(100% - var(--bubble-safe-x)));
+  top: clamp(var(--bubble-safe-y), var(--y), calc(100% - var(--bubble-safe-y)));
+  width: var(--bubble-render-size);
+  height: var(--bubble-render-size);
   transform: translate(-50%, -50%);
   border-radius: 999px;
   border: 1px solid rgba(102, 46, 125, 0.11);
@@ -664,8 +675,8 @@ export default {
   }
 
   &:hover {
-    width: calc(var(--size) * 1.12);
-    height: calc(var(--size) * 1.12);
+    width: var(--bubble-hover-size);
+    height: var(--bubble-hover-size);
     border-color: rgba(102, 46, 125, 0.17);
     box-shadow: 0 14px 28px rgba(102, 46, 125, 0.11),
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -851,8 +862,8 @@ export default {
   }
 
   .partner-bubble {
-    width: calc(var(--size) * 0.78);
-    height: calc(var(--size) * 0.78);
+    --bubble-scale: 0.78;
+    --bubble-hover-scale: 1.05;
   }
 
   .featured-section {
