@@ -28,29 +28,6 @@
             </button>
           </div>
         </div>
-
-        <div class="hero-visual lumia-fade-up" style="--delay: 180ms">
-          <div class="partners-panel">
-            <p class="lumia-eyebrow partners-eyebrow">
-              {{ text.partnerEyebrow }}
-            </p>
-            <div
-              class="partners-orbit"
-              role="list"
-              :aria-label="text.partnerEyebrow"
-            >
-              <article
-                v-for="item in partnerLogos"
-                :key="item.id"
-                class="partner-bubble"
-                :style="bubbleStyle(item)"
-                role="listitem"
-              >
-                <img :src="item.logo" :alt="item.name" loading="lazy" />
-              </article>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -98,6 +75,31 @@
         </div>
       </div>
     </section>
+
+    <section class="lumia-section partners-section">
+      <div class="lumia-container">
+        <div class="partners-panel lumia-fade-up" style="--delay: 120ms">
+          <p class="lumia-eyebrow partners-eyebrow">
+            {{ text.partnerEyebrow }}
+          </p>
+          <div
+            class="partners-orbit"
+            role="list"
+            :aria-label="text.partnerEyebrow"
+          >
+            <article
+              v-for="item in partnerLogos"
+              :key="item.id"
+              class="partner-bubble"
+              :style="bubbleStyle(item)"
+              role="listitem"
+            >
+              <img :src="item.logo" :alt="item.name" loading="lazy" />
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -116,7 +118,7 @@ import siiLogo from "@/assets/partners/sii.png";
 
 const I18N = {
   en: {
-    siteLabel: "LUMIA Research Group Website",
+    siteLabel: "Shanghai Jiao Tong University",
     labName: "LUMIA Lab",
     heroDesc:
       "We build machine intelligence systems that acquire, reason, and interact with abstract concepts from data.",
@@ -135,7 +137,7 @@ const I18N = {
     partnerEyebrow: "Partners",
   },
   zh: {
-    siteLabel: "LUMIA 实验室网站",
+    siteLabel: "上海交通大学",
     labName: "LUMIA实验室",
     heroDesc:
       "我们专注于构建能够从数据中学习、推理并与抽象概念交互的智能系统。",
@@ -471,10 +473,7 @@ export default {
 }
 
 .hero-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 32px;
-  align-items: center;
+  display: block;
 }
 
 .hero-copy {
@@ -536,10 +535,6 @@ export default {
   }
 }
 
-.hero-visual {
-  min-height: 520px;
-}
-
 .partners-panel {
   border: 1px solid rgba(102, 46, 125, 0.13);
   border-radius: 26px;
@@ -588,6 +583,14 @@ export default {
     margin-bottom: 14px;
     position: relative;
     z-index: 1;
+  }
+}
+
+.partners-section {
+  padding-top: 0;
+
+  .partners-panel {
+    margin-top: 8px;
   }
 }
 
@@ -816,17 +819,12 @@ export default {
 }
 
 @media (max-width: 1100px) {
-  .hero-grid,
   .news-preview .preview-grid {
     grid-template-columns: 1fr;
   }
 
   .hero {
     padding-top: 62px;
-  }
-
-  .hero-visual {
-    min-height: 470px;
   }
 
   .featured-section {

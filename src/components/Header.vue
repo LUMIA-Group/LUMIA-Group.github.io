@@ -3,38 +3,6 @@
     class="lumia-header"
     :class="{ scrolled: isScrolled, open: mobileMenuOpen }"
   >
-    <div class="header-topbar">
-      <div class="lumia-container topbar-inner">
-        <ul class="utility-nav">
-          <li
-            v-for="item in utilityMenu"
-            :key="`utility-${item.value}`"
-            @click="clickHeader(item)"
-          >
-            {{ item.label }}
-          </li>
-        </ul>
-
-        <div class="language-switcher" aria-label="language switcher">
-          <button
-            type="button"
-            :class="{ active: currentLanguage === 'en' }"
-            @click="setLanguage('en')"
-          >
-            EN
-          </button>
-          <span>/</span>
-          <button
-            type="button"
-            :class="{ active: currentLanguage === 'zh' }"
-            @click="setLanguage('zh')"
-          >
-            中文
-          </button>
-        </div>
-      </div>
-    </div>
-
     <div class="header-main">
       <div class="lumia-container main-inner">
         <button class="brand" @click="clickHeader({ value: 'home' })">
@@ -85,10 +53,27 @@
               </ul>
             </li>
           </ul>
+
+          <div class="language-switcher" aria-label="language switcher">
+            <button
+              type="button"
+              :class="{ active: currentLanguage === 'en' }"
+              @click="setLanguage('en')"
+            >
+              EN
+            </button>
+            <span>/</span>
+            <button
+              type="button"
+              :class="{ active: currentLanguage === 'zh' }"
+              @click="setLanguage('zh')"
+            >
+              中文
+            </button>
+          </div>
         </nav>
       </div>
     </div>
-
   </header>
 </template>
 
@@ -142,13 +127,6 @@ export default {
         { value: "home", label: this.localeText.home },
         { value: "people", label: this.localeText.people },
         { value: "research", label: this.localeText.research },
-        { value: "contact", label: this.localeText.contact },
-      ];
-    },
-    utilityMenu() {
-      return [
-        { value: "people", label: this.localeText.directory },
-        { value: "research", label: this.localeText.insights },
         { value: "contact", label: this.localeText.contact },
       ];
     },
@@ -226,99 +204,39 @@ export default {
   position: sticky;
   top: 0;
   z-index: 90;
-  background: rgba(244, 245, 241, 0.96);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(
+    90deg,
+    var(--lumia-primary-strong) 0%,
+    var(--lumia-primary) 56%,
+    #522267 100%
+  );
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &.scrolled {
-    border-bottom-color: rgba(102, 46, 125, 0.22);
-    box-shadow: 0 8px 25px rgba(102, 46, 125, 0.12);
-  }
-}
-
-.header-topbar {
-  background: var(--lumia-primary);
-  color: #fff;
-
-  .topbar-inner {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-  }
-
-  .utility-nav {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-
-    li {
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.2;
-      text-decoration: underline;
-      text-decoration-color: transparent;
-      text-underline-offset: 0.26em;
-      transition: text-decoration-color 0.25s ease;
-
-      &:hover {
-        text-decoration-color: #fff;
-      }
-    }
-  }
-
-  .language-switcher {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-
-    button {
-      border: none;
-      background: transparent;
-      color: #fff;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0.72;
-      padding: 0;
-
-      &.active {
-        opacity: 1;
-        text-decoration: underline;
-        text-decoration-thickness: 1.5px;
-        text-underline-offset: 0.2em;
-      }
-    }
-
-    span {
-      opacity: 0.45;
-      font-size: 12px;
-      transform: translateY(-1px);
-    }
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 10px 28px rgba(39, 21, 56, 0.34);
   }
 }
 
 .header-main {
   .main-inner {
-    min-height: 92px;
+    min-height: 84px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
   }
 
-    .brand {
+  .brand {
     border: none;
     background: transparent;
     display: inline-flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    color: var(--lumia-primary);
+    color: rgba(255, 255, 255, 0.96);
 
     .logo {
       width: 52px;
@@ -340,7 +258,7 @@ export default {
     display: none;
     border: none;
     background: transparent;
-    color: var(--lumia-primary);
+    color: rgba(255, 255, 255, 0.94);
     font-size: 15px;
     font-weight: 600;
     text-transform: uppercase;
@@ -369,7 +287,7 @@ export default {
         padding: 0;
         font-size: 18px;
         font-weight: 600;
-        color: var(--lumia-primary);
+        color: rgba(255, 255, 255, 0.9);
         text-decoration: underline;
         text-decoration-color: transparent;
         text-underline-offset: 0.25em;
@@ -378,7 +296,7 @@ export default {
 
       &:hover .menu-link,
       &.active .menu-link {
-        text-decoration-color: var(--lumia-primary);
+        text-decoration-color: rgba(255, 255, 255, 0.92);
       }
 
       .submenu {
@@ -424,6 +342,45 @@ export default {
       }
     }
   }
+
+  .language-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: 6px;
+    padding-left: 18px;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+
+    button {
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.86);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.78;
+      padding: 0;
+      transition: opacity 0.25s ease, text-decoration-color 0.25s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.active {
+        opacity: 1;
+        text-decoration: underline;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 0.2em;
+      }
+    }
+
+    span {
+      opacity: 0.45;
+      font-size: 12px;
+      transform: translateY(-1px);
+      color: rgba(255, 255, 255, 0.78);
+    }
+  }
 }
 
 @media (max-width: 1099px) {
@@ -437,10 +394,14 @@ export default {
       position: fixed;
       left: 0;
       right: 0;
-      top: 136px;
-      background: #fff;
-      border-top: 1px solid rgba(102, 46, 125, 0.2);
-      border-bottom: 1px solid rgba(102, 46, 125, 0.2);
+      top: 84px;
+      background: linear-gradient(
+        180deg,
+        var(--lumia-primary-strong) 0%,
+        #602d78 100%
+      );
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       padding: 24px 30px 30px;
       transform: translateY(-10px);
       opacity: 0;
@@ -470,7 +431,7 @@ export default {
           transform: none;
           box-shadow: none;
           border: none;
-          border-left: 2px solid rgba(102, 46, 125, 0.2);
+          border-left: 2px solid rgba(255, 255, 255, 0.22);
           border-radius: 0;
           margin-top: 6px;
           padding: 0 0 0 8px;
@@ -479,8 +440,22 @@ export default {
           .submenu-link {
             padding: 6px 8px;
             font-size: 15px;
+            color: rgba(255, 255, 255, 0.82);
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.08);
+            }
           }
         }
+      }
+
+      .language-switcher {
+        margin-left: 0;
+        margin-top: 8px;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
+        padding-top: 16px;
       }
 
       &.show {
@@ -494,19 +469,6 @@ export default {
 }
 
 @media (max-width: 649px) {
-  .header-topbar {
-    .topbar-inner {
-      min-height: 42px;
-    }
-
-    .utility-nav {
-      gap: 12px;
-      li {
-        font-size: 12px;
-      }
-    }
-  }
-
   .header-main {
     .main-inner {
       min-height: 80px;
@@ -523,7 +485,7 @@ export default {
     }
 
     .main-nav {
-      top: 122px;
+      top: 80px;
       padding: 22px;
 
       > ul {
