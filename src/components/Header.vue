@@ -290,13 +290,19 @@ export default {
         color: rgba(255, 255, 255, 0.9);
         text-decoration: underline;
         text-decoration-color: transparent;
+        text-decoration-thickness: 1.4px;
         text-underline-offset: 0.25em;
-        transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+        transition: text-decoration-color 0.25s ease,
+          text-decoration-thickness 0.25s ease, opacity 0.25s ease;
       }
 
-      &:hover .menu-link,
+      &:hover .menu-link {
+        text-decoration-color: rgba(255, 255, 255, 0.58);
+      }
+
       &.active .menu-link {
-        text-decoration-color: rgba(255, 255, 255, 0.92);
+        text-decoration-color: rgba(255, 255, 255, 0.96);
+        text-decoration-thickness: 2.8px;
       }
 
       .submenu {
