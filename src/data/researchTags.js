@@ -1,15 +1,3 @@
-export function normalizePaperTitle(title) {
-  if (typeof title !== "string") {
-    return "";
-  }
-  return title
-    .toLowerCase()
-    .replace(/[\u2010-\u2015]/g, "-")
-    .replace(/[’']/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
 export const RESEARCH_TAGS = [
   {
     id: "language-models",
@@ -57,40 +45,6 @@ export const RESEARCH_TAGS = [
   },
 ];
 
-const PAPER_TAG_TITLE_MAP = {
-  "Fourier Transformer: Fast Long Range Modeling by Removing Sequence Redundancy with FFT Operator":
-    ["trustworthy-ai"],
-  "Text Classification In The Wild: A Large-Scale Long-Tailed Name Normalization Dataset":
-    ["language-models"],
-  "Ordered GNN: Ordering Message Passing to Deal with Heterophily and Over-smoothing":
-    ["graph-learning"],
-  "RASAT: Integrating Relational Structures into Pretrained Seq2Seq Model for Text-to-SQL":
-    ["language-models"],
-  "Syntax-guided Localized Self-attention by Constituency Syntactic Distance":
-    ["language-models"],
-  "Leveraging Unimodal Self-Supervised Learning for Multimodal Audio-Visual Speech Recognition":
-    ["multimodal-learning"],
-  "Block-Skim: Efficient Question Answering for Transformer": ["trustworthy-ai"],
-  "Exploiting Syntactic Structure for Better Language Modeling: A Syntactic Distance Approach":
-    ["language-models"],
-  "Straight to the Tree: Constituency Parsing with Neural Syntactic Distance":
-    ["language-models"],
-  "Neural Language Modeling by Jointly Learning Syntax and Lexicon":
-    ["language-models"],
-  "A structured self-attentive Sentence Embedding": ["language-models"],
-  "Neural networks with few multiplications": ["trustworthy-ai"],
-  "Deep learning-based classification of hyperspectral data":
-    ["multimodal-learning"],
-};
-
-export const PAPER_TAGS_BY_TITLE = Object.keys(PAPER_TAG_TITLE_MAP).reduce(
-  (acc, title) => {
-    acc[normalizePaperTitle(title)] = PAPER_TAG_TITLE_MAP[title];
-    return acc;
-  },
-  {}
-);
-
 export function getLocalizedResearchTags(language = "zh") {
   const lang = language === "en" ? "en" : "zh";
   return RESEARCH_TAGS.map((tag) => ({
@@ -136,19 +90,3 @@ export function getResearchTagSearchText(tagIds) {
     })
     .join(" ");
 }
-
-export function getPaperTagIdsByTitle(title) {
-  return normalizeResearchTagIds(
-    PAPER_TAGS_BY_TITLE[normalizePaperTitle(title)]
-  );
-}
-
-// Backward-compatible alias for legacy single-tag use.
-export const PAPER_TAG_BY_TITLE = Object.keys(PAPER_TAGS_BY_TITLE).reduce(
-  (acc, title) => {
-    const tags = PAPER_TAGS_BY_TITLE[title];
-    acc[title] = Array.isArray(tags) && tags.length ? tags[0] : "";
-    return acc;
-  },
-  {}
-);
