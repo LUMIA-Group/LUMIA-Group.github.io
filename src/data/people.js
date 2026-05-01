@@ -126,5 +126,21 @@ export const peopleData = {
       homepage: "https://github.com/LuckySJTU",
     },
   ],
-  Alumni: [],
+  Alumni: [
+    {
+      id: 16,
+      name: "黄思远",
+      pic: "./static/people/s-8.jpg",
+      grade: "图神经网络",
+      homepage:
+        "https://scholar.google.com/citations?user=zw-OiYcAAAAJ&amp;hl=en",
+    },
+    {
+      id: 17,
+      name: "侯晟元",
+      pic: "./static/people/s-9.jpg",
+      grade: "时间序列预测、文本句法分析、机器翻译",
+      homepage: "https://github.com/houshengyuan",
+    },
+  ],
 };

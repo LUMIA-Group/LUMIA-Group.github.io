@@ -11,12 +11,24 @@
         <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
           {{ text.subtitle }}
         </p>
+        <div class="people-nav lumia-fade-up" style="--delay: 200ms">
+          <button
+            v-for="item in peopleJumpLinks"
+            :key="item.key"
+            class="people-nav-btn"
+            type="button"
+            @click="scrollToSection(item.key)"
+          >
+            {{ item.label }}
+          </button>
+        </div>
       </div>
     </section>
 
     <section
       v-for="(section, sectionIndex) in peopleSections"
       :key="section.key"
+      :id="sectionAnchor(section.key)"
       class="people-section lumia-section"
     >
       <div class="lumia-container">
@@ -76,7 +88,7 @@ const I18N = {
       PhD: "博士生",
       Master: "硕士生",
       Undergrads: "本科生",
-      Alumni: "校友",
+      Alumni: "毕业生",
     },
   },
 };
@@ -101,6 +113,12 @@ export default {
           displayTitle: this.text.sectionTitles[title] || title,
           list,
         }));
+    },
+    peopleJumpLinks() {
+      return ["Faculty", "PhD", "Master", "Undergrads", "Alumni"].map((key) => ({
+        key,
+        label: this.text.sectionTitles[key] || key,
+      }));
     },
   },
   mounted() {
@@ -132,6 +150,19 @@ export default {
       }
       return `${count} ${this.text.members}`;
     },
+    sectionAnchor(key) {
+      return `people-${String(key).toLowerCase()}`;
+    },
+    scrollToSection(key) {
+      const target = document.getElementById(this.sectionAnchor(key));
+      if (!target) {
+        return;
+      }
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    },
     goto(url) {
       if (url) {
         window.open(url, "_blank");
@@ -147,9 +178,44 @@ export default {
   border-bottom: 1px solid var(--lumia-border);
 }
 
+.people-nav {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.people-nav-btn {
+  border: 1.5px solid var(--lumia-primary);
+  background: transparent;
+  color: var(--lumia-primary);
+  border-radius: 999px;
+  padding: 12px 22px;
+  min-height: 46px;
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, background-color 0.25s ease,
+    color 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--lumia-primary);
+    color: var(--lumia-white);
+    box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+    outline: none;
+  }
+}
+
 .people-section {
   padding-top: 54px;
   padding-bottom: 54px;
+  scroll-margin-top: 96px;
 
   &:nth-child(even) {
     background: rgba(255, 255, 255, 0.5);

@@ -56,11 +56,11 @@
           >
             <div class="research-toolbar">
               <label class="search-box" for="paper-search">
-                <span>{{ text.searchLabel }}</span>
                 <input
                   id="paper-search"
                   v-model.trim="searchKeyword"
                   type="text"
+                  :aria-label="text.searchLabel"
                   :placeholder="text.searchPlaceholder"
                 />
               </label>
@@ -634,18 +634,8 @@ export default {
   }
 
   .search-box {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    display: block;
     min-width: min(560px, 100%);
-
-    span {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.75;
-    }
 
     input {
       width: 100%;
