@@ -145,7 +145,7 @@ export default {
 
     h2 {
       margin-top: 12px;
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--lumia-heading-font);
       font-size: clamp(26px, 3.5vw, 44px);
       font-weight: 600;
       line-height: 1.15;

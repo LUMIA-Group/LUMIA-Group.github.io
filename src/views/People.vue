@@ -51,7 +51,7 @@
               <img :src="item.pic || defaultImg" :alt="item.name" />
             </div>
             <h3 class="name" @click="goto(item.homepage)">{{ item.name }}</h3>
-            <p class="bio">{{ item.grade }}</p>
+            <p class="bio">{{ item.bio }}</p>
           </li>
         </ul>
       </div>
@@ -233,7 +233,7 @@ export default {
   margin-bottom: 24px;
 
   h2 {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: var(--lumia-heading-font);
     font-size: clamp(30px, 4vw, 44px);
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -299,7 +299,7 @@ export default {
     margin-top: 16px;
     margin-bottom: 10px;
     font-size: 22px;
-    font-family: "Space Grotesk", sans-serif;
+    font-family: var(--lumia-heading-font);
     font-weight: 700;
     line-height: 1.15;
     cursor: pointer;

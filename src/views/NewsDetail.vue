@@ -172,7 +172,7 @@ export default {
 
 ::v-deep .detail-body h2 {
   margin: 28px 0 12px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--lumia-heading-font);
   font-size: 28px;
   line-height: 1.15;
   font-weight: 700;

@@ -17,8 +17,8 @@ export const publications = [
     id: "fourier-transformer",
     title:
       "Fourier Transformer: Fast Long Range Modeling by Removing Sequence Redundancy with FFT Operator",
-    authorsHtml:
-      "Ziwei He, Meng Yang, Minwei Feng, Jingcheng Yin, Xinbing Wang, Jingwen Leng, <strong>Zhouhan Lin#</strong>",
+    authors:
+      "Ziwei He, Meng Yang, Minwei Feng, Jingcheng Yin, Xinbing Wang, Jingwen Leng, Zhouhan Lin#",
     venue: "ACL 2023 (Findings)",
     image: fourierTransformerImage,
     pdf: "https://aclanthology.org/2023.findings-acl.570.pdf",
@@ -33,8 +33,8 @@ export const publications = [
     id: "lot-insts",
     title:
       "Text Classification In The Wild: A Large-Scale Long-Tailed Name Normalization Dataset",
-    authorsHtml:
-      "Jiexing Qi, Shuhao Li, Zhixin Guo, Yusheng Huang, Chenghu Zhou, Weinan Zhang, Xinbing Wang, <strong>Zhouhan Lin#</strong>",
+    authors:
+      "Jiexing Qi, Shuhao Li, Zhixin Guo, Yusheng Huang, Chenghu Zhou, Weinan Zhang, Xinbing Wang, Zhouhan Lin#",
     venue: "ICASSP 2023",
     image: lotInstsImage,
     pdf: "https://arxiv.org/pdf/2302.09509.pdf",
@@ -49,8 +49,7 @@ export const publications = [
     id: "ordered-gnn",
     title:
       "Ordered GNN: Ordering Message Passing to Deal with Heterophily and Over-smoothing",
-    authorsHtml:
-      "Yunchong Song, Chenghu Zhou, Xinbing Wang, <strong>Zhouhan Lin#</strong>",
+    authors: "Yunchong Song, Chenghu Zhou, Xinbing Wang, Zhouhan Lin#",
     venue: "ICLR 2023",
     image: orderedGnnImage,
     pdf: "https://arxiv.org/pdf/2302.01524.pdf",
@@ -65,8 +64,8 @@ export const publications = [
     id: "rasat",
     title:
       "RASAT: Integrating Relational Structures into Pretrained Seq2Seq Model for Text-to-SQL",
-    authorsHtml:
-      "Jiexing Qi, Jingyao Tang, Ziwei He, Xiangpeng Wan, Yu Cheng, Chenghu Zhou, Xinbing Wang, Quanshi Zhang, <strong>Zhouhan Lin#</strong>",
+    authors:
+      "Jiexing Qi, Jingyao Tang, Ziwei He, Xiangpeng Wan, Yu Cheng, Chenghu Zhou, Xinbing Wang, Quanshi Zhang, Zhouhan Lin#",
     venue: "EMNLP 2022",
     image: rasatImage,
     pdf: "https://arxiv.org/pdf/2205.06983.pdf",
@@ -81,8 +80,8 @@ export const publications = [
     id: "syntax-guided-localized-self-attention",
     title:
       "Syntax-guided Localized Self-attention by Constituency Syntactic Distance",
-    authorsHtml:
-      "Shengyuan Hou*, Jushi Kai*, Haotian Xue*, Bingyu Zhu, Bo Yuan, Longtao Huang, Xinbing Wang, <strong>Zhouhan Lin#</strong>",
+    authors:
+      "Shengyuan Hou*, Jushi Kai*, Haotian Xue*, Bingyu Zhu, Bo Yuan, Longtao Huang, Xinbing Wang, Zhouhan Lin#",
     venue: "EMNLP 2022 (Findings)",
     image: distanceTransformerImage,
     pdf: "https://arxiv.org/pdf/2210.11759.pdf",
@@ -97,8 +96,8 @@ export const publications = [
     id: "avsr-self-supervised-learning",
     title:
       "Leveraging Unimodal Self-Supervised Learning for Multimodal Audio-Visual Speech Recognition",
-    authorsHtml:
-      "Xichen Pan, Peiyu Chen, Yichen Gong, Helong Zhou, Xinbing Wang, <strong>Zhouhan Lin#</strong>",
+    authors:
+      "Xichen Pan, Peiyu Chen, Yichen Gong, Helong Zhou, Xinbing Wang, Zhouhan Lin#",
     venue: "ACL 2022",
     image: avsrPanImage,
     pdf: "https://arxiv.org/pdf/2203.07996.pdf",
@@ -113,8 +112,8 @@ export const publications = [
   {
     id: "block-skim",
     title: "Block-Skim: Efficient Question Answering for Transformer",
-    authorsHtml:
-      "Yue Guan, Zhengyi Li, Jingwen Leng#, <strong>Zhouhan Lin#</strong>, Minyi Guo, Yuhao Zhu",
+    authors:
+      "Yue Guan, Zhengyi Li, Jingwen Leng#, Zhouhan Lin#, Minyi Guo, Yuhao Zhu",
     venue: "AAAI 2022",
     image: blockSkimImage,
     pdf: "https://arxiv.org/pdf/2112.08560.pdf",
@@ -129,8 +128,8 @@ export const publications = [
     id: "syntactic-distance-language-modeling",
     title:
       "Exploiting Syntactic Structure for Better Language Modeling: A Syntactic Distance Approach",
-    authorsHtml:
-      "Wenyu Du*, <strong>Zhouhan Lin</strong>*, Yikang Shen, Timothy J. O'Donnell, Yoshua Bengio, Yue Zhang#",
+    authors:
+      "Wenyu Du*, Zhouhan Lin*, Yikang Shen, Timothy J. O'Donnell, Yoshua Bengio, Yue Zhang#",
     venue: "ACL 2020",
     image: distanceLmWenyuImage,
     pdf: "https://arxiv.org/pdf/2005.05864.pdf",
@@ -145,8 +144,8 @@ export const publications = [
     id: "distance-parser",
     title:
       "Straight to the Tree: Constituency Parsing with Neural Syntactic Distance",
-    authorsHtml:
-      "Yikang Shen*, <strong>Zhouhan Lin</strong>*, Athul Paul Jacob, Alessandro Sordoni, Aaron Courville, Yoshua Bengio",
+    authors:
+      "Yikang Shen*, Zhouhan Lin*, Athul Paul Jacob, Alessandro Sordoni, Aaron Courville, Yoshua Bengio",
     venue: "ACL 2018",
     image: distanceParserImage,
     pdf: "https://arxiv.org/pdf/1806.04168.pdf",
@@ -160,8 +159,7 @@ export const publications = [
   {
     id: "prpn",
     title: "Neural Language Modeling by Jointly Learning Syntax and Lexicon",
-    authorsHtml:
-      "Yikang Shen, <strong>Zhouhan Lin</strong>, Chin-Wei Huang, Aaron Courville",
+    authors: "Yikang Shen, Zhouhan Lin, Chin-Wei Huang, Aaron Courville",
     venue: "ICLR 2018",
     image: treeImage,
     pdf: "https://arxiv.org/pdf/1711.02013.pdf",
@@ -175,8 +173,8 @@ export const publications = [
   {
     id: "self-attentive-sentence-embedding",
     title: "A structured self-attentive Sentence Embedding",
-    authorsHtml:
-      "<strong>Zhouhan Lin</strong>, Minwei Feng, Cicero Nogueira dos Santos, Mo Yu, Bing Xiang, Bowen Zhou and Yoshua Bengio",
+    authors:
+      "Zhouhan Lin, Minwei Feng, Cicero Nogueira dos Santos, Mo Yu, Bing Xiang, Bowen Zhou and Yoshua Bengio",
     venue: "ICLR 2017",
     image: seMlpImage,
     pdf: "https://arxiv.org/pdf/1703.03130.pdf",
@@ -190,8 +188,8 @@ export const publications = [
   {
     id: "neural-networks-few-multiplications",
     title: "Neural networks with few multiplications",
-    authorsHtml:
-      "<strong>Zhouhan Lin</strong>, Matthieu Courbariaux, Roland Memisevic, and Yoshua Bengio",
+    authors:
+      "Zhouhan Lin, Matthieu Courbariaux, Roland Memisevic, and Yoshua Bengio",
     venue: "ICLR 2016 (oral)",
     image: expQuantImage,
     pdf: "https://arxiv.org/pdf/1510.03009.pdf",
@@ -205,8 +203,7 @@ export const publications = [
   {
     id: "hyperspectral-deep-learning-classification",
     title: "Deep learning-based classification of hyperspectral data",
-    authorsHtml:
-      "Yushi Chen, <strong>Zhouhan Lin</strong>, Xing Zhao, Gang Wang, and Yanfeng Gu",
+    authors: "Yushi Chen, Zhouhan Lin, Xing Zhao, Gang Wang, and Yanfeng Gu",
     venue:
       "Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 2014",
     image: hsiClassifyImage,

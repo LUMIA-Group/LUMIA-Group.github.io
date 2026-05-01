@@ -347,7 +347,7 @@ export default {
     }
 
     .name {
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--lumia-heading-font);
       font-size: 24px;
       font-weight: 700;
       letter-spacing: -0.01em;

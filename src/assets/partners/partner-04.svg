@@ -6,6 +6,6 @@
     <path d="M110 182 A72 72 0 0 1 38 110" stroke="#d7cbdf" stroke-width="7" />
     <path d="M72 110 H148" stroke="#8f79a2" stroke-width="5" />
   </g>
-  <text x="110" y="103" text-anchor="middle" font-family="'Space Grotesk', 'Arial', sans-serif" font-size="25" font-weight="700" fill="#55356d">P04</text>
-  <text x="110" y="128" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Arial', sans-serif" font-size="12" font-weight="600" letter-spacing="1.5" fill="#6c5a7a">PARTNER</text>
+  <text x="110" y="103" text-anchor="middle" font-family="'MiSans', 'Arial', sans-serif" font-size="25" font-weight="700" fill="#55356d">P04</text>
+  <text x="110" y="128" text-anchor="middle" font-family="'MiSans', 'Arial', sans-serif" font-size="12" font-weight="600" letter-spacing="1.5" fill="#6c5a7a">PARTNER</text>
 </svg>

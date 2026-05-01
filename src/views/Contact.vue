@@ -24,10 +24,6 @@
         >
           <header>
             <h2>{{ item.header }}</h2>
-            <button class="apply-trigger" @click="gotoApplication(item.applyMode)">
-              <img :src="applicationLogo" alt="application" />
-              <span>{{ text.apply }}</span>
-            </button>
           </header>
           <p
             v-for="(line, lineIndex) in item.list"
@@ -43,14 +39,12 @@
 
 <script>
 import { contactData } from "@/data/contact";
-import applicationLogo from "@/assets/application.svg";
 
 const I18N = {
   en: {
     eyebrow: "Collaborate",
     title: "Contact",
     subtitle: "Recruitment, collaboration, and advisory opportunities.",
-    apply: "Apply",
     sections: [
       {
         header: "Graduate Recruitment",
@@ -74,7 +68,6 @@ const I18N = {
     eyebrow: "合作联系",
     title: "联系我们",
     subtitle: "招生、合作与顾问咨询相关信息。",
-    apply: "申请",
   },
 };
 
@@ -82,7 +75,6 @@ export default {
   data() {
     return {
       contactData,
-      applicationLogo,
       currentLanguage: "zh",
     };
   },
@@ -91,15 +83,10 @@ export default {
       return I18N[this.currentLanguage] || I18N.zh;
     },
     sectionList() {
-      const attachMode = (list = []) =>
-        list.map((item, index) => ({
-          ...item,
-          applyMode: index === 1 ? "industry" : "graduate",
-        }));
       if (this.currentLanguage === "en") {
-        return attachMode(I18N.en.sections);
+        return I18N.en.sections;
       }
-      return attachMode(this.contactData.contactList);
+      return this.contactData.contactList;
     },
   },
   mounted() {
@@ -124,10 +111,6 @@ export default {
       ) {
         this.currentLanguage = event.detail;
       }
-    },
-    gotoApplication(mode) {
-      const query = mode === "industry" ? { type: "industry" } : {};
-      this.$router.push({ name: "application", query });
     },
   },
 };
@@ -160,7 +143,7 @@ export default {
     }
 
     h2 {
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--lumia-heading-font);
       font-size: clamp(24px, 3vw, 34px);
       line-height: 1.15;
       font-weight: 700;
@@ -178,32 +161,6 @@ export default {
     }
   }
 
-  .apply-trigger {
-    border: 1.5px solid var(--lumia-primary);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--lumia-primary);
-    padding: 9px 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.25s ease, color 0.25s ease;
-
-    img {
-      width: 16px;
-      height: 16px;
-      filter: hue-rotate(220deg) saturate(0.6);
-    }
-
-    &:hover,
-    &:focus {
-      background: var(--lumia-primary);
-      color: #fff;
-    }
-  }
 }
 
 @media (max-width: 649px) {

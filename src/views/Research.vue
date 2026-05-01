@@ -36,24 +36,29 @@
             </button>
           </div>
         </section>
+        <article
+          v-show="activeDirection"
+          class="direction-placeholder lumia-fade-up"
+          style="--delay: 240ms"
+        >
+          <h2>{{ activeDirection ? activeDirection.name : "" }}</h2>
+          <p>
+            {{ activeDirection ? activeDirection.intro : "" }}
+          </p>
+          <div
+            v-if="activeDirectionContent"
+            class="direction-body"
+            v-html="activeDirectionContent"
+          ></div>
+          <p v-else>{{ text.directionPlaceholder }}</p>
+        </article>
       </div>
     </section>
 
     <section class="lumia-section research-content">
       <div class="lumia-container">
         <section class="research-workspace">
-          <article v-show="activeDirection" class="direction-placeholder">
-            <h2>{{ activeDirection ? activeDirection.name : "" }}</h2>
-            <p>
-              {{ activeDirection ? activeDirection.intro : "" }}
-            </p>
-            <p>{{ text.directionPlaceholder }}</p>
-          </article>
-
-          <section
-            class="publication-browser"
-            :class="{ 'with-direction': activeDirection }"
-          >
+          <section class="publication-browser">
             <div class="research-toolbar">
               <label class="search-box" for="paper-search">
                 <input
@@ -113,7 +118,7 @@
                   </div>
                   <div class="col-xs-12 col-sm-8">
                     <h4 v-html="getHighlightedHtml(paper.title)"></h4>
-                    <p class="author" v-html="paper.authorsHtml"></p>
+                    <p class="author">{{ paper.authors }}</p>
                     <div class="link-list">
                       <span v-html="getHighlightedHtml(paper.venue)"></span>
                       <template v-for="link in getPaperLinks(paper)">
@@ -160,10 +165,10 @@
             class="compact-item"
           >
             <h3 v-html="getHighlightedHtml(paper.title)"></h3>
-            <p class="compact-author" v-html="paper.authorsHtml"></p>
+            <p class="compact-author">{{ paper.authors }}</p>
             <div class="link-list compact-venue-row">
               <span v-html="getHighlightedHtml(paper.venue)"></span>
-              <template v-for="(link, linkIndex) in getPaperLinks(paper)">
+              <template v-for="link in getPaperLinks(paper)">
                 <span :key="`${paper.id}-${link.key}-separator`">
                   |
                 </span>
@@ -203,6 +208,7 @@
 </template>
 <script>
 import { publications } from "@/data/publications";
+import { getResearchDirectionContent } from "@/data/researchDirections";
 import {
   getLocalizedResearchTags,
   getResearchTagSearchText,
@@ -281,7 +287,7 @@ export default {
       return publications.map((paper) => {
         const normalizedPaper = {
           ...paper,
-          authorsHtml: paper.authorsHtml || "",
+          authors: paper.authors || "",
           abstract: paper.abstract || "",
           tagIds: this.normalizeTagIds(paper.tagIds),
         };
@@ -301,6 +307,15 @@ export default {
       return (
         this.localizedTags.find((tag) => tag.id === this.activeDirectionId) ||
         null
+      );
+    },
+    activeDirectionContent() {
+      if (!this.activeDirectionId) {
+        return "";
+      }
+      return getResearchDirectionContent(
+        this.activeDirectionId,
+        this.currentLanguage
       );
     },
     filteredPapers() {
@@ -417,9 +432,6 @@ export default {
     escapeRegExp(value) {
       return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     },
-    stripHtml(value) {
-      return String(value || "").replace(/<[^>]*>/g, " ");
-    },
     getHighlightedHtml(value) {
       const text = typeof value === "string" ? value : "";
       const keyword = this.searchKeyword.trim();
@@ -452,7 +464,7 @@ export default {
       return [
         paper.title,
         paper.venue,
-        this.stripHtml(paper.authorsHtml),
+        paper.authors,
         paper.abstract,
         this.getTagSearchText(paper.tagIds),
       ]
@@ -577,11 +589,87 @@ export default {
 
   .guide-card-name {
     margin: 0;
-    font-family: "Space Grotesk", sans-serif;
+    font-family: var(--lumia-heading-font);
     font-size: 15px;
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: 0;
+  }
+}
+
+.direction-placeholder {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin-top: 34px;
+  padding: 34px;
+  border: 1px solid rgba(102, 46, 125, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+
+  h2 {
+    margin: 0 0 14px;
+    font-family: var(--lumia-heading-font);
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    max-width: none;
+    margin: 0 0 12px;
+    font-size: 17px;
+    line-height: 1.68;
+  }
+
+  :deep(.direction-body) {
+    margin-top: 18px;
+    display: grid;
+    gap: 18px;
+  }
+
+  :deep(.direction-body section) {
+    margin: 0;
+  }
+
+  :deep(.direction-body h3) {
+    margin: 0 0 8px;
+    font-family: var(--lumia-heading-font);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  :deep(.direction-body p) {
+    max-width: none;
+    margin: 0 0 10px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  :deep(.direction-body ul) {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+  }
+
+  :deep(.direction-body li) {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  :deep(.direction-body a) {
+    color: var(--lumia-primary);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(102, 46, 125, 0.28);
+    text-underline-offset: 0.24em;
+    transition: text-decoration-color 0.2s ease;
+
+    &:hover {
+      text-decoration-color: var(--lumia-primary);
+    }
   }
 }
 
@@ -591,37 +679,6 @@ export default {
 
   .research-workspace {
     min-height: 360px;
-  }
-
-  .direction-placeholder {
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
-    padding: 34px;
-    border: 1px solid rgba(102, 46, 125, 0.18);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.82);
-
-    h2 {
-      margin: 0 0 14px;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(28px, 3vw, 42px);
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-    }
-
-    p {
-      max-width: none;
-      margin: 0 0 12px;
-      font-size: 17px;
-      line-height: 1.68;
-    }
-  }
-
-  .publication-browser.with-direction {
-    margin-top: 28px;
-    padding-top: 28px;
-    border-top: 1px solid rgba(102, 46, 125, 0.16);
   }
 
   .research-toolbar {
@@ -826,7 +883,7 @@ export default {
 
       h3 {
         margin: 0;
-        font-family: "Space Grotesk", sans-serif;
+        font-family: var(--lumia-heading-font);
         font-size: clamp(20px, 2vw, 26px);
         line-height: 1.2;
         letter-spacing: -0.01em;
@@ -945,7 +1002,7 @@ export default {
     }
 
     h4 {
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--lumia-heading-font);
       font-size: clamp(23px, 2.4vw, 34px);
       line-height: 1.15;
       font-weight: 700;
@@ -974,11 +1031,11 @@ export default {
 }
 
 @media (max-width: 649px) {
-  .research-content {
-    .direction-placeholder {
-      padding: 24px;
-    }
+  .direction-placeholder {
+    padding: 24px;
+  }
 
+  .research-content {
     .view-switch {
       width: auto;
     }

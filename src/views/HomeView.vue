@@ -745,7 +745,7 @@ export default {
     }
 
     h3 {
-      font-family: "Space Grotesk", sans-serif;
+      font-family: var(--lumia-heading-font);
       font-size: 28px;
       line-height: 1.15;
       margin-bottom: 14px;
@@ -840,7 +840,7 @@ export default {
 }
 
 .section-title {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--lumia-heading-font);
   font-size: clamp(28px, 3.8vw, 52px);
   font-weight: 700;
   line-height: 1.1;
