@@ -42,6 +42,7 @@ const I18N = {
     home: "Home",
     people: "People",
     research: "Research",
+    news: "News",
     contact: "Contact",
   },
   zh: {
@@ -51,6 +52,7 @@ const I18N = {
     home: "主页",
     people: "成员",
     research: "研究",
+    news: "新闻",
     contact: "联系我们",
   },
 };
@@ -74,6 +76,7 @@ export default {
         { value: "home", label: this.text.home },
         { value: "people", label: this.text.people },
         { value: "research", label: this.text.research },
+        { value: "news", label: this.text.news },
         { value: "contact", label: this.text.contact },
       ];
     },
