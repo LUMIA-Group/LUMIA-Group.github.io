@@ -80,14 +80,20 @@
             v-for="(item, index) in featuredCards"
             :key="item.id"
             class="feature-card lumia-fade-up"
+            role="link"
+            tabindex="0"
+            :aria-label="`${text.readProjects}: ${item.name}`"
             :style="{ '--delay': `${160 + index * 80}ms` }"
+            @click="goToResearchTag(item.id)"
+            @keydown.enter.prevent="goToResearchTag(item.id)"
+            @keydown.space.prevent="goToResearchTag(item.id)"
           >
             <p class="meta">0{{ index + 1 }}</p>
             <h3>{{ item.name }}</h3>
             <p>{{ item.intro }}</p>
-            <button class="lumia-link" @click="goToResearchTag(item.id)">
+            <span class="lumia-link">
               {{ text.readProjects }}
-            </button>
+            </span>
           </article>
         </div>
       </div>
@@ -774,6 +780,22 @@ export default {
     border: 1px solid rgba(102, 46, 125, 0.2);
     background: var(--lumia-white);
     padding: 26px;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(102, 46, 125, 0.34);
+      box-shadow: 0 14px 30px rgba(102, 46, 125, 0.1);
+      outline: none;
+    }
+
+    &:hover .lumia-link,
+    &:focus-visible .lumia-link {
+      text-decoration-color: var(--lumia-primary);
+    }
 
     &:nth-child(3n + 1) {
       background: linear-gradient(155deg, #ffffff 0%, #fff9eb 100%);
@@ -808,11 +830,12 @@ export default {
     }
 
     .lumia-link {
-      border: none;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
       color: inherit;
+      display: inline-flex;
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 0.24em;
+      transition: text-decoration-color 0.25s ease;
     }
   }
 }
