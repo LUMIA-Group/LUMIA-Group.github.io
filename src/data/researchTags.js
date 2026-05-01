@@ -91,6 +91,58 @@ export const PAPER_TAGS_BY_TITLE = Object.keys(PAPER_TAG_TITLE_MAP).reduce(
   {}
 );
 
+export function getLocalizedResearchTags(language = "zh") {
+  const lang = language === "en" ? "en" : "zh";
+  return RESEARCH_TAGS.map((tag) => ({
+    ...tag,
+    name: tag.name[lang] || tag.name.zh,
+    intro: tag.intro[lang] || tag.intro.zh,
+  }));
+}
+
+export function getResearchTagById(tagId) {
+  return RESEARCH_TAGS.find((tag) => tag.id === tagId) || null;
+}
+
+export function isResearchTagId(tagId) {
+  return Boolean(getResearchTagById(tagId));
+}
+
+export function normalizeResearchTagIds(tagIds) {
+  const list = Array.isArray(tagIds) ? tagIds : [];
+  const seen = new Set();
+  return list
+    .map((tagId) => (typeof tagId === "string" ? tagId.trim() : ""))
+    .filter((tagId) => tagId && isResearchTagId(tagId))
+    .filter((tagId) => {
+      if (seen.has(tagId)) {
+        return false;
+      }
+      seen.add(tagId);
+      return true;
+    });
+}
+
+export function getResearchTagSearchText(tagIds) {
+  return normalizeResearchTagIds(tagIds)
+    .map((tagId) => {
+      const tag = getResearchTagById(tagId);
+      if (!tag) {
+        return "";
+      }
+      return [tag.id, tag.name.zh, tag.name.en, tag.intro.zh, tag.intro.en]
+        .filter(Boolean)
+        .join(" ");
+    })
+    .join(" ");
+}
+
+export function getPaperTagIdsByTitle(title) {
+  return normalizeResearchTagIds(
+    PAPER_TAGS_BY_TITLE[normalizePaperTitle(title)]
+  );
+}
+
 // Backward-compatible alias for legacy single-tag use.
 export const PAPER_TAG_BY_TITLE = Object.keys(PAPER_TAGS_BY_TITLE).reduce(
   (acc, title) => {

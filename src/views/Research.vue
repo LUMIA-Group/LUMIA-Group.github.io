@@ -11,87 +11,79 @@
         <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
           {{ text.subtitle }}
         </p>
-        <div class="repo-entry lumia-fade-up" style="--delay: 200ms">
-          <span>{{ text.repoLabel }}</span>
-          <a
-            href="https://github.com/LUMIA-Group"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ text.repoLink }}
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="lumia-section research-content">
-      <div class="lumia-container">
-        <section class="research-guide">
-          <div class="guide-head">
-            <p class="guide-title">{{ text.directionGuideTitle }}</p>
-            <button
-              type="button"
-              class="all-directions-btn"
-              :class="{ active: !activeTags.length }"
-              @click="clearActiveTags"
-            >
-              {{ text.allDirections }}
-            </button>
-          </div>
+        <section class="research-guide lumia-fade-up" style="--delay: 200ms">
           <div class="guide-grid">
             <button
               v-for="(tag, index) in localizedTags"
               :key="tag.id"
               type="button"
-              class="guide-card lumia-fade-up"
-              :class="{ active: activeTags.includes(tag.id) }"
+              class="guide-card"
+              :class="{ active: activeDirectionId === tag.id }"
               :style="{ '--delay': `${90 + index * 50}ms` }"
-              @click="toggleActiveTag(tag.id)"
+              @click="selectDirection(tag.id)"
             >
               <p class="guide-card-name">{{ tag.name }}</p>
               <p class="guide-card-intro">{{ tag.intro }}</p>
             </button>
           </div>
         </section>
+      </div>
+    </section>
 
-        <div class="research-toolbar">
-          <label class="search-box" for="paper-search">
-            <span>{{ text.searchLabel }}</span>
-            <input
-              id="paper-search"
-              v-model.trim="searchKeyword"
-              type="text"
-              :placeholder="text.searchPlaceholder"
-            />
-          </label>
-          <div class="view-switch" role="group" aria-label="paper view switch">
-            <button
-              type="button"
-              class="switch-btn"
-              :class="{ active: viewMode === 'detailed' }"
-              @click="setViewMode('detailed')"
-            >
-              {{ text.detailedView }}
-            </button>
-            <button
-              type="button"
-              class="switch-btn"
-              :class="{ active: viewMode === 'compact' }"
-              @click="setViewMode('compact')"
-            >
-              {{ text.compactView }}
-            </button>
-          </div>
-        </div>
-        <p class="result-count">
-          {{ filteredPapers.length }} {{ text.results }}
-        </p>
+    <section class="lumia-section research-content">
+      <div class="lumia-container">
+        <section class="research-workspace">
+          <article v-show="activeDirection" class="direction-placeholder">
+            <p class="placeholder-eyebrow">{{ text.directionHomepageEyebrow }}</p>
+            <h2>{{ activeDirection ? activeDirection.name : "" }}</h2>
+            <p>
+              {{ activeDirection ? activeDirection.intro : "" }}
+            </p>
+            <p>{{ text.directionPlaceholder }}</p>
+          </article>
 
-        <section
-          id="publications"
-          class="section-item"
-          v-show="viewMode === 'detailed'"
-        >
+          <section
+            class="publication-browser"
+            :class="{ 'with-direction': activeDirection }"
+          >
+            <div class="research-toolbar">
+              <label class="search-box" for="paper-search">
+                <span>{{ text.searchLabel }}</span>
+                <input
+                  id="paper-search"
+                  v-model.trim="searchKeyword"
+                  type="text"
+                  :placeholder="text.searchPlaceholder"
+                />
+              </label>
+              <div class="view-switch" role="group" aria-label="paper view switch">
+                <button
+                  type="button"
+                  class="switch-btn"
+                  :class="{ active: viewMode === 'detailed' }"
+                  @click="setViewMode('detailed')"
+                >
+                  {{ text.detailedView }}
+                </button>
+                <button
+                  type="button"
+                  class="switch-btn"
+                  :class="{ active: viewMode === 'compact' }"
+                  @click="setViewMode('compact')"
+                >
+                  {{ text.compactView }}
+                </button>
+              </div>
+            </div>
+            <p class="result-count">
+              {{ resultCountText }}
+            </p>
+
+            <section
+              id="publications"
+              class="section-item"
+              v-show="viewMode === 'detailed'"
+            >
           <section class="research-section" ref="detailedSection">
             <!-- research 1 -->
             <div class="row">
@@ -769,15 +761,19 @@
             }}
           </p>
         </section>
+          </section>
+        </section>
       </div>
     </section>
   </div>
 </template>
 <script>
 import {
-  PAPER_TAGS_BY_TITLE,
-  RESEARCH_TAGS,
-  normalizePaperTitle,
+  getLocalizedResearchTags,
+  getPaperTagIdsByTitle,
+  getResearchTagSearchText,
+  isResearchTagId,
+  normalizeResearchTagIds,
 } from "@/data/researchTags";
 
 const I18N = {
@@ -786,10 +782,9 @@ const I18N = {
     title: "Research",
     subtitle:
       "Selected papers on language modeling, multimodal learning, graph neural networks, and trustworthy AI.",
-    repoLabel: "Code Repository",
-    repoLink: "Visit LUMIA Group on Github",
-    directionGuideTitle: "Direction Guide",
-    allDirections: "All Directions",
+    directionHomepageEyebrow: "Direction Home",
+    directionPlaceholder:
+      "This direction page is being organized. It will later collect the overview, representative papers, projects, and resources for this research direction.",
     searchLabel: "Search",
     searchPlaceholder: "Search any keyword across papers...",
     detailedView: "Detailed View",
@@ -803,10 +798,9 @@ const I18N = {
     title: "研究",
     subtitle:
       "展示实验室在语言建模、多模态学习、图神经网络和可信 AI 方向的代表性论文。",
-    repoLabel: "代码仓库",
-    repoLink: "访问 LUMIA Group Github",
-    directionGuideTitle: "方向导引",
-    allDirections: "全部方向",
+    directionHomepageEyebrow: "方向主页",
+    directionPlaceholder:
+      "该方向主页内容正在整理中，后续会在这里展示方向概览、代表论文、项目与相关资源。",
     searchLabel: "搜索",
     searchPlaceholder: "按任意关键词搜索（标题/作者/会议/摘要等）...",
     detailedView: "详细视图",
@@ -835,12 +829,7 @@ export default {
       return this.searchKeyword.toLowerCase().trim();
     },
     localizedTags() {
-      const lang = this.currentLanguage === "en" ? "en" : "zh";
-      return RESEARCH_TAGS.map((tag) => ({
-        id: tag.id,
-        name: tag.name[lang] || tag.name.zh,
-        intro: tag.intro[lang] || tag.intro.zh,
-      }));
+      return getLocalizedResearchTags(this.currentLanguage);
     },
     tagNameById() {
       return this.localizedTags.reduce((acc, tag) => {
@@ -848,8 +837,29 @@ export default {
         return acc;
       }, {});
     },
+    activeDirectionId() {
+      return this.activeTags[0] || "";
+    },
+    activeDirection() {
+      if (!this.activeDirectionId) {
+        return null;
+      }
+      return (
+        this.localizedTags.find((tag) => tag.id === this.activeDirectionId) ||
+        null
+      );
+    },
     filteredPapers() {
       return this.papers.filter((paper) => this.matchesPaper(paper));
+    },
+    resultCountText() {
+      if (!this.activeDirection) {
+        return `${this.filteredPapers.length} ${this.text.results}`;
+      }
+      if (this.currentLanguage === "en") {
+        return `In ${this.activeDirection.name}, ${this.filteredPapers.length} ${this.text.results}`;
+      }
+      return `在${this.activeDirection.name}方向下，${this.filteredPapers.length}${this.text.results}`;
     },
   },
   watch: {
@@ -903,21 +913,10 @@ export default {
       }
     },
     isValidTag(tagId) {
-      return RESEARCH_TAGS.some((tag) => tag.id === tagId);
+      return isResearchTagId(tagId);
     },
     normalizeTagIds(tagIds) {
-      const list = Array.isArray(tagIds) ? tagIds : [];
-      const seen = new Set();
-      return list
-        .map((tagId) => (typeof tagId === "string" ? tagId.trim() : ""))
-        .filter((tagId) => tagId && this.isValidTag(tagId))
-        .filter((tagId) => {
-          if (seen.has(tagId)) {
-            return false;
-          }
-          seen.add(tagId);
-          return true;
-        });
+      return normalizeResearchTagIds(tagIds);
     },
     sameTagIds(a, b) {
       if (!Array.isArray(a) || !Array.isArray(b)) {
@@ -1006,27 +1005,7 @@ export default {
       return result;
     },
     getTagSearchText(tagIds) {
-      const ids = Array.isArray(tagIds) ? tagIds : [];
-      if (!ids.length) {
-        return "";
-      }
-      return ids
-        .map((tagId) => {
-          const tag = RESEARCH_TAGS.find((item) => item.id === tagId);
-          if (!tag) {
-            return "";
-          }
-          return [
-            tag.id,
-            tag.name.zh,
-            tag.name.en,
-            tag.intro.zh,
-            tag.intro.en,
-          ]
-            .filter(Boolean)
-            .join(" ");
-        })
-        .join(" ");
+      return getResearchTagSearchText(tagIds);
     },
     matchesPaper(paper) {
       if (!paper) {
@@ -1035,10 +1014,9 @@ export default {
       const matchesKeyword =
         !this.normalizedKeyword ||
         (paper.searchText && paper.searchText.includes(this.normalizedKeyword));
-      const matchesTag =
-        !this.activeTags.length ||
-        this.activeTags.every((tagId) => paper.tagIds.includes(tagId));
-      return matchesKeyword && matchesTag;
+      const matchesDirection =
+        !this.activeDirectionId || paper.tagIds.includes(this.activeDirectionId);
+      return matchesKeyword && matchesDirection;
     },
     setViewMode(mode) {
       this.viewMode = mode === "compact" ? "compact" : "detailed";
@@ -1046,31 +1024,24 @@ export default {
         this.$nextTick(() => this.applyDetailedFilter());
       }
     },
-    toggleActiveTag(tagId) {
+    selectDirection(tagId) {
       if (!this.isValidTag(tagId)) {
         return;
       }
-      if (this.activeTags.includes(tagId)) {
-        this.activeTags = this.activeTags.filter((item) => item !== tagId);
+      if (this.activeDirectionId === tagId) {
+        this.activeTags = [];
         return;
       }
-      this.activeTags = this.normalizeTagIds([...this.activeTags, tagId]);
-    },
-    clearActiveTags() {
-      if (this.activeTags.length) {
-        this.activeTags = [];
-      }
+      this.activeTags = [tagId];
     },
     openTagFilter(tagId) {
       if (!this.isValidTag(tagId)) {
         return;
       }
-      this.$router.push({ name: "research", query: { tag: tagId } }).catch(() => {
-        this.activeTags = [tagId];
-      });
+      this.selectDirection(tagId);
     },
     syncTagsFromRoute() {
-      const routeTagIds = this.extractTagsFromRoute();
+      const routeTagIds = this.extractTagsFromRoute().slice(0, 1);
       if (!this.sameTagIds(this.activeTags, routeTagIds)) {
         this.activeTags = routeTagIds;
       }
@@ -1084,7 +1055,7 @@ export default {
         .catch(() => {});
     },
     syncRouteFromTags() {
-      const canonicalQuery = this.buildQueryWithTags(this.activeTags);
+      const canonicalQuery = this.buildQueryWithTags(this.activeTags.slice(0, 1));
       if (this.isSameQuery(canonicalQuery, this.$route.query)) {
         return;
       }
@@ -1108,9 +1079,7 @@ export default {
         const venue = venueNode
           ? venueNode.textContent.replace(/\s+/g, " ").trim()
           : "Unknown Venue";
-        const tagIds = this.normalizeTagIds(
-          PAPER_TAGS_BY_TITLE[normalizePaperTitle(title)] || []
-        );
+        const tagIds = this.normalizeTagIds(getPaperTagIdsByTitle(title));
         const baseSearchText = row.textContent
           ? row.textContent.replace(/\s+/g, " ").trim().toLowerCase()
           : "";
@@ -1285,41 +1254,58 @@ export default {
     }
   }
 
-  .repo-entry {
-    margin-top: 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid rgba(102, 46, 125, 0.22);
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 999px;
-    padding: 8px 10px 8px 16px;
+}
 
-    span {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.75;
+.research-guide {
+  margin-top: 30px;
+  display: grid;
+  gap: 14px;
+
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .guide-card {
+    min-height: 150px;
+    border: 1px solid rgba(102, 46, 125, 0.2);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 20px;
+    text-align: left;
+    color: var(--lumia-text);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.25s ease,
+      border-color 0.25s ease, background 0.25s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      border-color: rgba(102, 46, 125, 0.38);
+      box-shadow: 0 10px 22px rgba(102, 46, 125, 0.1);
     }
 
-    a {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--lumia-primary);
-      color: var(--lumia-primary);
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: background 0.25s ease, color 0.25s ease;
-
-      &:hover {
-        color: #fff;
-        background: var(--lumia-primary);
-      }
+    &.active {
+      border-color: var(--lumia-primary);
+      background: linear-gradient(160deg, #ffffff 0%, #f6edff 100%);
+      box-shadow: 0 12px 24px rgba(102, 46, 125, 0.12);
     }
+  }
+
+  .guide-card-name {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(21px, 1.5vw, 25px);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+  }
+
+  .guide-card-intro {
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.62;
+    opacity: 0.86;
   }
 }
 
@@ -1327,90 +1313,48 @@ export default {
   padding-top: 46px;
   text-align: left;
 
-  .research-guide {
-    margin-bottom: 22px;
+  .research-workspace {
+    min-height: 360px;
+  }
 
-    .guide-head {
-      margin-bottom: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
+  .direction-placeholder {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 34px;
+    border: 1px solid rgba(102, 46, 125, 0.18);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.82);
 
-    .guide-title {
-      margin: 0;
-      font-size: 13px;
+    .placeholder-eyebrow {
+      margin: 0 0 10px;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      opacity: 0.78;
+      opacity: 0.72;
     }
 
-    .all-directions-btn {
-      border: 1px solid rgba(102, 46, 125, 0.26);
-      background: rgba(255, 255, 255, 0.72);
-      color: var(--lumia-text);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.25s ease, color 0.25s ease,
-        border-color 0.25s ease;
-
-      &.active {
-        background: var(--lumia-primary);
-        border-color: var(--lumia-primary);
-        color: #fff;
-      }
-    }
-
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .guide-card {
-      border: 1px solid rgba(102, 46, 125, 0.2);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.86);
-      padding: 14px;
-      text-align: left;
-      color: var(--lumia-text);
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.25s ease,
-        border-color 0.25s ease, background 0.25s ease;
-
-      &:hover {
-        transform: translateY(-1px);
-        border-color: rgba(102, 46, 125, 0.38);
-        box-shadow: 0 10px 22px rgba(102, 46, 125, 0.1);
-      }
-
-      &.active {
-        border-color: var(--lumia-primary);
-        background: linear-gradient(160deg, #ffffff 0%, #f6edff 100%);
-        box-shadow: 0 12px 24px rgba(102, 46, 125, 0.12);
-      }
-    }
-
-    .guide-card-name {
-      margin: 0;
+    h2 {
+      margin: 0 0 14px;
       font-family: "Space Grotesk", sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.24;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
     }
 
-    .guide-card-intro {
-      margin: 8px 0 0;
-      font-size: 13px;
-      line-height: 1.55;
-      opacity: 0.86;
+    p {
+      max-width: none;
+      margin: 0 0 12px;
+      font-size: 17px;
+      line-height: 1.68;
     }
+  }
+
+  .publication-browser.with-direction {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(102, 46, 125, 0.16);
   }
 
   .research-toolbar {
@@ -1700,13 +1644,13 @@ export default {
 }
 
 @media (max-width: 999px) {
-  .research-content {
-    .research-guide {
-      .guide-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+  .research-guide {
+    .guide-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
+  .research-content {
     .search-box {
       min-width: 100%;
     }
@@ -1724,20 +1668,15 @@ export default {
 }
 
 @media (max-width: 649px) {
+  .research-guide {
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .research-content {
-    .research-guide {
-      .guide-head {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .all-directions-btn {
-        width: 100%;
-      }
-
-      .guide-grid {
-        grid-template-columns: 1fr;
-      }
+    .direction-placeholder {
+      padding: 24px;
     }
 
     .view-switch {

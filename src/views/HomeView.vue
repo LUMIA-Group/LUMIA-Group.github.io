@@ -138,7 +138,7 @@ import {
   isInternalNews,
   newsData,
 } from "@/data/news";
-import { RESEARCH_TAGS } from "@/data/researchTags";
+import { getLocalizedResearchTags } from "@/data/researchTags";
 import alibabaLogo from "@/assets/partners/阿里巴巴logo.svg";
 import huaweiLogo from "@/assets/partners/华为logo.svg";
 import tencentLogo from "@/assets/partners/腾讯logo.svg";
@@ -210,12 +210,7 @@ export default {
       return I18N[this.currentLanguage] || I18N.zh;
     },
     featuredCards() {
-      const lang = this.currentLanguage === "en" ? "en" : "zh";
-      return RESEARCH_TAGS.slice(0, 4).map((tag) => ({
-        id: tag.id,
-        name: tag.name[lang] || tag.name.zh,
-        intro: tag.intro[lang] || tag.intro.zh,
-      }));
+      return getLocalizedResearchTags(this.currentLanguage);
     },
     newsItems() {
       return this.newsData.newsList || [];
@@ -516,6 +511,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.home-page {
+  --home-surface: rgba(255, 255, 255, 0.62);
+  --home-surface-hover: rgba(255, 255, 255, 0.9);
+  --home-border: rgba(102, 46, 125, 0.13);
+  --home-border-hover: rgba(102, 46, 125, 0.4);
+  --home-hover-shadow: 0 8px 18px rgba(102, 46, 125, 0.05);
+}
+
 .hero {
   padding-top: 84px;
 }
@@ -560,11 +563,10 @@ export default {
     justify-content: center;
     line-height: 1.2;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.25s ease,
-      background-color 0.25s ease, color 0.25s ease;
+    transition: box-shadow 0.25s ease, background-color 0.25s ease,
+      color 0.25s ease;
 
     &:hover {
-      transform: translateY(-1px);
       background: var(--lumia-primary);
       color: var(--lumia-white);
       box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
@@ -584,47 +586,15 @@ export default {
 }
 
 .partners-panel {
-  border: 1px solid rgba(102, 46, 125, 0.13);
-  border-radius: 26px;
-  background: linear-gradient(165deg, #ffffff 0%, #faf7fd 100%);
+  border: 1px solid var(--home-border);
+  border-radius: 18px;
+  background: var(--home-surface);
   min-height: 520px;
   padding: 28px;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    width: 210px;
-    height: 210px;
-    top: -104px;
-    right: -80px;
-    border-radius: 999px;
-    background: radial-gradient(
-      circle,
-      rgba(102, 46, 125, 0.09) 0%,
-      rgba(102, 46, 125, 0) 70%
-    );
-    pointer-events: none;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    bottom: -92px;
-    left: -64px;
-    border-radius: 999px;
-    background: radial-gradient(
-      circle,
-      rgba(161, 217, 232, 0.14) 0%,
-      rgba(161, 217, 232, 0) 72%
-    );
-    pointer-events: none;
-  }
 }
 
 .featured-section,
@@ -646,35 +616,14 @@ export default {
 
 .partners-orbit {
   position: relative;
-  border-radius: 22px;
-  border: 1px solid rgba(102, 46, 125, 0.1);
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.84) 0%,
-      rgba(253, 250, 255, 0.82) 100%
-    ),
-    radial-gradient(
-      circle at 22% 12%,
-      rgba(255, 255, 255, 0.68) 0%,
-      rgba(255, 255, 255, 0) 42%
-    );
+  border-radius: 14px;
+  border: 1px solid rgba(102, 46, 125, 0.09);
+  background: rgba(255, 255, 255, 0.42);
   min-height: 390px;
   flex: 1;
   overflow: hidden;
   position: relative;
   z-index: 1;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.36) 0%,
-      rgba(255, 255, 255, 0) 30%
-    );
-    pointer-events: none;
-  }
 }
 
 .partner-bubble {
@@ -693,24 +642,16 @@ export default {
   height: var(--bubble-render-size);
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  border: 1px solid rgba(102, 46, 125, 0.11);
-  background: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(248, 245, 252, 0.97) 100%
-  );
-  box-shadow: 0 10px 24px rgba(102, 46, 125, 0.075),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(102, 46, 125, 0.12);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: partnerFloat var(--duration) cubic-bezier(0.37, 0.01, 0.29, 1)
     infinite;
   animation-delay: var(--delay);
-  transition: width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease,
-    border-color 0.25s ease;
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
 
   &::after {
     content: "";
@@ -724,9 +665,7 @@ export default {
   &:hover {
     width: var(--bubble-hover-size);
     height: var(--bubble-hover-size);
-    border-color: rgba(102, 46, 125, 0.17);
-    box-shadow: 0 14px 28px rgba(102, 46, 125, 0.11),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-color: var(--home-border-hover);
     z-index: 2;
   }
 
@@ -776,37 +715,25 @@ export default {
   }
 
   .feature-card {
-    border-radius: 24px;
-    border: 1px solid rgba(102, 46, 125, 0.2);
-    background: var(--lumia-white);
+    border-radius: 16px;
+    border: 1px solid var(--home-border);
+    background: var(--home-surface);
     padding: 26px;
     cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease,
+    transition: background-color 0.2s ease, border-color 0.2s ease,
       box-shadow 0.2s ease;
 
     &:hover,
     &:focus-visible {
-      transform: translateY(-2px);
-      border-color: rgba(102, 46, 125, 0.34);
-      box-shadow: 0 14px 30px rgba(102, 46, 125, 0.1);
+      background: var(--home-surface-hover);
+      border-color: var(--home-border-hover);
+      box-shadow: var(--home-hover-shadow);
       outline: none;
     }
 
     &:hover .lumia-link,
     &:focus-visible .lumia-link {
       text-decoration-color: var(--lumia-primary);
-    }
-
-    &:nth-child(3n + 1) {
-      background: linear-gradient(155deg, #ffffff 0%, #fff9eb 100%);
-    }
-
-    &:nth-child(3n + 2) {
-      background: linear-gradient(155deg, #ffffff 0%, #eef9fd 100%);
-    }
-
-    &:nth-child(3n + 3) {
-      background: linear-gradient(155deg, #ffffff 0%, #fff1f7 100%);
     }
 
     .meta {
@@ -855,22 +782,19 @@ export default {
   .news-item {
     min-height: 86px;
     padding: 22px 24px;
-    border: 1px solid rgba(102, 46, 125, 0.2);
-    border-radius: 24px;
-    background: var(--lumia-white);
+    border: 1px solid var(--home-border);
+    border-radius: 16px;
+    background: var(--home-surface);
     display: flex;
     align-items: stretch;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease;
 
-    &:nth-child(3n + 1) {
-      background: linear-gradient(155deg, #ffffff 0%, #fff9eb 100%);
-    }
-
-    &:nth-child(3n + 2) {
-      background: linear-gradient(155deg, #ffffff 0%, #eef9fd 100%);
-    }
-
-    &:nth-child(3n + 3) {
-      background: linear-gradient(155deg, #ffffff 0%, #fff1f7 100%);
+    &:hover,
+    &:focus-within {
+      background: var(--home-surface-hover);
+      border-color: var(--home-border-hover);
+      box-shadow: var(--home-hover-shadow);
     }
 
     .news-link {

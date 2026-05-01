@@ -30,40 +30,48 @@
         </button>
 
         <nav id="site-main-nav" class="main-nav" :class="{ show: mobileMenuOpen }">
-          <ul>
-            <li
-              v-for="item in mainMenu"
-              :key="item.value"
-              class="menu-node"
-              :class="{
-                active: isActive(item),
-                hasChildren: item.children && item.children.length,
-              }"
-            >
-              <button
-                class="menu-link"
-                type="button"
-                @click="clickHeader(item)"
+          <div ref="navListWrap" class="nav-list-wrap">
+            <ul ref="navList">
+              <li
+                v-for="item in mainMenu"
+                :key="item.value"
+                ref="menuNodes"
+                class="menu-node"
+                :class="{
+                  active: isActive(item),
+                  hasChildren: item.children && item.children.length,
+                }"
               >
-                {{ item.label }}
-              </button>
-
-              <ul v-if="item.children && item.children.length" class="submenu">
-                <li
-                  v-for="child in item.children"
-                  :key="`${item.value}-${child.value}`"
+                <button
+                  class="menu-link"
+                  type="button"
+                  @click="clickHeader(item)"
                 >
-                  <button
-                    class="submenu-link"
-                    type="button"
-                    @click.stop="clickHeader(child)"
+                  {{ item.label }}
+                </button>
+
+                <ul v-if="item.children && item.children.length" class="submenu">
+                  <li
+                    v-for="child in item.children"
+                    :key="`${item.value}-${child.value}`"
                   >
-                    {{ child.label }}
-                  </button>
-                </li>
-              </ul>
-            </li>
-          </ul>
+                    <button
+                      class="submenu-link"
+                      type="button"
+                      @click.stop="clickHeader(child)"
+                    >
+                      {{ child.label }}
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <span
+              class="active-indicator"
+              :style="activeIndicatorStyle"
+              aria-hidden="true"
+            ></span>
+          </div>
 
           <div class="language-switcher" aria-label="language switcher">
             <button
@@ -126,6 +134,11 @@ export default {
       mobileMenuOpen: false,
       isScrolled: false,
       currentLanguage: "zh",
+      activeIndicatorStyle: {
+        opacity: 0,
+        transform: "translateX(0px)",
+        width: "0px",
+      },
     };
   },
   computed: {
@@ -145,13 +158,29 @@ export default {
       ];
     },
   },
+  watch: {
+    $route() {
+      this.scheduleActiveIndicatorUpdate();
+    },
+    currentLanguage() {
+      this.scheduleActiveIndicatorUpdate();
+    },
+    mobileMenuOpen() {
+      this.scheduleActiveIndicatorUpdate();
+    },
+  },
   mounted() {
     this.initLanguage();
     window.addEventListener("scroll", this.handleScroll, { passive: true });
+    window.addEventListener("resize", this.scheduleActiveIndicatorUpdate, {
+      passive: true,
+    });
     this.handleScroll();
+    this.scheduleActiveIndicatorUpdate();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("resize", this.scheduleActiveIndicatorUpdate);
   },
   methods: {
     initLanguage() {
@@ -194,6 +223,9 @@ export default {
       if (this.$route.name === item.value) {
         return true;
       }
+      if (item.value === "news" && this.$route.name === "news-detail") {
+        return true;
+      }
       if (!item.children || !item.children.length) {
         return false;
       }
@@ -208,6 +240,43 @@ export default {
         this.$router.push({ name: item.value });
       }
       this.mobileMenuOpen = false;
+    },
+    scheduleActiveIndicatorUpdate() {
+      this.$nextTick(() => {
+        if (typeof window !== "undefined" && window.requestAnimationFrame) {
+          window.requestAnimationFrame(this.updateActiveIndicator);
+          return;
+        }
+        this.updateActiveIndicator();
+      });
+    },
+    updateActiveIndicator() {
+      const wrap = this.$refs.navListWrap;
+      const nodes = this.$refs.menuNodes || [];
+      const activeIndex = this.mainMenu.findIndex((item) => this.isActive(item));
+      const activeNode = Array.isArray(nodes) ? nodes[activeIndex] : nodes;
+
+      if (!wrap || !activeNode) {
+        this.activeIndicatorStyle = {
+          opacity: 0,
+          transform: "translateX(0px)",
+          width: "0px",
+        };
+        return;
+      }
+
+      const activeLink = activeNode.querySelector(".menu-link");
+      if (!activeLink) {
+        return;
+      }
+
+      const wrapRect = wrap.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
+      this.activeIndicatorStyle = {
+        opacity: 1,
+        transform: `translateX(${linkRect.left - wrapRect.left}px)`,
+        width: `${linkRect.width}px`,
+      };
     },
   },
 };
@@ -329,11 +398,30 @@ export default {
     align-self: stretch;
     gap: 24px;
 
-    > ul {
+    .nav-list-wrap {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+    }
+
+    .nav-list-wrap > ul {
       display: flex;
       align-items: stretch;
       gap: 28px;
       height: 100%;
+    }
+
+    .active-indicator {
+      position: absolute;
+      left: 0;
+      bottom: 22px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.96);
+      pointer-events: none;
+      transition: transform 0.28s cubic-bezier(0.2, 0.72, 0.18, 1),
+        width 0.28s cubic-bezier(0.2, 0.72, 0.18, 1), opacity 0.2s ease;
     }
 
     .menu-node {
@@ -341,6 +429,21 @@ export default {
       display: flex;
       align-items: stretch;
       height: 100%;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 22px;
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.58);
+        opacity: 0;
+        transform: scaleX(0.55);
+        transition: opacity 0.18s ease, transform 0.22s ease;
+        pointer-events: none;
+      }
 
       .menu-link {
         cursor: pointer;
@@ -358,16 +461,17 @@ export default {
         text-decoration-color: transparent;
         text-decoration-thickness: 1.4px;
         text-underline-offset: 0.25em;
-        transition: opacity 0.15s ease;
+        transition: color 0.18s ease, opacity 0.15s ease;
       }
 
-      &:hover .menu-link {
-        text-decoration-color: rgba(255, 255, 255, 0.58);
+      &:not(.active):hover::after,
+      &:not(.active):focus-within::after {
+        opacity: 1;
+        transform: scaleX(1);
       }
 
       &.active .menu-link {
-        text-decoration-color: rgba(255, 255, 255, 0.96);
-        text-decoration-thickness: 2.8px;
+        color: rgba(255, 255, 255, 0.98);
       }
 
       .submenu {
@@ -482,16 +586,34 @@ export default {
       flex-direction: column;
       align-items: flex-start;
 
-      > ul {
+      .nav-list-wrap {
+        width: 100%;
+        height: auto;
+      }
+
+      .nav-list-wrap > ul {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 14px 20px;
       }
 
+      .active-indicator {
+        display: none;
+      }
+
       .menu-node {
+        &::after {
+          display: none;
+        }
+
         .menu-link {
           font-size: 20px;
+        }
+
+        &.active .menu-link {
+          text-decoration-color: rgba(255, 255, 255, 0.96);
+          text-decoration-thickness: 2.8px;
         }
 
         .submenu {
@@ -559,7 +681,7 @@ export default {
       top: 80px;
       padding: 22px;
 
-      > ul {
+      .nav-list-wrap > ul {
         grid-template-columns: 1fr;
       }
 
