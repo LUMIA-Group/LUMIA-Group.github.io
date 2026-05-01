@@ -2,40 +2,135 @@
   <div class="news-page">
     <section class="lumia-section news-hero">
       <div class="lumia-container">
-        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">Updates</p>
-        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">News</h1>
+        <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
+          {{ text.eyebrow }}
+        </p>
+        <h1 class="lumia-title lumia-fade-up" style="--delay: 120ms">
+          {{ text.title }}
+        </h1>
         <p class="lumia-subtitle lumia-fade-up" style="--delay: 160ms">
-          Recent publications, awards, and lab milestones.
+          {{ text.subtitle }}
         </p>
       </div>
     </section>
 
     <section class="lumia-section news-listing">
       <div class="lumia-container">
-        <ol class="timeline">
+        <ul class="timeline">
           <li
             v-for="(item, index) in newsData.newsList"
-            :key="`${index}-${item}`"
+            :key="item.id"
             class="timeline-item lumia-fade-up"
             :style="{ '--delay': `${100 + index * 70}ms` }"
           >
-            <div class="timeline-marker">{{ index + 1 }}</div>
-            <p>{{ item }}</p>
+            <router-link
+              v-if="isInternalNews(item)"
+              class="timeline-link"
+              :to="newsInternalLink(item)"
+            >
+              <span class="date">{{ formatDisplayDate(item.date) }}:</span>
+              <span class="news-text">{{ getDisplayTitle(item) }}</span>
+            </router-link>
+            <a
+              v-else-if="isExternalNews(item)"
+              class="timeline-link"
+              :href="newsExternalLink(item)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="date">{{ formatDisplayDate(item.date) }}:</span>
+              <span class="news-text">{{ getDisplayTitle(item) }}</span>
+            </a>
           </li>
-        </ol>
+        </ul>
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import { newsData } from "@/data/news";
+import {
+  formatNewsDate,
+  getNewsTitle,
+  isExternalNews,
+  isInternalNews,
+  newsData,
+} from "@/data/news";
+
+const I18N = {
+  en: {
+    eyebrow: "Updates",
+    title: "News",
+    subtitle: "Recent publications, awards, and lab milestones.",
+  },
+  zh: {
+    eyebrow: "动态",
+    title: "新闻",
+    subtitle: "近期论文发表、获奖信息与实验室动态。",
+  },
+};
 
 export default {
   data() {
     return {
       newsData,
+      currentLanguage: "zh",
     };
+  },
+  computed: {
+    text() {
+      return I18N[this.currentLanguage] || I18N.zh;
+    },
+  },
+  mounted() {
+    this.initLanguage();
+    window.addEventListener("lumia-language-change", this.onLanguageChange);
+  },
+  beforeDestroy() {
+    window.removeEventListener("lumia-language-change", this.onLanguageChange);
+  },
+  methods: {
+    initLanguage() {
+      const saved = localStorage.getItem("lumia_lang");
+      if (saved === "en" || saved === "zh") {
+        this.currentLanguage = saved;
+      }
+    },
+    onLanguageChange(event) {
+      if (
+        event &&
+        event.detail &&
+        (event.detail === "en" || event.detail === "zh")
+      ) {
+        this.currentLanguage = event.detail;
+      }
+    },
+    formatDisplayDate(date) {
+      return formatNewsDate(date, this.currentLanguage);
+    },
+    getDisplayTitle(news) {
+      return getNewsTitle(news, this.currentLanguage);
+    },
+    isExternalNews(news) {
+      return isExternalNews(news);
+    },
+    isInternalNews(news) {
+      return isInternalNews(news);
+    },
+    newsInternalLink(news) {
+      if (news && news.link) {
+        return news.link;
+      }
+      return {
+        name: "news-detail",
+        params: {
+          id: news.id,
+        },
+      };
+    },
+    newsExternalLink(news) {
+      return (news && news.link) || "#";
+    },
   },
 };
 </script>
@@ -58,10 +153,7 @@ export default {
     border: 1px solid rgba(102, 46, 125, 0.18);
     border-radius: 20px;
     padding: 18px 20px;
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 14px;
-    align-items: center;
+    display: block;
 
     &:nth-child(3n + 1) {
       background: linear-gradient(150deg, #ffffff 0%, #fff6df 100%);
@@ -75,23 +167,33 @@ export default {
       background: linear-gradient(150deg, #ffffff 0%, #fff0f5 100%);
     }
 
-    .timeline-marker {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: var(--lumia-primary);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      letter-spacing: 0.04em;
-    }
-
-    p {
+    .timeline-link {
+      color: inherit;
+      display: block;
       font-size: 18px;
       line-height: 1.55;
+      text-decoration: none;
+      transition: color 0.25s ease;
+
+      &:hover {
+        color: var(--lumia-primary-strong);
+
+        .news-text {
+          text-decoration-color: var(--lumia-primary);
+        }
+      }
+    }
+
+    .date {
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    .news-text {
+      text-decoration: underline;
+      text-decoration-color: transparent;
+      text-underline-offset: 0.24em;
+      transition: text-decoration-color 0.25s ease;
     }
   }
 }
@@ -99,14 +201,7 @@ export default {
 @media (max-width: 999px) {
   .news-listing {
     .timeline-item {
-      grid-template-columns: 38px 1fr;
-
-      .timeline-marker {
-        width: 32px;
-        height: 32px;
-      }
-
-      p {
+      .timeline-link {
         font-size: 16px;
       }
     }

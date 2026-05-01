@@ -20,7 +20,7 @@
             <button class="hero-action-btn" type="button" @click="go('people')">
               {{ text.meetPeople }}
             </button>
-            <button class="hero-action-btn" type="button" @click="scrollToNews">
+            <button class="hero-action-btn" type="button" @click="go('news')">
               {{ text.latestNewsLink }}
             </button>
             <button class="hero-action-btn" type="button" @click="go('contact')">
@@ -32,19 +32,36 @@
     </section>
 
     <section class="lumia-section news-preview">
-      <div class="lumia-container preview-grid">
-        <div class="preview-left lumia-fade-up" style="--delay: 80ms">
+      <div class="lumia-container">
+        <div class="preview-head lumia-fade-up" style="--delay: 80ms">
           <p class="lumia-eyebrow">{{ text.updates }}</p>
           <h2 class="section-title">{{ text.labNews }}</h2>
         </div>
         <div class="preview-list">
           <article
             v-for="(news, index) in newsItems"
-            :key="`news-${index}`"
+            :key="news.id"
             class="news-item lumia-fade-up"
             :style="{ '--delay': `${120 + index * 70}ms` }"
           >
-            <p v-html="news"></p>
+            <router-link
+              v-if="isInternalNews(news)"
+              class="news-link"
+              :to="newsInternalLink(news)"
+            >
+              <span class="news-date">{{ formatDisplayDate(news.date) }}:</span>
+              <span class="news-text">{{ getDisplayTitle(news) }}</span>
+            </router-link>
+            <a
+              v-else-if="isExternalNews(news)"
+              class="news-link"
+              :href="newsExternalLink(news)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="news-date">{{ formatDisplayDate(news.date) }}:</span>
+              <span class="news-text">{{ getDisplayTitle(news) }}</span>
+            </a>
           </article>
         </div>
       </div>
@@ -108,6 +125,13 @@
 
 <script>
 import { homeData } from "@/data/home";
+import {
+  formatNewsDate,
+  getNewsTitle,
+  isExternalNews,
+  isInternalNews,
+  newsData,
+} from "@/data/news";
 import { RESEARCH_TAGS } from "@/data/researchTags";
 import alibabaLogo from "@/assets/partners/阿里巴巴logo.svg";
 import huaweiLogo from "@/assets/partners/华为logo.svg";
@@ -167,6 +191,7 @@ export default {
   data() {
     return {
       homeData,
+      newsData,
       currentLanguage: "zh",
       displayedHeroDesc: "",
       isTypingHeroDesc: false,
@@ -187,15 +212,7 @@ export default {
       }));
     },
     newsItems() {
-      return [
-        'Sep 2023: <a href="https://openreview.net/pdf?id=t2hEZadBBk" target="_blank" rel="noopener noreferrer">One paper</a> got accepted at NeurIPS 2023!',
-        'May 2023: Two papers (<a href="https://aclanthology.org/2023.acl-long.281/" target="_blank" rel="noopener noreferrer">[1]</a><a href="https://aclanthology.org/2023.findings-acl.570/" target="_blank" rel="noopener noreferrer">[2]</a>) are accepted at ACL 2023!',
-        'Mar. 2023: <a href="https://scholar.google.com/citations?user=C-TqDNsAAAAJ" target="_blank" rel="noopener noreferrer">Yunchong Song</a> has got the ICLR Travel Award, congratulations!',
-        'Feb. 2023: Two papers (<a href="https://arxiv.org/abs/2302.09509" target="_blank" rel="noopener noreferrer">[1]</a><a href="https://arxiv.org/abs/2304.05361" target="_blank" rel="noopener noreferrer">[2]</a>) are accepted at ICASSP 2023!',
-        'Jan. 2023: <a href="https://openreview.net/forum?id=wKPmPBHSnT6" target="_blank" rel="noopener noreferrer">One paper</a> is accepted at ICLR 2023!',
-        'Oct. 2022: Three papers (<a href="https://aclanthology.org/2022.emnlp-main.211/" target="_blank" rel="noopener noreferrer">[1]</a><a href="https://aclanthology.org/2022.findings-emnlp.173/" target="_blank" rel="noopener noreferrer">[2]</a><a href="https://aclanthology.org/2022.findings-emnlp.114/" target="_blank" rel="noopener noreferrer">[3]</a>) are accepted at EMNLP 2022!',
-        'Feb. 2022: Two papers (<a href="https://aclanthology.org/2022.acl-long.308/" target="_blank" rel="noopener noreferrer">[1]</a><a href="https://aclanthology.org/2022.acl-long.502/" target="_blank" rel="noopener noreferrer">[2]</a>) are accepted at ACL 2022!',
-      ];
+      return this.newsData.newsList || [];
     },
     partnerLogos() {
       return [
@@ -449,11 +466,31 @@ export default {
       const query = nextTag ? { tag: nextTag } : {};
       this.$router.push({ name: "research", query }).catch(() => {});
     },
-    scrollToNews() {
-      const section = this.$el.querySelector(".news-preview");
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
+    formatDisplayDate(date) {
+      return formatNewsDate(date, this.currentLanguage);
+    },
+    getDisplayTitle(news) {
+      return getNewsTitle(news, this.currentLanguage);
+    },
+    isExternalNews(news) {
+      return isExternalNews(news);
+    },
+    isInternalNews(news) {
+      return isInternalNews(news);
+    },
+    newsInternalLink(news) {
+      if (news && news.link) {
+        return news.link;
       }
+      return {
+        name: "news-detail",
+        params: {
+          id: news.id,
+        },
+      };
+    },
+    newsExternalLink(news) {
+      return (news && news.link) || "#";
     },
     bubbleStyle(item) {
       return {
@@ -781,45 +818,76 @@ export default {
 }
 
 .news-preview {
-  .preview-grid {
-    display: grid;
-    grid-template-columns: 0.78fr 1.22fr;
-    gap: 24px;
-  }
-
   .section-title {
     margin: 12px 0 22px;
   }
 
   .preview-list {
-    border: 1px solid rgba(102, 46, 125, 0.2);
-    border-radius: 24px;
-    overflow: hidden;
-    background: var(--lumia-white);
+    margin: 34px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .news-item {
+    min-height: 86px;
     padding: 22px 24px;
-    border-bottom: 1px solid rgba(102, 46, 125, 0.16);
+    border: 1px solid rgba(102, 46, 125, 0.2);
+    border-radius: 24px;
+    background: var(--lumia-white);
+    display: flex;
+    align-items: stretch;
 
-    &:last-child {
-      border-bottom: none;
+    &:nth-child(3n + 1) {
+      background: linear-gradient(155deg, #ffffff 0%, #fff9eb 100%);
     }
 
-    p {
-      line-height: 1.6;
-      font-size: 17px;
+    &:nth-child(3n + 2) {
+      background: linear-gradient(155deg, #ffffff 0%, #eef9fd 100%);
     }
 
-    :deep(a) {
+    &:nth-child(3n + 3) {
+      background: linear-gradient(155deg, #ffffff 0%, #fff1f7 100%);
+    }
+
+    .news-link {
+      color: inherit;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      line-height: 1.45;
+      font-size: 19px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.25s ease;
+
+      &:hover {
+        color: var(--lumia-primary-strong);
+
+        .news-text {
+          text-decoration-color: var(--lumia-primary);
+        }
+      }
+    }
+
+    .news-date {
+      display: block;
+      flex: 0 0 104px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+      opacity: 0.72;
+    }
+
+    .news-text {
+      flex: 1;
       text-decoration: underline;
       text-decoration-color: transparent;
       text-underline-offset: 0.22em;
       transition: text-decoration-color 0.25s ease;
-
-      &:hover {
-        text-decoration-color: var(--lumia-primary);
-      }
     }
   }
 }
@@ -833,7 +901,7 @@ export default {
 }
 
 @media (max-width: 1100px) {
-  .news-preview .preview-grid {
+  .news-preview .preview-list {
     grid-template-columns: 1fr;
   }
 
@@ -876,8 +944,20 @@ export default {
   }
 
   .news-preview {
-    .news-item p {
+    .news-item {
+      min-height: 0;
+      padding: 20px;
+    }
+
+    .news-link {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
       font-size: 16px;
+    }
+
+    .news-date {
+      flex-basis: auto;
     }
   }
 }

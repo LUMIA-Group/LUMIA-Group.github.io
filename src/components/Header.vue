@@ -14,11 +14,22 @@
           <span class="name">{{ brandName }}</span>
         </button>
 
-        <button class="mobile-toggle" @click="mobileMenuOpen = !mobileMenuOpen">
-          {{ mobileMenuOpen ? localeText.close : localeText.menu }}
+        <button
+          class="mobile-toggle"
+          type="button"
+          :aria-label="mobileMenuOpen ? localeText.close : localeText.menu"
+          :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
+          aria-controls="site-main-nav"
+          @click="mobileMenuOpen = !mobileMenuOpen"
+        >
+          <span class="mobile-toggle-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
         </button>
 
-        <nav class="main-nav" :class="{ show: mobileMenuOpen }">
+        <nav id="site-main-nav" class="main-nav" :class="{ show: mobileMenuOpen }">
           <ul>
             <li
               v-for="item in mainMenu"
@@ -85,6 +96,7 @@ const I18N = {
     home: "Home",
     people: "People",
     research: "Research",
+    news: "News",
     contact: "Contact",
     directory: "Directory",
     insights: "Insights",
@@ -96,6 +108,7 @@ const I18N = {
     home: "主页",
     people: "成员",
     research: "研究",
+    news: "新闻",
     contact: "联系我们",
     directory: "成员目录",
     insights: "研究方向",
@@ -127,6 +140,7 @@ export default {
         { value: "home", label: this.localeText.home },
         { value: "people", label: this.localeText.people },
         { value: "research", label: this.localeText.research },
+        { value: "news", label: this.localeText.news },
         { value: "contact", label: this.localeText.contact },
       ];
     },
@@ -218,6 +232,22 @@ export default {
     border-bottom-color: rgba(255, 255, 255, 0.14);
     box-shadow: 0 10px 28px rgba(39, 21, 56, 0.34);
   }
+
+  &.open {
+    .mobile-toggle-icon {
+      span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+      }
+
+      span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+  }
 }
 
 .header-main {
@@ -257,15 +287,40 @@ export default {
 
   .mobile-toggle {
     display: none;
-    border: none;
-    background: transparent;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
     align-self: center;
+    align-items: center;
+    justify-content: center;
     color: rgba(255, 255, 255, 0.94);
-    font-size: 15px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
     cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.42);
+    }
+  }
+
+  .mobile-toggle-icon {
+    width: 20px;
+    height: 16px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transform-origin: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
   }
 
   .main-nav {
@@ -402,7 +457,7 @@ export default {
 @media (max-width: 1099px) {
   .header-main {
     .mobile-toggle {
-      display: inline-block;
+      display: inline-flex;
       margin-left: auto;
     }
 

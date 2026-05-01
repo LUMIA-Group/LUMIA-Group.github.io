@@ -2,20 +2,28 @@
   <div class="news-container">
     <div class="news-content">
       <ul>
-        <li v-for="(item, index) in newsData.newsList" :key="index">
-          {{ item }}
+        <li v-for="item in newsData.newsList" :key="item.id">
+          {{ formatDisplayDate(item.date) }}: {{ getDisplayTitle(item) }}
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-import { newsData } from "@/data/news";
+import { formatNewsDate, getNewsTitle, newsData } from "@/data/news";
 export default {
   data() {
     return {
       newsData: newsData,
     };
+  },
+  methods: {
+    formatDisplayDate(date) {
+      return formatNewsDate(date, "zh");
+    },
+    getDisplayTitle(news) {
+      return getNewsTitle(news, "zh");
+    },
   },
 };
 </script>

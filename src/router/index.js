@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import People from "../views/People.vue";
 import Research from "../views/Research.vue";
+import News from "../views/News.vue";
+import NewsDetail from "../views/NewsDetail.vue";
 import Contact from "../views/Contact.vue";
 import Application from "../views/Application.vue";
 Vue.use(VueRouter);
@@ -25,9 +27,13 @@ const routes = [
   },
   {
     path: "/news",
-    redirect: {
-      name: "home",
-    },
+    name: "news",
+    component: News,
+  },
+  {
+    path: "/news/:id",
+    name: "news-detail",
+    component: NewsDetail,
   },
   {
     path: "/contact",
