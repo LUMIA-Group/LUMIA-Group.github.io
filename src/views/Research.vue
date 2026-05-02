@@ -36,15 +36,18 @@
             </button>
           </div>
         </section>
+        <p
+          v-if="activeDirection"
+          class="direction-intro lumia-fade-up"
+          style="--delay: 230ms"
+        >
+          {{ activeDirection.intro }}
+        </p>
         <article
           v-show="activeDirection"
           class="direction-placeholder lumia-fade-up"
-          style="--delay: 240ms"
+          style="--delay: 260ms"
         >
-          <h2>{{ activeDirection ? activeDirection.name : "" }}</h2>
-          <p>
-            {{ activeDirection ? activeDirection.intro : "" }}
-          </p>
           <div
             v-if="activeDirectionContent"
             class="direction-body"
@@ -258,6 +261,223 @@ const PAPER_LINK_FIELDS = [
   { key: "homepage", label: "Project Page" },
 ];
 
+const MATH_COMMANDS = {
+  alpha: "α",
+  beta: "β",
+  gamma: "γ",
+  delta: "δ",
+  epsilon: "ε",
+  theta: "θ",
+  lambda: "λ",
+  mu: "μ",
+  pi: "π",
+  sigma: "σ",
+  phi: "φ",
+  omega: "ω",
+  Gamma: "Γ",
+  Delta: "Δ",
+  Theta: "Θ",
+  Lambda: "Λ",
+  Pi: "Π",
+  Sigma: "Σ",
+  Phi: "Φ",
+  Omega: "Ω",
+  sum: "∑",
+  prod: "∏",
+  infty: "∞",
+  leq: "≤",
+  geq: "≥",
+  neq: "≠",
+  approx: "≈",
+  times: "×",
+  cdot: "·",
+  mid: "|",
+  lt: "<",
+  gt: ">",
+};
+
+const MATH_OPERATORS = new Set(["argmax", "argmin", "log", "max", "min"]);
+const MATH_LIMIT_OPERATORS = new Set([
+  "argmax",
+  "argmin",
+  "max",
+  "min",
+  "prod",
+  "sum",
+]);
+
+function escapeMathHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function readBalancedGroup(source, startIndex) {
+  let depth = 1;
+  let cursor = startIndex + 1;
+  let value = "";
+  while (cursor < source.length && depth > 0) {
+    const char = source[cursor];
+    if (char === "{") {
+      depth += 1;
+      value += char;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth > 0) {
+        value += char;
+      }
+    } else {
+      value += char;
+    }
+    cursor += 1;
+  }
+  return { value, endIndex: cursor };
+}
+
+function readMathArgument(source, startIndex) {
+  let cursor = startIndex;
+  while (/\s/.test(source[cursor] || "")) {
+    cursor += 1;
+  }
+  if (source[cursor] === "{") {
+    return readBalancedGroup(source, cursor);
+  }
+  if (source[cursor] === "\\") {
+    const command = source.slice(cursor + 1).match(/^[A-Za-z]+/);
+    if (command) {
+      const value = `\\${command[0]}`;
+      return { value, endIndex: cursor + command[0].length + 1 };
+    }
+  }
+  return {
+    value: source[cursor] || "",
+    endIndex: Math.min(cursor + 1, source.length),
+  };
+}
+
+function readMathScripts(source, startIndex) {
+  let cursor = startIndex;
+  let subscript = "";
+  let superscript = "";
+  let hasScripts = false;
+
+  while (cursor < source.length) {
+    let scriptCursor = cursor;
+    while (/\s/.test(source[scriptCursor] || "")) {
+      scriptCursor += 1;
+    }
+
+    const marker = source[scriptCursor];
+    if (marker !== "_" && marker !== "^") {
+      break;
+    }
+
+    const argument = readMathArgument(source, scriptCursor + 1);
+    if (marker === "_") {
+      subscript = argument.value;
+    } else {
+      superscript = argument.value;
+    }
+    cursor = argument.endIndex;
+    hasScripts = true;
+  }
+
+  return {
+    endIndex: cursor,
+    hasScripts,
+    subscript,
+    superscript,
+  };
+}
+
+function renderMathCommand(command) {
+  if (MATH_OPERATORS.has(command)) {
+    return `<span class="math-op">${escapeMathHtml(command)}</span>`;
+  }
+  if (Object.prototype.hasOwnProperty.call(MATH_COMMANDS, command)) {
+    return escapeMathHtml(MATH_COMMANDS[command]);
+  }
+  return escapeMathHtml(command);
+}
+
+function renderMathLimitOperator(command, scripts) {
+  const core =
+    command === "sum" || command === "prod"
+      ? MATH_COMMANDS[command]
+      : command;
+  const classes = [
+    "math-limit-op",
+    command === "sum" || command === "prod"
+      ? "math-symbol-op"
+      : "math-word-op",
+  ];
+  if (scripts.superscript) {
+    classes.push("has-sup");
+  }
+
+  const top = scripts.superscript
+    ? `<span class="math-limit math-limit-top">${renderMathFormula(
+        scripts.superscript
+      )}</span>`
+    : "";
+  const bottom = scripts.subscript
+    ? `<span class="math-limit math-limit-bottom">${renderMathFormula(
+        scripts.subscript
+      )}</span>`
+    : "";
+  return `<span class="${classes.join(
+    " "
+  )}">${top}<span class="math-limit-core">${escapeMathHtml(
+    core
+  )}</span>${bottom}</span>`;
+}
+
+function renderMathFormula(source) {
+  let cursor = 0;
+  let result = "";
+  while (cursor < source.length) {
+    const char = source[cursor];
+    if (/\s/.test(char)) {
+      result += " ";
+      while (/\s/.test(source[cursor + 1] || "")) {
+        cursor += 1;
+      }
+      cursor += 1;
+    } else if (char === "\\") {
+      const command = source.slice(cursor + 1).match(/^[A-Za-z]+/);
+      if (command) {
+        const commandName = command[0];
+        const commandEndIndex = cursor + commandName.length + 1;
+        const scripts = readMathScripts(source, commandEndIndex);
+        if (MATH_LIMIT_OPERATORS.has(commandName) && scripts.hasScripts) {
+          result += renderMathLimitOperator(commandName, scripts);
+          cursor = scripts.endIndex;
+        } else {
+          result += renderMathCommand(commandName);
+          cursor = commandEndIndex;
+        }
+      } else {
+        result += escapeMathHtml(source[cursor + 1] || "");
+        cursor += 2;
+      }
+    } else if (char === "_" || char === "^") {
+      const argument = readMathArgument(source, cursor + 1);
+      const tag = char === "_" ? "sub" : "sup";
+      result += `<${tag}>${renderMathFormula(argument.value)}</${tag}>`;
+      cursor = argument.endIndex;
+    } else if (char === "{" || char === "}") {
+      cursor += 1;
+    } else {
+      result += escapeMathHtml(char);
+      cursor += 1;
+    }
+  }
+  return result.trim();
+}
+
 export default {
   data() {
     return {
@@ -335,6 +555,12 @@ export default {
     activeTags() {
       this.syncRouteFromTags();
     },
+    activeDirectionContent: {
+      immediate: true,
+      handler() {
+        this.$nextTick(this.renderDirectionMath);
+      },
+    },
     "$route.query": {
       immediate: true,
       handler() {
@@ -345,6 +571,7 @@ export default {
   mounted() {
     this.initLanguage();
     window.addEventListener("lumia-language-change", this.onLanguageChange);
+    this.$nextTick(this.renderDirectionMath);
   },
   beforeDestroy() {
     window.removeEventListener("lumia-language-change", this.onLanguageChange);
@@ -480,6 +707,19 @@ export default {
           typeof paper[field.key] === "string" ? paper[field.key].trim() : "",
       })).filter((link) => link.href);
     },
+    renderDirectionMath() {
+      if (!this.$el) {
+        return;
+      }
+      const mathNodes = this.$el.querySelectorAll(
+        ".direction-body .math-render[data-formula]"
+      );
+      mathNodes.forEach((node) => {
+        const formula = node.getAttribute("data-formula") || "";
+        node.innerHTML = renderMathFormula(formula);
+        node.setAttribute("aria-label", formula);
+      });
+    },
     matchesPaper(paper) {
       if (!paper) {
         return false;
@@ -597,33 +837,32 @@ export default {
   }
 }
 
+.direction-intro {
+  max-width: 860px;
+  margin: 22px 0 0;
+  color: rgba(102, 46, 125, 0.78);
+  font-size: 17px;
+  line-height: 1.72;
+}
+
 .direction-placeholder {
   width: 100%;
   max-width: none;
   box-sizing: border-box;
-  margin-top: 34px;
+  margin-top: 24px;
   padding: 34px;
   border: 1px solid rgba(102, 46, 125, 0.18);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.82);
 
-  h2 {
-    margin: 0 0 14px;
-    font-family: var(--lumia-heading-font);
-    font-size: clamp(28px, 3vw, 42px);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-  }
-
-  p {
+  > p {
     max-width: none;
-    margin: 0 0 12px;
+    margin: 0;
     font-size: 17px;
     line-height: 1.68;
   }
 
   :deep(.direction-body) {
-    margin-top: 18px;
     display: grid;
     gap: 18px;
   }
@@ -637,13 +876,13 @@ export default {
   }
 
   :deep(.direction-body .concept-blog-header) {
-    margin-bottom: 28px;
-    padding-bottom: 26px;
+    margin-bottom: 0;
+    padding-bottom: 30px;
     border-bottom: 1px solid rgba(102, 46, 125, 0.14);
   }
 
   :deep(.direction-body .concept-meta) {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     color: var(--lumia-primary);
     font-size: 13px;
     font-weight: 700;
@@ -651,27 +890,35 @@ export default {
     text-transform: uppercase;
   }
 
-  :deep(.direction-body .concept-blog-header h3) {
-    margin: 0 0 16px;
-    font-size: clamp(28px, 4vw, 48px);
+  :deep(.direction-body .concept-blog-header h1) {
+    margin: 0;
+    font-family: var(--lumia-heading-font);
+    font-size: clamp(36px, 5vw, 58px);
     line-height: 1.12;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 
   :deep(.direction-body .concept-blog-header .lead) {
     max-width: 880px;
-    margin: 0;
+    margin: 22px 0 0;
     color: rgba(102, 46, 125, 0.84);
     font-size: clamp(18px, 2vw, 22px);
     line-height: 1.72;
   }
 
+  :deep(.direction-body .concept-blog section) {
+    padding: 34px 0;
+    border-bottom: 1px solid rgba(102, 46, 125, 0.12);
+  }
+
+  :deep(.direction-body h2),
   :deep(.direction-body h3) {
     margin: 0 0 8px;
     font-family: var(--lumia-heading-font);
-    font-size: 20px;
+    font-size: clamp(22px, 2.4vw, 28px);
     font-weight: 700;
     line-height: 1.25;
+    letter-spacing: 0;
   }
 
   :deep(.direction-body p) {
@@ -799,23 +1046,78 @@ export default {
     font-weight: 700;
   }
 
-  :deep(.direction-body .math-line) {
-    display: flex;
-    flex-wrap: wrap;
+  :deep(.direction-body .math-render) {
+    display: inline-flex;
+    flex-wrap: nowrap;
     align-items: baseline;
-    gap: 0 5px;
+    gap: 0 3px;
     color: var(--lumia-primary-strong);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
       "Liberation Mono", monospace;
     font-size: 16px;
     line-height: 1.8;
+    white-space: nowrap;
   }
 
-  :deep(.direction-body .math-line sub) {
-    margin-left: -4px;
-    margin-right: 2px;
+  :deep(.direction-body .math-render sub),
+  :deep(.direction-body .math-render sup) {
+    margin-left: -2px;
+    margin-right: 1px;
     font-size: 0.72em;
     line-height: 1;
+  }
+
+  :deep(.direction-body .math-render sup) {
+    align-self: flex-start;
+  }
+
+  :deep(.direction-body .math-op) {
+    font-style: normal;
+  }
+
+  :deep(.direction-body .math-limit-op) {
+    display: inline-grid;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    align-items: center;
+    margin: 0 2px;
+    vertical-align: middle;
+    line-height: 1;
+    transform: translateY(0.05em);
+  }
+
+  :deep(.direction-body .math-limit-op.has-sup) {
+    grid-template-rows: auto auto auto;
+  }
+
+  :deep(.direction-body .math-limit-core) {
+    display: block;
+    line-height: 1;
+  }
+
+  :deep(.direction-body .math-symbol-op .math-limit-core) {
+    font-size: 1.46em;
+    font-weight: 600;
+  }
+
+  :deep(.direction-body .math-word-op .math-limit-core) {
+    font-size: 0.95em;
+    font-weight: 700;
+  }
+
+  :deep(.direction-body .math-limit) {
+    display: block;
+    font-size: 0.64em;
+    font-weight: 650;
+    line-height: 1;
+  }
+
+  :deep(.direction-body .math-limit-top) {
+    margin-bottom: 1px;
+  }
+
+  :deep(.direction-body .math-limit-bottom) {
+    margin-top: 1px;
   }
 
   :deep(.direction-body code) {
