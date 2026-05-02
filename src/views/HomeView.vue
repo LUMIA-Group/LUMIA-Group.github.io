@@ -31,42 +31,6 @@
       </div>
     </section>
 
-    <section class="lumia-section news-preview">
-      <div class="lumia-container">
-        <div class="preview-head lumia-fade-up" style="--delay: 80ms">
-          <p class="lumia-eyebrow">{{ text.updates }}</p>
-          <h2 class="section-title">{{ text.labNews }}</h2>
-        </div>
-        <div class="preview-list">
-          <article
-            v-for="(news, index) in newsItems"
-            :key="news.id"
-            class="news-item lumia-fade-up"
-            :style="{ '--delay': `${120 + index * 70}ms` }"
-          >
-            <router-link
-              v-if="isInternalNews(news)"
-              class="news-link"
-              :to="newsInternalLink(news)"
-            >
-              <span class="news-date">{{ formatDisplayDate(news.date) }}:</span>
-              <span class="news-text">{{ getDisplayTitle(news) }}</span>
-            </router-link>
-            <a
-              v-else-if="isExternalNews(news)"
-              class="news-link"
-              :href="newsExternalLink(news)"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="news-date">{{ formatDisplayDate(news.date) }}:</span>
-              <span class="news-text">{{ getDisplayTitle(news) }}</span>
-            </a>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="lumia-section featured-section">
       <div class="lumia-container">
         <p class="lumia-eyebrow lumia-fade-up" style="--delay: 80ms">
@@ -131,13 +95,6 @@
 
 <script>
 import { homeData } from "@/data/home";
-import {
-  formatNewsDate,
-  getNewsTitle,
-  isExternalNews,
-  isInternalNews,
-  newsData,
-} from "@/data/news";
 import { getLocalizedResearchTags } from "@/data/researchTags";
 import alibabaLogo from "@/assets/partners/阿里巴巴logo.svg";
 import huaweiLogo from "@/assets/partners/华为logo.svg";
@@ -163,8 +120,6 @@ const I18N = {
     featured: "Featured",
     focusAreas: "Current Focus Areas",
     readProjects: "Read projects",
-    updates: "Updates",
-    labNews: "Lab News",
     latestNewsLink: "Lab News",
     contactUs: "Contact Us (Collab/Admissions)",
     partnerEyebrow: "Partners",
@@ -183,8 +138,6 @@ const I18N = {
     featured: "焦点方向",
     focusAreas: "当前研究重点",
     readProjects: "查看项目",
-    updates: "动态",
-    labNews: "实验室新闻",
     latestNewsLink: "实验室新闻",
     contactUs: "联系我们（合作/招生）",
     partnerEyebrow: "合作伙伴",
@@ -197,7 +150,6 @@ export default {
   data() {
     return {
       homeData,
-      newsData,
       currentLanguage: "zh",
       displayedHeroDesc: "",
       isTypingHeroDesc: false,
@@ -211,9 +163,6 @@ export default {
     },
     featuredCards() {
       return getLocalizedResearchTags(this.currentLanguage);
-    },
-    newsItems() {
-      return this.newsData.newsList || [];
     },
     partnerLogos() {
       return [
@@ -467,32 +416,6 @@ export default {
       const query = nextTag ? { tag: nextTag } : {};
       this.$router.push({ name: "research", query }).catch(() => {});
     },
-    formatDisplayDate(date) {
-      return formatNewsDate(date, this.currentLanguage);
-    },
-    getDisplayTitle(news) {
-      return getNewsTitle(news, this.currentLanguage);
-    },
-    isExternalNews(news) {
-      return isExternalNews(news);
-    },
-    isInternalNews(news) {
-      return isInternalNews(news);
-    },
-    newsInternalLink(news) {
-      if (news && news.link) {
-        return news.link;
-      }
-      return {
-        name: "news-detail",
-        params: {
-          id: news.id,
-        },
-      };
-    },
-    newsExternalLink(news) {
-      return (news && news.link) || "#";
-    },
     bubbleStyle(item) {
       return {
         "--x": `${item.x}%`,
@@ -598,7 +521,6 @@ export default {
 }
 
 .featured-section,
-.news-preview,
 .partners-section {
   padding-top: 56px;
   border-top: 1px solid var(--lumia-border);
@@ -767,78 +689,6 @@ export default {
   }
 }
 
-.news-preview {
-  .section-title {
-    margin: 12px 0 22px;
-  }
-
-  .preview-list {
-    margin: 34px 0 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .news-item {
-    min-height: 86px;
-    padding: 22px 24px;
-    border: 1px solid var(--home-border);
-    border-radius: 16px;
-    background: var(--home-surface);
-    display: flex;
-    align-items: stretch;
-    transition: background-color 0.2s ease, border-color 0.2s ease,
-      box-shadow 0.2s ease;
-
-    &:hover,
-    &:focus-within {
-      background: var(--home-surface-hover);
-      border-color: var(--home-border-hover);
-      box-shadow: var(--home-hover-shadow);
-    }
-
-    .news-link {
-      color: inherit;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      line-height: 1.45;
-      font-size: 19px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.25s ease;
-
-      &:hover {
-        color: var(--lumia-primary-strong);
-
-        .news-text {
-          text-decoration-color: var(--lumia-primary);
-        }
-      }
-    }
-
-    .news-date {
-      display: block;
-      flex: 0 0 104px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      line-height: 1.2;
-      text-transform: uppercase;
-      opacity: 0.72;
-    }
-
-    .news-text {
-      flex: 1;
-      text-decoration: underline;
-      text-decoration-color: transparent;
-      text-underline-offset: 0.22em;
-      transition: text-decoration-color 0.25s ease;
-    }
-  }
-}
-
 .section-title {
   font-family: var(--lumia-heading-font);
   font-size: clamp(28px, 3.8vw, 52px);
@@ -848,10 +698,6 @@ export default {
 }
 
 @media (max-width: 1100px) {
-  .news-preview .preview-list {
-    grid-template-columns: 1fr;
-  }
-
   .hero {
     padding-top: 62px;
   }
@@ -890,22 +736,5 @@ export default {
     }
   }
 
-  .news-preview {
-    .news-item {
-      min-height: 0;
-      padding: 20px;
-    }
-
-    .news-link {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 16px;
-    }
-
-    .news-date {
-      flex-basis: auto;
-    }
-  }
 }
 </style>
