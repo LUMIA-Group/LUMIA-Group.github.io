@@ -847,7 +847,7 @@ export default {
 
 .direction-placeholder {
   width: 100%;
-  max-width: none;
+  max-width: 1040px;
   box-sizing: border-box;
   margin-top: 24px;
   padding: 34px;
@@ -873,8 +873,8 @@ export default {
 
   :deep(.direction-body .concept-blog) {
     display: block;
-    max-width: 920px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
   }
 
   :deep(.direction-body .concept-blog-header) {
