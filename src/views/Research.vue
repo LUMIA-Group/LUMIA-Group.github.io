@@ -873,11 +873,13 @@ export default {
 
   :deep(.direction-body .concept-blog) {
     display: block;
+    max-width: 920px;
+    margin: 0 auto;
   }
 
   :deep(.direction-body .concept-blog-header) {
     margin-bottom: 0;
-    padding-bottom: 30px;
+    padding-bottom: 32px;
     border-bottom: 1px solid rgba(102, 46, 125, 0.14);
   }
 
@@ -893,7 +895,8 @@ export default {
   :deep(.direction-body .concept-blog-header h1) {
     margin: 0;
     font-family: var(--lumia-heading-font);
-    font-size: clamp(36px, 5vw, 58px);
+    font-size: 48px;
+    font-weight: 800;
     line-height: 1.12;
     letter-spacing: 0;
   }
@@ -902,20 +905,20 @@ export default {
     max-width: 880px;
     margin: 22px 0 0;
     color: rgba(102, 46, 125, 0.84);
-    font-size: clamp(18px, 2vw, 22px);
+    font-size: 20px;
     line-height: 1.72;
   }
 
   :deep(.direction-body .concept-blog section) {
-    padding: 34px 0;
+    padding: 38px 0;
     border-bottom: 1px solid rgba(102, 46, 125, 0.12);
   }
 
   :deep(.direction-body h2),
   :deep(.direction-body h3) {
-    margin: 0 0 8px;
+    margin: 0 0 14px;
     font-family: var(--lumia-heading-font);
-    font-size: clamp(22px, 2.4vw, 28px);
+    font-size: 26px;
     font-weight: 700;
     line-height: 1.25;
     letter-spacing: 0;
@@ -923,8 +926,8 @@ export default {
 
   :deep(.direction-body p) {
     max-width: none;
-    margin: 0 0 10px;
-    font-size: 16px;
+    margin: 0 0 14px;
+    font-size: 17px;
     line-height: 1.7;
   }
 
@@ -1517,6 +1520,31 @@ export default {
 @media (max-width: 649px) {
   .direction-placeholder {
     padding: 24px;
+
+    :deep(.direction-body .concept-blog-header) {
+      padding-bottom: 24px;
+    }
+
+    :deep(.direction-body .concept-blog-header h1) {
+      font-size: 34px;
+    }
+
+    :deep(.direction-body .concept-blog-header .lead) {
+      font-size: 18px;
+    }
+
+    :deep(.direction-body .concept-blog section) {
+      padding: 30px 0;
+    }
+
+    :deep(.direction-body h2),
+    :deep(.direction-body h3) {
+      font-size: 22px;
+    }
+
+    :deep(.direction-body p) {
+      font-size: 16px;
+    }
 
     :deep(.direction-body figure) {
       padding: 16px;
