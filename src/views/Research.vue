@@ -224,7 +224,7 @@ const I18N = {
     eyebrow: "Publications",
     title: "Research",
     subtitle:
-      "Selected papers on language modeling, multimodal learning, graph neural networks, and trustworthy AI.",
+      "Selected papers on differentiable memory, concept-level language models, latent pondering, and efficient language models.",
     directionPlaceholder:
       "This direction page is being organized. It will later collect the overview, representative papers, projects, and resources for this research direction.",
     searchLabel: "Search",
@@ -240,7 +240,7 @@ const I18N = {
     eyebrow: "论文成果",
     title: "研究",
     subtitle:
-      "展示实验室在语言建模、多模态学习、图神经网络和可信 AI 方向的代表性论文。",
+      "展示实验室在可微记忆、概念级语言模型、隐思考机制和高效化方向的代表性论文。",
     directionPlaceholder:
       "该方向主页内容正在整理中，后续会在这里展示方向概览、代表论文、项目与相关资源。",
     searchLabel: "搜索",
@@ -963,6 +963,42 @@ export default {
     line-height: 1.6;
   }
 
+  :deep(.direction-body .table-wrap) {
+    width: 100%;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  :deep(.direction-body table) {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    border: 1px solid rgba(102, 46, 125, 0.16);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.76);
+    font-size: 15px;
+    line-height: 1.58;
+  }
+
+  :deep(.direction-body th),
+  :deep(.direction-body td) {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(102, 46, 125, 0.12);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  :deep(.direction-body th) {
+    background: rgba(102, 46, 125, 0.08);
+    color: var(--lumia-primary-strong);
+    font-weight: 700;
+  }
+
+  :deep(.direction-body tr:last-child td) {
+    border-bottom: 0;
+  }
+
   :deep(.direction-body .flow) {
     display: grid;
     gap: 14px;
@@ -1548,6 +1584,11 @@ export default {
 
     :deep(.direction-body figure) {
       padding: 16px;
+    }
+
+    :deep(.direction-body table) {
+      min-width: 680px;
+      font-size: 14px;
     }
 
     :deep(.direction-body .label) {

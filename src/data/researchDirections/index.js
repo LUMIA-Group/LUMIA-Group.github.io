@@ -1,13 +1,13 @@
-import graphLearning from "./graph-learning";
-import languageModels from "./language-models";
-import multimodalLearning from "./multimodal-learning";
-import trustworthyAi from "./trustworthy-ai";
+import differentiableMemory from "./differentiable-memory";
+import efficientLm from "./efficient-lm";
+import higherLevelLm from "./higher-level-lm";
+import latentPonder from "./latent-ponder";
 
 export const researchDirectionPages = [
-  languageModels,
-  multimodalLearning,
-  graphLearning,
-  trustworthyAi,
+  differentiableMemory,
+  higherLevelLm,
+  latentPonder,
+  efficientLm,
 ].reduce((pages, page) => {
   pages[page.tagId] = page;
   return pages;

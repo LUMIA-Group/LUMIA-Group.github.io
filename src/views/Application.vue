@@ -295,10 +295,10 @@ const I18N = {
         { label: "Research Collaboration", value: "collab" },
       ],
       interestOptions: [
-        { label: "Large Language Models", value: "llm" },
-        { label: "Multimodal Learning", value: "multimodal" },
-        { label: "Graph Learning", value: "graph" },
-        { label: "Speech & Audio", value: "speech" },
+        { label: "Differentiable Memory", value: "differentiable-memory" },
+        { label: "Concept-Level Language Models", value: "higher-level-lm" },
+        { label: "Latent Pondering", value: "latent-ponder" },
+        { label: "Efficient Language Models", value: "efficient-lm" },
       ],
       resourceOptions: [
         { label: "Need advisor support", value: "need_mentor" },
@@ -411,10 +411,10 @@ const I18N = {
         { label: "科研合作", value: "collab" },
       ],
       interestOptions: [
-        { label: "大语言模型", value: "llm" },
-        { label: "多模态学习", value: "multimodal" },
-        { label: "图学习", value: "graph" },
-        { label: "语音与音频", value: "speech" },
+        { label: "可微记忆", value: "differentiable-memory" },
+        { label: "概念级语言模型", value: "higher-level-lm" },
+        { label: "隐思考机制", value: "latent-ponder" },
+        { label: "高效化", value: "efficient-lm" },
       ],
       resourceOptions: [
         { label: "需要导师指导", value: "need_mentor" },

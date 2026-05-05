@@ -1,5 +1,5 @@
 export default {
-  tagId: "language-models",
+  tagId: "higher-level-lm",
   content: {
     zh: `
       <article class="concept-blog">
@@ -106,15 +106,15 @@ export default {
     en: `
       <section>
         <h2>Overview</h2>
-        <p>This direction studies language modeling, structured semantic representation, foundation model capability, and modeling problems that map natural language to structured targets.</p>
+        <p>This direction studies concept-level language modeling: moving prediction targets beyond individual tokens toward concepts, semantic states, goals, and structured higher-level representations.</p>
         <p>This page can later be expanded with long-term goals, representative problems, project resources, and open research questions.</p>
       </section>
       <section>
         <h2>Representative Topics</h2>
         <ul>
-          <li>Structured representations and syntactic induction in language models.</li>
-          <li>Task-oriented semantic parsing such as Text-to-SQL and Text-to-Code.</li>
-          <li>Long-sequence modeling, retrieval-augmented generation, and foundation model analysis.</li>
+          <li>Concept-level prediction objectives and semantic-state modeling.</li>
+          <li>Structured representations above token sequences.</li>
+          <li>Training signals that encourage abstraction, reasoning, and long-range consistency.</li>
         </ul>
       </section>
     `,

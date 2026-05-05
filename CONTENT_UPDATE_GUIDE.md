@@ -160,7 +160,7 @@ import exampleImage from "@/assets/research/example.png";
   github: "https://github.com/example/project",
   huggingface: "https://huggingface.co/example/model",
   homepage: "https://example.com/project",
-  tagIds: ["language-models"],
+  tagIds: ["higher-level-lm"],
   abstract: "This paper studies ...",
 }
 ```
@@ -187,14 +187,14 @@ import exampleImage from "@/assets/research/example.png";
 
 ```js
 {
-  id: "language-models",
+  id: "higher-level-lm",
   name: {
-    zh: "语言建模与基础模型",
-    en: "Language & Foundation Models",
+    zh: "概念级语言模型",
+    en: "Concept-Level Language Models",
   },
   intro: {
-    zh: "关注语言建模、结构化语义表示与基础模型能力提升。",
-    en: "Language modeling, structured representations, and foundation model capability.",
+    zh: "探索从 token 级预测走向概念、状态与更高层语义结构建模。",
+    en: "Moving beyond token-level prediction toward concepts, states, and higher-level semantic structures.",
   },
 }
 ```
@@ -205,12 +205,19 @@ import exampleImage from "@/assets/research/example.png";
 - `name.zh` / `name.en`：中英文方向名称。
 - `intro.zh` / `intro.en`：中英文方向介绍，会显示在研究页方向内容区。
 
+当前方向 ID：
+
+- `differentiable-memory`：可微记忆
+- `higher-level-lm`：概念级语言模型
+- `latent-ponder`：隐思考机制
+- `efficient-lm`：高效化
+
 ### 给论文绑定方向
 
 在论文对象中填写：
 
 ```js
-tagIds: ["language-models", "multimodal-learning"],
+tagIds: ["higher-level-lm", "efficient-lm"],
 ```
 
 如果 `tagIds` 为空或填写了不存在的标签，该论文不会被对应方向筛选命中。
@@ -221,16 +228,16 @@ tagIds: ["language-models", "multimodal-learning"],
 
 当前每个方向对应一个文件：
 
-- `src/data/researchDirections/language-models.js`
-- `src/data/researchDirections/multimodal-learning.js`
-- `src/data/researchDirections/graph-learning.js`
-- `src/data/researchDirections/trustworthy-ai.js`
+- `src/data/researchDirections/differentiable-memory.js`
+- `src/data/researchDirections/higher-level-lm.js`
+- `src/data/researchDirections/latent-ponder.js`
+- `src/data/researchDirections/efficient-lm.js`
 
 每个文件格式如下：
 
 ```js
 export default {
-  tagId: "language-models",
+  tagId: "higher-level-lm",
   content: {
     zh: `
       <section>
@@ -252,8 +259,8 @@ export default {
 
 - `tagId` 必须和 `src/data/researchTags.js` 中的方向 `id` 完全一致。
 - `content.zh` 和 `content.en` 分别是中文、英文方向详情正文。
-- 正文使用 HTML 字符串，只填写内容部分，不需要写方向标题。
-- 可使用常见 HTML 标签，如 `<section>`、`<h3>`、`<p>`、`<ul>`、`<li>`、`<a>`。
+- 正文使用 HTML 字符串渲染，可以只填写内容段落，也可以像独立内容页一样自带标题、页眉和完整结构。
+- 可使用常见 HTML 标签，如 `<article>`、`<header>`、`<section>`、`<h1>`、`<h2>`、`<h3>`、`<p>`、`<ul>`、`<li>`、`<a>`。
 - 如果新增了研究方向，也需要在 `src/data/researchDirections/index.js` 中 import 新文件并加入 `researchDirectionPages`。
 
 ## 新闻数据
