@@ -41,7 +41,7 @@ export const publications = [
     github: "https://github.com/LUMIA-Group/LoT-insts",
     huggingface: "",
     homepage: "",
-    tagIds: ["higher-level-lm"],
+    tagIds: ["gfn-rl"],
     abstract:
       "In this work, we first collect a large-scale institution name normalization dataset LoT-insts, which contains over 25k classes that exhibit a naturally long-tailed distribution. In order to isolate the few-shot and zero-shot learning scenarios from the massive many-shot classes, we construct our test set from four different subsets: many-, medium-, and few-shot sets, as well as a zero-shot open set. We believe it provides an important and different scenario to study this problem.",
   },
@@ -56,7 +56,7 @@ export const publications = [
     github: "https://github.com/LUMIA-Group/OrderedGNN",
     huggingface: "",
     homepage: "",
-    tagIds: ["differentiable-memory"],
+    tagIds: ["graph-learning"],
     abstract:
       "In this work, we propose to tackle both heterophily and over-smoothing problems by an ordered message passing mecanism, with specific blocks of neurons in a node embedding targeted for messages passed from neighboring nodes that are located within specific hops. This is achieved by aligning the hierarchy of the rooted-tree of a central node with the ordered neurons in its node representation. SOTA performance in both homophily and heterophily settings without any targeted design, robust to a wide number of layers, and explainable.",
   },
@@ -72,7 +72,7 @@ export const publications = [
     github: "https://github.com/LUMIA-Group/rasat",
     huggingface: "",
     homepage: "",
-    tagIds: ["higher-level-lm"],
+    tagIds: ["higher-level-lm", "graph-learning"],
     abstract:
       "Relational structures such as schema linking and schema encoding have been validated as a key component to qualitatively translating natural language into SQL queries. We propose RASAT: a Transformer seq2seq architecture augmented with relation-aware self-attention that could leverage a variety of relational structures while still being able to inherit the pretrained parameters from the T5 model effectively. Our model can incorporate almost all types of existing relations in the literature. Experimental results on three widely used text-to-SQL datasets, covering both single-turn and multi-turn scenarios, have shown that RASAT could achieve state-of-the-art results across all three benchmarks (75.5% EX on Spider, 52.6% IEX on SParC, and 37.4% IEX on CoSQL).",
   },
@@ -88,7 +88,7 @@ export const publications = [
     github: "https://github.com/LUMIA-Group/distance_transformer",
     huggingface: "",
     homepage: "",
-    tagIds: ["higher-level-lm"],
+    tagIds: ["differentiable-memory"],
     abstract:
       "We propose a syntax-guided localized self-attention for Transformer that allows directly incorporating grammar structures from an external constituency parser. It prohibits the attention mechanism from overweight the grammatically distant tokens over close ones.",
   },

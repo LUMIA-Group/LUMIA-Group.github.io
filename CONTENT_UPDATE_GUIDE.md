@@ -204,13 +204,16 @@ import exampleImage from "@/assets/research/example.png";
 - `id`：稳定标签 ID。会用于 `/research?tag=...`、论文 `tagIds`、首页研究方向卡片和研究页方向筛选。已经上线后不要随意改名；如果必须改，需要同步更新所有论文的 `tagIds` 和旧链接。
 - `name.zh` / `name.en`：中英文方向名称。
 - `intro.zh` / `intro.en`：中英文方向介绍，会显示在研究页方向内容区。
+- 首页只展示 `RESEARCH_TAGS` 数组中的前 4 个方向，研究页会展示全部方向。
 
 当前方向 ID：
 
 - `differentiable-memory`：可微记忆
 - `higher-level-lm`：概念级语言模型
 - `latent-ponder`：隐思考机制
+- `gfn-rl`：生成流网络与强化学习
 - `efficient-lm`：高效化
+- `graph-learning`：图学习与结构化推理
 
 ### 给论文绑定方向
 
@@ -226,12 +229,10 @@ tagIds: ["higher-level-lm", "efficient-lm"],
 
 研究页中选择某个小方向后，方向标题和短介绍来自 `src/data/researchTags.js`，标题下方的详情正文来自 `src/data/researchDirections/`。
 
-当前每个方向对应一个文件：
+当前已有详情正文文件：
 
-- `src/data/researchDirections/differentiable-memory.js`
 - `src/data/researchDirections/higher-level-lm.js`
 - `src/data/researchDirections/latent-ponder.js`
-- `src/data/researchDirections/efficient-lm.js`
 
 每个文件格式如下：
 
@@ -262,6 +263,7 @@ export default {
 - 正文使用 HTML 字符串渲染，可以只填写内容段落，也可以像独立内容页一样自带标题、页眉和完整结构。
 - 可使用常见 HTML 标签，如 `<article>`、`<header>`、`<section>`、`<h1>`、`<h2>`、`<h3>`、`<p>`、`<ul>`、`<li>`、`<a>`。
 - 如果新增了研究方向，也需要在 `src/data/researchDirections/index.js` 中 import 新文件并加入 `researchDirectionPages`。
+- 如果某个方向暂时没有详情正文，可以先不新增对应文件；研究页会只展示方向简介和论文筛选，不展示详情内容框。
 
 ## 新闻数据
 

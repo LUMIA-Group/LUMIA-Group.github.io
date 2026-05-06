@@ -44,16 +44,14 @@
           {{ activeDirection.intro }}
         </p>
         <article
-          v-show="activeDirection"
+          v-if="activeDirectionContent"
           class="direction-placeholder lumia-fade-up"
           style="--delay: 260ms"
         >
           <div
-            v-if="activeDirectionContent"
             class="direction-body"
             v-html="activeDirectionContent"
           ></div>
-          <p v-else>{{ text.directionPlaceholder }}</p>
         </article>
       </div>
     </section>
@@ -224,7 +222,7 @@ const I18N = {
     eyebrow: "Publications",
     title: "Research",
     subtitle:
-      "Selected papers on differentiable memory, concept-level language models, latent pondering, and efficient language models.",
+      "Selected papers across differentiable memory, concept-level language models, latent pondering, generative flow networks and reinforcement learning, LLM efficiency, and graph learning.",
     directionPlaceholder:
       "This direction page is being organized. It will later collect the overview, representative papers, projects, and resources for this research direction.",
     searchLabel: "Search",
@@ -240,7 +238,7 @@ const I18N = {
     eyebrow: "论文成果",
     title: "研究",
     subtitle:
-      "展示实验室在可微记忆、概念级语言模型、隐思考机制和高效化方向的代表性论文。",
+      "展示实验室在可微记忆、概念级语言模型、隐思考机制、生成流网络与强化学习、高效化和图学习方向的代表性论文。",
     directionPlaceholder:
       "该方向主页内容正在整理中，后续会在这里展示方向概览、代表论文、项目与相关资源。",
     searchLabel: "搜索",

@@ -298,7 +298,18 @@ const I18N = {
         { label: "Differentiable Memory", value: "differentiable-memory" },
         { label: "Concept-Level Language Models", value: "higher-level-lm" },
         { label: "Latent Pondering", value: "latent-ponder" },
-        { label: "Efficient Language Models", value: "efficient-lm" },
+        {
+          label: "Generative Flow Networks & Reinforcement Learning",
+          value: "gfn-rl",
+        },
+        {
+          label: "LLM Efficiency & Context Compression and Memory",
+          value: "efficient-lm",
+        },
+        {
+          label: "Graph Learning & Structured Reasoning",
+          value: "graph-learning",
+        },
       ],
       resourceOptions: [
         { label: "Need advisor support", value: "need_mentor" },
@@ -414,7 +425,9 @@ const I18N = {
         { label: "可微记忆", value: "differentiable-memory" },
         { label: "概念级语言模型", value: "higher-level-lm" },
         { label: "隐思考机制", value: "latent-ponder" },
+        { label: "生成流网络与强化学习", value: "gfn-rl" },
         { label: "高效化", value: "efficient-lm" },
+        { label: "图学习与结构化推理", value: "graph-learning" },
       ],
       resourceOptions: [
         { label: "需要导师指导", value: "need_mentor" },

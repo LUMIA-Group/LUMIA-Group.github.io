@@ -33,14 +33,36 @@ export const RESEARCH_TAGS = [
     },
   },
   {
+    id: "gfn-rl",
+    name: {
+      zh: "生成流网络与强化学习",
+      en: "Generative Flow Networks & Reinforcement Learning",
+    },
+    intro: {
+      zh: "研究超越奖励最大化的大语言模型强化学习范式。",
+      en: "Research on reinforcement learning paradigms for large language models beyond reward maximization.",
+    },
+  },
+  {
     id: "efficient-lm",
     name: {
       zh: "高效化",
-      en: "Efficient Language Models",
+      en: "LLM Efficiency & Context Compression and Memory",
     },
     intro: {
-      zh: "关注语言模型的训练、推理、压缩与长序列计算效率。",
-      en: "Training, inference, compression, and long-context efficiency for language models.",
+      zh: "研究大模型的高效训练与推理，长文本的压缩记忆机制。",
+      en: "Efficient training and inference of LLMs, as well as compression and memory mechanism of long contexts.",
+    },
+  },
+  {
+    id: "graph-learning",
+    name: {
+      zh: "图学习与结构化推理",
+      en: "Graph Learning & Structured Reasoning",
+    },
+    intro: {
+      zh: "研究图神经网络、关系建模与结构化消息传递。",
+      en: "Graph neural networks, relational modeling, and structured message passing.",
     },
   },
 ];
@@ -48,7 +70,6 @@ export const RESEARCH_TAGS = [
 const LEGACY_RESEARCH_TAG_IDS = {
   "language-models": "higher-level-lm",
   "multimodal-learning": "latent-ponder",
-  "graph-learning": "differentiable-memory",
   "trustworthy-ai": "efficient-lm",
 };
 

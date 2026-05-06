@@ -162,7 +162,7 @@ export default {
       return I18N[this.currentLanguage] || I18N.zh;
     },
     featuredCards() {
-      return getLocalizedResearchTags(this.currentLanguage);
+      return getLocalizedResearchTags(this.currentLanguage).slice(0, 4);
     },
     partnerLogos() {
       return [
