@@ -210,6 +210,7 @@
 <script>
 import { publications } from "@/data/publications";
 import { getResearchDirectionContent } from "@/data/researchDirections";
+import { siteTextOverrides } from "@/data/siteText";
 import {
   getLocalizedResearchTags,
   getResearchTagSearchText,
@@ -487,7 +488,10 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      return {
+        ...(I18N[this.currentLanguage] || I18N.zh),
+        ...((siteTextOverrides[this.currentLanguage] || {}).research || {}),
+      };
     },
     normalizedKeyword() {
       return this.searchKeyword.toLowerCase().trim();

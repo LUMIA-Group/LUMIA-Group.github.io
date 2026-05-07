@@ -6,6 +6,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
+        "sync:sheet": "python3 scripts/sync-local-sheet.py",
         "serve:public": "node server/feedback-server.js",
         "start:public": "npm run build && node server/feedback-server.js"
     },

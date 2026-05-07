@@ -96,6 +96,7 @@
 <script>
 import { homeData } from "@/data/home";
 import { getLocalizedResearchTags } from "@/data/researchTags";
+import { siteTextOverrides } from "@/data/siteText";
 import alibabaLogo from "@/assets/partners/阿里巴巴logo.svg";
 import huaweiLogo from "@/assets/partners/华为logo.svg";
 import tencentLogo from "@/assets/partners/腾讯logo.svg";
@@ -159,7 +160,10 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      return {
+        ...(I18N[this.currentLanguage] || I18N.zh),
+        ...((siteTextOverrides[this.currentLanguage] || {}).home || {}),
+      };
     },
     featuredCards() {
       return getLocalizedResearchTags(this.currentLanguage).slice(0, 4);

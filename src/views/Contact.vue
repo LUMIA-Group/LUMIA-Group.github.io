@@ -39,6 +39,7 @@
 
 <script>
 import { contactData } from "@/data/contact";
+import { siteTextOverrides } from "@/data/siteText";
 
 const I18N = {
   en: {
@@ -80,7 +81,10 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      return {
+        ...(I18N[this.currentLanguage] || I18N.zh),
+        ...((siteTextOverrides[this.currentLanguage] || {}).contact || {}),
+      };
     },
     sectionList() {
       if (this.currentLanguage === "en") {

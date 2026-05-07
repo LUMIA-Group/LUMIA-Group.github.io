@@ -33,6 +33,7 @@
 
 <script>
 import appHeader from "@/components/Header.vue";
+import { siteTextOverrides } from "@/data/siteText";
 
 const I18N = {
   en: {
@@ -69,7 +70,10 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      return {
+        ...(I18N[this.currentLanguage] || I18N.zh),
+        ...((siteTextOverrides[this.currentLanguage] || {}).app || {}),
+      };
     },
     footerLinks() {
       return [

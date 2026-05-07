@@ -56,6 +56,7 @@ import {
   isInternalNews,
   newsData,
 } from "@/data/news";
+import { siteTextOverrides } from "@/data/siteText";
 
 const I18N = {
   en: {
@@ -79,7 +80,10 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      return {
+        ...(I18N[this.currentLanguage] || I18N.zh),
+        ...((siteTextOverrides[this.currentLanguage] || {}).news || {}),
+      };
     },
   },
   mounted() {

@@ -87,9 +87,9 @@ PR 描述建议包含：
 
 ```js
 {
-  id: 16,
+  id: "16",
   name: "张三",
-  pic: "./static/people/s-16.jpg",
+  pic: "./static/people/16.jpg",
   bio: "自然语言处理、大语言模型",
   homepage: "https://example.com"
 }
@@ -97,7 +97,7 @@ PR 描述建议包含：
 
 字段说明：
 
-- `id`：数字，建议在全站成员数据中保持唯一。
+- `id`：字符串，建议在全站成员数据中保持唯一。同步脚本会优先使用表格 `id` 列作为头像文件名。
 - `name`：姓名，必填。
 - `pic`：头像路径。头像放在 `public/static/people/`，数据中写成 `./static/people/文件名`。如果暂时没有头像，可写空字符串 `""`，页面会使用默认头像。
 - `bio`：研究方向、简介或身份说明，必填。
@@ -105,15 +105,15 @@ PR 描述建议包含：
 
 ### 新增成员示例
 
-1. 将头像保存到 `public/static/people/s-16.jpg`。
+1. 将头像保存到 `public/static/people/16.jpg`。
 2. 在对应分组数组中新增成员对象。
 
 ```js
 Master: [
   {
-    id: 16,
+    id: "16",
     name: "张三",
-    pic: "./static/people/s-16.jpg",
+    pic: "./static/people/16.jpg",
     bio: "自然语言处理、大语言模型",
     homepage: "https://example.com",
   },

@@ -61,6 +61,7 @@
 
 <script>
 import { peopleData } from "@/data/people";
+import { siteTextOverrides } from "@/data/siteText";
 import defaultImg from "@/assets/default.jpg";
 
 const I18N = {
@@ -103,7 +104,17 @@ export default {
   },
   computed: {
     text() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      const base = I18N[this.currentLanguage] || I18N.zh;
+      const overrides =
+        ((siteTextOverrides[this.currentLanguage] || {}).people || {});
+      return {
+        ...base,
+        ...overrides,
+        sectionTitles: {
+          ...base.sectionTitles,
+          ...(overrides.sectionTitles || {}),
+        },
+      };
     },
     peopleSections() {
       return Object.entries(this.peopleData)

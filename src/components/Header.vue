@@ -98,6 +98,7 @@
 
 <script>
 import { headerData } from "@/data/header";
+import { siteTextOverrides } from "@/data/siteText";
 
 const I18N = {
   en: {
@@ -143,7 +144,17 @@ export default {
   },
   computed: {
     localeText() {
-      return I18N[this.currentLanguage] || I18N.zh;
+      const base = I18N[this.currentLanguage] || I18N.zh;
+      const overrides = siteTextOverrides[this.currentLanguage] || {};
+      return {
+        ...base,
+        labName: (overrides.home || {}).labName || base.labName,
+        home: (overrides.home || {}).home || base.home,
+        people: (overrides.people || {}).title || base.people,
+        research: (overrides.research || {}).title || base.research,
+        news: (overrides.news || {}).title || base.news,
+        contact: (overrides.contact || {}).title || base.contact,
+      };
     },
     brandName() {
       return this.localeText.labName;
