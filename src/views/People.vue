@@ -44,14 +44,21 @@
           <li
             v-for="(item, index) in section.list"
             :key="`${section.key}-${index}`"
-            class="people-card lumia-fade-up"
+            class="people-card-item lumia-fade-up"
             :style="{ '--delay': `${120 + index * 45}ms` }"
           >
-            <div class="avatar-wrap">
-              <img :src="item.pic || defaultImg" :alt="item.name" />
-            </div>
-            <h3 class="name" @click="goto(item.homepage)">{{ item.name }}</h3>
-            <p class="bio">{{ item.bio }}</p>
+            <component
+              :is="hasHomepage(item) ? 'a' : 'div'"
+              class="people-card"
+              :class="{ 'has-homepage': hasHomepage(item) }"
+              v-bind="homepageAttrs(item)"
+            >
+              <div class="avatar-wrap">
+                <img :src="item.pic || defaultImg" :alt="item.name" />
+              </div>
+              <h3 class="name">{{ item.name }}</h3>
+              <p class="bio">{{ item.bio }}</p>
+            </component>
           </li>
         </ul>
       </div>
@@ -174,10 +181,23 @@ export default {
         block: "start",
       });
     },
-    goto(url) {
-      if (url) {
-        window.open(url, "_blank");
+    normalizeHomepage(url) {
+      return typeof url === "string" ? url.trim().replace(/&amp;/g, "&") : "";
+    },
+    hasHomepage(item) {
+      return Boolean(item && this.normalizeHomepage(item.homepage));
+    },
+    homepageAttrs(item) {
+      const href = this.normalizeHomepage(item && item.homepage);
+      if (!href) {
+        return {};
       }
+      return {
+        href,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        "aria-label": `${item.name} homepage`,
+      };
     },
   },
 };
@@ -264,32 +284,50 @@ export default {
   gap: 20px;
 }
 
+.people-card-item {
+  display: block;
+  min-width: 0;
+
+  &:nth-child(4n + 1) .people-card {
+    background: linear-gradient(160deg, #ffffff 0%, #fff8e6 100%);
+  }
+
+  &:nth-child(4n + 2) .people-card {
+    background: linear-gradient(160deg, #ffffff 0%, #ecf8fc 100%);
+  }
+
+  &:nth-child(4n + 3) .people-card {
+    background: linear-gradient(160deg, #ffffff 0%, #fff0f7 100%);
+  }
+
+  &:nth-child(4n + 4) .people-card {
+    background: linear-gradient(160deg, #ffffff 0%, #f3f0ff 100%);
+  }
+}
+
 .people-card {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
   background: var(--lumia-white);
   border: 1px solid rgba(102, 46, 125, 0.18);
   border-radius: 24px;
   padding: 16px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  color: inherit;
+  text-decoration: none;
 
-  &:hover {
+  &.has-homepage {
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  &.has-homepage:hover,
+  &.has-homepage:focus-visible {
     transform: translateY(-4px);
+    border-color: rgba(102, 46, 125, 0.34);
     box-shadow: 0 14px 28px rgba(102, 46, 125, 0.14);
-  }
-
-  &:nth-child(4n + 1) {
-    background: linear-gradient(160deg, #ffffff 0%, #fff8e6 100%);
-  }
-
-  &:nth-child(4n + 2) {
-    background: linear-gradient(160deg, #ffffff 0%, #ecf8fc 100%);
-  }
-
-  &:nth-child(4n + 3) {
-    background: linear-gradient(160deg, #ffffff 0%, #fff0f7 100%);
-  }
-
-  &:nth-child(4n + 4) {
-    background: linear-gradient(160deg, #ffffff 0%, #f3f0ff 100%);
+    outline: none;
   }
 
   .avatar-wrap {
@@ -313,15 +351,6 @@ export default {
     font-family: var(--lumia-heading-font);
     font-weight: 700;
     line-height: 1.15;
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 0.18em;
-    transition: text-decoration-color 0.25s ease;
-
-    &:hover {
-      text-decoration-color: var(--lumia-primary);
-    }
   }
 
   .bio {
