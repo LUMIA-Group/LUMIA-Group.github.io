@@ -233,6 +233,8 @@ tagIds: ["higher-level-lm", "efficient-lm"],
 
 - `src/data/researchDirections/higher-level-lm.js`
 - `src/data/researchDirections/latent-ponder.js`
+- `src/data/researchDirections/gfn-rl.js`
+- `src/data/researchDirections/graph-learning.js`
 
 每个文件格式如下：
 
