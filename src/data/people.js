@@ -99,11 +99,25 @@ export const peopleData = {
       "homepage": ""
     },
     {
+      "id": "1912",
+      "name": "苏畅",
+      "pic": "./static/people/1912.jpg",
+      "bio": "大语言模型，信息检索。上海交通大学计算机学院。",
+      "homepage": ""
+    },
+    {
       "id": "1077",
       "name": "程序",
       "pic": "./static/people/1077.jpg",
       "bio": "大语言模型预训练，参数化记忆，智能体记忆，上海交通大学人工智能学院",
       "homepage": "https://github.com/cheese1010"
+    },
+    {
+      "id": "9444",
+      "name": "唐思琪",
+      "pic": "",
+      "bio": "大语言模型预训练，参数化长期记忆，上海交通大学人工智能学院",
+      "homepage": ""
     }
   ],
   "Undergrads": [
@@ -231,6 +245,20 @@ export const peopleData = {
       "name": "张乐恒",
       "pic": "./static/people/1098.png",
       "bio": "大语言模型后训练，生成式流网络",
+      "homepage": ""
+    },
+    {
+      "id": "1083",
+      "name": "郝忆秦",
+      "pic": "./static/people/1083.jpg",
+      "bio": "大语言模型预训练，23级本科生",
+      "homepage": "https://hyq718.github.io/"
+    },
+    {
+      "id": "1246",
+      "name": "陈明松",
+      "pic": "",
+      "bio": "大语言模型预训练，24级本科生",
       "homepage": ""
     }
   ],
