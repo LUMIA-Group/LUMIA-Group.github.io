@@ -20,6 +20,13 @@ export const peopleData = {
       "homepage": "https://www.linkedin.com/in/jushi-kai-019814336/"
     },
     {
+      "id": "1037",
+      "name": "戴蓓亚",
+      "pic": "./static/people/1037.jpg",
+      "bio": "大语言模型基础架构，预训练，上海交通大学计算机学院",
+      "homepage": ""
+    },
+    {
       "id": "1067",
       "name": "刘一凡",
       "pic": "./static/people/1067.png",
@@ -51,7 +58,7 @@ export const peopleData = {
       "id": "1048",
       "name": "魏如斌",
       "pic": "./static/people/1048.png",
-      "bio": "大语言模型预训练，参数化长期记忆，上海交通大学人工智能学院",
+      "bio": "大语言模型预训练，参数化记忆，上海交通大学人工智能学院",
       "homepage": "https://rubin-wei.github.io/"
     },
     {
@@ -81,6 +88,20 @@ export const peopleData = {
       "pic": "./static/people/1079.jpg",
       "bio": "生成流网络、大语言模型后训练，上海交通大学人工智能学院 上海人工智能实验室联培",
       "homepage": "https://shadowyuan616.github.io/"
+    },
+    {
+      "id": "1122",
+      "name": "沈俊哲",
+      "pic": "./static/people/1122.jpg",
+      "bio": "大语言模型预训练，diffusion LM, 上海交通大学计算机学院25级博士生",
+      "homepage": "https://junzheshen.github.io/"
+    },
+    {
+      "id": "1052",
+      "name": "刘玉梁",
+      "pic": "./static/people/1052.jpg",
+      "bio": "语言模型架构；预训练，上海创智学院联培学生",
+      "homepage": ""
     }
   ],
   "Master": [
@@ -103,7 +124,7 @@ export const peopleData = {
       "name": "苏畅",
       "pic": "./static/people/1912.jpg",
       "bio": "大语言模型，信息检索。上海交通大学计算机学院。",
-      "homepage": ""
+      "homepage": "https://github.com/shadowbringer1"
     },
     {
       "id": "1077",
@@ -117,6 +138,13 @@ export const peopleData = {
       "name": "唐思琪",
       "pic": "",
       "bio": "大语言模型预训练，参数化长期记忆，上海交通大学人工智能学院",
+      "homepage": ""
+    },
+    {
+      "id": "1046",
+      "name": "李贺",
+      "pic": "./static/people/1046.jpg",
+      "bio": "大模型预训练，25级硕士生",
       "homepage": ""
     }
   ],
@@ -168,7 +196,7 @@ export const peopleData = {
       "name": "汪子桐",
       "pic": "./static/people/1998.png",
       "bio": "大语言模型基础架构与预训练",
-      "homepage": ""
+      "homepage": "https://zitongwang018.github.io/"
     },
     {
       "id": "1086",
@@ -257,8 +285,15 @@ export const peopleData = {
     {
       "id": "1246",
       "name": "陈明松",
-      "pic": "",
+      "pic": "./static/people/1246.jpg",
       "bio": "大语言模型预训练，24级本科生",
+      "homepage": ""
+    },
+    {
+      "id": "1071",
+      "name": "裘凯希",
+      "pic": "./static/people/1071.jpg",
+      "bio": "高效大模型，23级本科生",
       "homepage": ""
     }
   ],
