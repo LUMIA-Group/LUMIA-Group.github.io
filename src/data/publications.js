@@ -330,5 +330,76 @@ export const publications = [
       "efficient-lm"
     ],
     abstract: "Motivated by the success of frequency-domain transforms in image compression (e.g., JPEG), we systematically analyze the frequency redundancy in visual representations and uncover a non-uniform distribution of semantic information across frequency bands. Building upon this, we introduce Fourier Compressor, an effective, parameter-free, and highly generalizable module that removes redundancy from visual representations within the frequency domain. Implemented via FFT with O(n^2 logn) complexity and no additional parameters, Fourier Compressor introduces negligible computational overhead while preserving semantic fidelity. Extensive experiments on image-based benchmarks demonstrate that our method achieves a favorable performance-efficiency trade-off, retaining over 96% of the original accuracy while reducing inference FLOPs by up to 83.8% and boosting generation speed by 31.2%. It consistently outperforms existing parameter-free methods and even surpasses some parameterized approaches. Importantly, Fourier Compressor generalizes consistently across both LLaVA and Qwen-VL architectures, and further extends to video understanding tasks, highlighting its practical applicability for efficient VLMs.",
+  },
+  {
+    id: "ponderlm",
+    title: "PonderLM: Pretraining Language Models to Ponder in Continuous Space",
+    authors: "Boyi Zeng, Shixiang Song, Siyuan Huang, Yixuan Wang, He Li, Ziwei He, Xinbing Wang, Zhiyu Li, Zhouhan Lin",
+    venue: "ICLR 2026",
+    image: "",
+    pdf: "https://arxiv.org/abs/2505.20674",
+    github: "https://github.com/LUMIA-Group/PonderingLM",
+    huggingface: "",
+    homepage: "",
+    tagIds: [
+      "latent-ponder"
+    ],
+    abstract: "Humans ponder before articulating complex sentence elements. We introduce this pondering process into language models by repeatedly invoking the forward pass within a single token generation step. Instead of sampling an actual token, the model ponders by yielding a weighted sum of token embeddings, which is fed back as input. The model learns to ponder via self-supervised learning, with no human annotations. PonderPythia-2.8B surpasses Pythia-6.9B and rivals Pythia-12B.",
+  },
+  {
+    id: "ponderlm-2",
+    title: "PonderLM-2: Pretraining LLM with Latent Thoughts in Continuous Space",
+    authors: "Boyi Zeng, He Li, Shixiang Song, Yixuan Wang, Zitong Wang, Ziwei He, Xinbing Wang, Zhouhan Lin",
+    venue: "ICML 2026 Spotlight",
+    image: "",
+    pdf: "https://arxiv.org/abs/2509.23184",
+    github: "https://github.com/LUMIA-Group/PonderLM-2",
+    huggingface: "",
+    homepage: "",
+    tagIds: [
+      "latent-ponder"
+    ],
+    abstract: "The remarkable success of Chain-of-Thought, which scales generation steps at test time, inspires us to ask: can we leverage a similar scaling of computational steps during pretraining? PonderLM-2 pretrains a language model to first generate a latent thought—the last hidden state of the current position—and then use it to predict the next token. At identical inference cost, a model with one additional latent thought per token outperforms a standard model with double the parameters.",
+  },
+  {
+    id: "awm",
+    title: "AWM: Accurate Weight-Matrix Fingerprint for Large Language Models",
+    authors: "Boyi Zeng, Lin Chen, Ziwei He, Xinbing Wang, Zhouhan Lin",
+    venue: "ICLR 2026",
+    image: "",
+    pdf: "https://arxiv.org/abs/2510.06738",
+    github: "https://github.com/LUMIA-Group/AWM",
+    huggingface: "",
+    homepage: "",
+    tagIds: [],
+    abstract: "Protecting the intellectual property of LLMs is crucial. We propose a training-free fingerprinting method based on weight matrices, leveraging the Linear Assignment Problem and unbiased Centered Kernel Alignment similarity to neutralize parameter manipulations such as permutation, scaling, and rotation. On 60 positive and 90 negative model pairs, AWM achieves perfect classification across all metrics with near-zero false positives.",
+  },
+  {
+    id: "huref",
+    title: "HuRef: Human-Readable Fingerprint for Large Language Models",
+    authors: "Boyi Zeng, Lizheng Wang, Yuncong Hu, Yi Xu, Chenghu Zhou, Xinbing Wang, Yu Yu, Zhouhan Lin",
+    venue: "NeurIPS 2024",
+    image: "",
+    pdf: "https://arxiv.org/abs/2312.04828",
+    github: "https://github.com/LUMIA-Group/HuRef",
+    huggingface: "",
+    homepage: "",
+    tagIds: [],
+    abstract: "HuRef is a human-readable fingerprint that uniquely identifies an LLM's base model. We observe that the parameter direction of an LLM remains stable through subsequent training (continued pretraining, SFT, RLHF). Leveraging the Transformer structure, we define three invariant terms and map them to a Gaussian vector via an encoder, then convert it to a natural image via StyleGAN2. Zero-Knowledge Proof is integrated to ensure honest generation in the black-box setting.",
+  },
+  {
+    id: "adaptive-latent-cot",
+    title: "Pretraining with Token-Level Adaptive Latent Chain-of-Thought",
+    authors: "Boyi Zeng, Yiqin Hao, He Li, Shixiang Song, Feichen Song, Zitong Wang, Siyuan Huang, Yi Xu, Ziwei He, Xinbing Wang, Zhouhan Lin",
+    venue: "arXiv",
+    image: "",
+    pdf: "https://arxiv.org/abs/2602.08220",
+    github: "",
+    huggingface: "",
+    homepage: "",
+    tagIds: [
+      "latent-ponder"
+    ],
+    abstract: "Scaling LLMs by parameters and data is increasingly constrained by limited high-quality corpora and rising communication costs. We explore an alternative axis: increasing per-token computation without expanding parameters, by internalizing latent CoT into pretraining. Our model generates a variable-length latent CoT trajectory before each token—longer for hard tokens, shorter or zero for easy ones. The behavior emerges naturally from one-stage pretraining and reduces compute via token-wise adaptive halting.",
   }
 ];

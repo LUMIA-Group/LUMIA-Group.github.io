@@ -37,7 +37,7 @@ export const peopleData = {
       "id": "1014",
       "name": "王意轩",
       "pic": "./static/people/1014.jpg",
-      "bio": "高效大模型、大语言模型的预训练。lumia集群管理员，上海创智学院联培学生。\n——格物致知",
+      "bio": "大模型的预训练方法，KV Cache压缩与高效大模型，AI for Science。实验室集群管理员，上海交通大学计算机学院博士生，上海创智学院联培博士生。Always believe that something wonderful is about to happen.",
       "homepage": "https://github.com/LuckySJTU"
     },
     {
@@ -259,7 +259,7 @@ export const peopleData = {
       "name": "石翔",
       "pic": "./static/people/1053.png",
       "bio": "大语言模型基础架构、Memory",
-      "homepage": ""
+      "homepage": "https://github.com/shixiang123"
     },
     {
       "id": "1099",
@@ -295,6 +295,13 @@ export const peopleData = {
       "pic": "./static/people/1071.jpg",
       "bio": "高效大模型，23级本科生",
       "homepage": ""
+    },
+    {
+      "id": "1128",
+      "name": "石清宇",
+      "pic": "./static/people/1128.jpg",
+      "bio": "I am a second-year Computer Science undergraduate at University of Cambridge interested in efficient large language models, with a focus on KV-cache compression.",
+      "homepage": "https://www.linkedin.com/in/qingyu-shi-5a7429369/"
     }
   ],
   "Alumni": [
