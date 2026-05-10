@@ -102,6 +102,20 @@ export const peopleData = {
       "pic": "./static/people/1052.jpg",
       "bio": "语言模型架构；预训练，上海创智学院联培学生",
       "homepage": ""
+    },
+    {
+      "id": "1100",
+      "name": "曾博义",
+      "pic": "./static/people/1100.png",
+      "bio": "大语言模型预训练，隐空间推理（Pondering Language Model 系列），LLM 安全与指纹，上海交通大学计算机学院 21 级博士生",
+      "homepage": "https://scholar.google.com/citations?user=rI5JUvgAAAAJ"
+    },
+    {
+      "id": "1234",
+      "name": "王穆泽",
+      "pic": "./static/people/1234.png",
+      "bio": "高效大模型 上海创智学院联培博士生",
+      "homepage": ""
     }
   ],
   "Master": [
