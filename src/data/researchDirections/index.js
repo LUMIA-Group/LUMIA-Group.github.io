@@ -1,9 +1,11 @@
 import higherLevelLm from "./higher-level-lm";
+import differentiableMemory from "./differentiable-memory";
 import latentPonder from "./latent-ponder";
 import gfnRl from "./gfn-rl";
 import graphLearning from "./graph-learning";
 
 export const researchDirectionPages = [
+  differentiableMemory,
   higherLevelLm,
   latentPonder,
   gfnRl,
