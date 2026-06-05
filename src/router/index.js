@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import People from "../views/People.vue";
 import Research from "../views/Research.vue";
+import ResearchDirection from "../views/ResearchDirection.vue";
 import News from "../views/News.vue";
 import NewsDetail from "../views/NewsDetail.vue";
 import Contact from "../views/Contact.vue";
@@ -24,6 +25,11 @@ const routes = [
     path: "/research",
     name: "research",
     component: Research,
+  },
+  {
+    path: "/research/directions/:tagId",
+    name: "research-direction",
+    component: ResearchDirection,
   },
   {
     path: "/news",

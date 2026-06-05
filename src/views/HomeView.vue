@@ -412,13 +412,15 @@ export default {
     },
     goToResearchTag(tagId) {
       const nextTag = typeof tagId === "string" ? tagId : "";
-      const currentTag =
-        typeof this.$route.query.tag === "string" ? this.$route.query.tag : "";
-      if (this.$route.name === "research" && currentTag === nextTag) {
+      if (!nextTag) {
         return;
       }
-      const query = nextTag ? { tag: nextTag } : {};
-      this.$router.push({ name: "research", query }).catch(() => {});
+      this.$router
+        .push({
+          name: "research-direction",
+          params: { tagId: nextTag },
+        })
+        .catch(() => {});
     },
     bubbleStyle(item) {
       return {
