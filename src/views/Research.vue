@@ -44,15 +44,67 @@
         <section class="research-workspace">
           <section class="publication-browser">
             <div class="research-toolbar">
-              <label class="search-box" for="paper-search">
-                <input
-                  id="paper-search"
-                  v-model.trim="searchKeyword"
-                  type="text"
-                  :aria-label="text.searchLabel"
-                  :placeholder="text.searchPlaceholder"
-                />
-              </label>
+              <div class="filter-controls">
+                <label class="search-box" for="paper-search">
+                  <input
+                    id="paper-search"
+                    v-model.trim="searchKeyword"
+                    type="text"
+                    :aria-label="text.searchLabel"
+                    :placeholder="text.searchPlaceholder"
+                  />
+                </label>
+                <div
+                  class="direction-select"
+                  :class="{ 'is-open': isDirectionDropdownOpen }"
+                >
+                  <button
+                    id="direction-filter"
+                    type="button"
+                    class="direction-select-trigger"
+                    :aria-label="text.directionFilterLabel"
+                    aria-haspopup="listbox"
+                    :aria-expanded="isDirectionDropdownOpen ? 'true' : 'false'"
+                    aria-controls="direction-filter-list"
+                    @pointerdown="captureDirectionDropdownScrollPosition"
+                    @click.stop="toggleDirectionDropdown"
+                    @keydown="onDirectionDropdownKeydown"
+                  >
+                    <span>{{ directionFilterText }}</span>
+                  </button>
+                  <div
+                    v-if="isDirectionDropdownOpen"
+                    id="direction-filter-list"
+                    class="direction-select-menu"
+                    role="listbox"
+                    :aria-label="text.directionFilterLabel"
+                  >
+                    <button
+                      v-for="option in directionFilterOptions"
+                      :key="option.id || 'all-directions'"
+                      type="button"
+                      class="direction-select-option"
+                      :class="{ active: activeDirectionId === option.id }"
+                      :data-direction-id="option.id || 'all'"
+                      role="option"
+                      :aria-selected="
+                        activeDirectionId === option.id ? 'true' : 'false'
+                      "
+                      @click.stop="setDirectionFilter(option.id)"
+                    >
+                      <span>{{ option.name }}</span>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  v-if="activeDirectionHasPage"
+                  type="button"
+                  class="direction-detail-link"
+                  @click="openActiveDirectionPage"
+                >
+                  <span>{{ text.directionIntro }}</span>
+                </button>
+              </div>
               <div
                 class="view-switch"
                 :class="{ 'is-compact': viewMode === 'compact' }"
@@ -128,6 +180,7 @@
                         :key="`${paper.id}-${tagId}`"
                         type="button"
                         class="paper-tag-chip"
+                        :class="{ active: activeDirectionId === tagId }"
                         @click="openTagFilter(tagId)"
                       >
                         <span v-html="getHighlightedHtml(getTagLabel(tagId))"></span>
@@ -176,6 +229,7 @@
                 :key="`${paper.id}-${tagId}`"
                 type="button"
                 class="paper-tag-chip"
+                :class="{ active: activeDirectionId === tagId }"
                 @click="openTagFilter(tagId)"
               >
                 <span v-html="getHighlightedHtml(getTagLabel(tagId))"></span>
@@ -196,6 +250,7 @@
 </template>
 <script>
 import { publications } from "@/data/publications";
+import { getResearchDirectionContent } from "@/data/researchDirections";
 import { siteTextOverrides } from "@/data/siteText";
 import {
   getLocalizedResearchTags,
@@ -212,6 +267,9 @@ const I18N = {
       "Selected papers across differentiable memory, concept-level language models, latent pondering, generative flow networks and reinforcement learning, LLM efficiency, and graph learning.",
     searchLabel: "Search",
     searchPlaceholder: "Search any keyword across papers...",
+    directionFilterLabel: "Filter by direction",
+    allDirections: "All Directions",
+    directionIntro: "Direction Overview",
     detailedView: "Detailed View",
     compactView: "Compact View",
     results: "results",
@@ -226,6 +284,9 @@ const I18N = {
       "展示实验室在可微记忆、概念级语言模型、隐思考机制、生成流网络与强化学习、高效化和图学习方向的代表性论文。",
     searchLabel: "搜索",
     searchPlaceholder: "按任意关键词搜索（标题/作者/会议/摘要等）...",
+    directionFilterLabel: "按研究方向筛选",
+    allDirections: "全部方向",
+    directionIntro: "方向介绍",
     detailedView: "详细视图",
     compactView: "简要视图",
     results: "条结果",
@@ -249,6 +310,8 @@ export default {
       searchKeyword: "",
       viewMode: "detailed",
       activeTags: [],
+      isDirectionDropdownOpen: false,
+      directionDropdownScrollPosition: null,
     };
   },
   computed: {
@@ -296,6 +359,25 @@ export default {
         null
       );
     },
+    directionFilterOptions() {
+      return [
+        {
+          id: "",
+          name: this.text.allDirections,
+        },
+        ...this.localizedTags,
+      ];
+    },
+    directionFilterText() {
+      return this.activeDirection
+        ? this.activeDirection.name
+        : this.text.allDirections;
+    },
+    activeDirectionHasPage() {
+      return Boolean(
+        this.activeDirectionId && this.hasDirectionPage(this.activeDirectionId)
+      );
+    },
     targetPaperId() {
       return typeof this.$route.query.paper === "string"
         ? this.$route.query.paper
@@ -329,10 +411,12 @@ export default {
   mounted() {
     this.initLanguage();
     window.addEventListener("lumia-language-change", this.onLanguageChange);
+    document.addEventListener("click", this.onDocumentClick);
     this.$nextTick(this.scrollToTargetPaper);
   },
   beforeDestroy() {
     window.removeEventListener("lumia-language-change", this.onLanguageChange);
+    document.removeEventListener("click", this.onDocumentClick);
   },
   methods: {
     initLanguage() {
@@ -348,6 +432,15 @@ export default {
         (event.detail === "en" || event.detail === "zh")
       ) {
         this.currentLanguage = event.detail;
+      }
+    },
+    onDocumentClick(event) {
+      if (!this.isDirectionDropdownOpen || !this.$el) {
+        return;
+      }
+      const dropdown = this.$el.querySelector(".direction-select");
+      if (dropdown && !dropdown.contains(event.target)) {
+        this.closeDirectionDropdown();
       }
     },
     isValidTag(tagId) {
@@ -479,14 +572,46 @@ export default {
     setViewMode(mode) {
       this.viewMode = mode === "compact" ? "compact" : "detailed";
     },
+    hasDirectionPage(tagId) {
+      return Boolean(
+        getResearchDirectionContent(tagId, this.currentLanguage).trim()
+      );
+    },
     openDirectionPage(tagId) {
       if (!this.isValidTag(tagId)) {
+        return;
+      }
+      if (!this.hasDirectionPage(tagId)) {
+        this.selectDirection(tagId);
+        this.$nextTick(() => {
+          const publicationsSection = this.$el.querySelector(
+            ".research-content"
+          );
+          if (publicationsSection) {
+            publicationsSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
         return;
       }
       this.$router
         .push({
           name: "research-direction",
           params: { tagId },
+        })
+        .catch(() => {});
+    },
+    openActiveDirectionPage() {
+      if (!this.activeDirectionHasPage) {
+        return;
+      }
+      this.closeDirectionDropdown();
+      this.$router
+        .push({
+          name: "research-direction",
+          params: { tagId: this.activeDirectionId },
         })
         .catch(() => {});
     },
@@ -502,6 +627,112 @@ export default {
     },
     clearDirection() {
       this.activeTags = [];
+    },
+    captureDirectionDropdownScrollPosition() {
+      if (!this.isDirectionDropdownOpen) {
+        this.directionDropdownScrollPosition = this.getScrollPosition();
+      }
+    },
+    toggleDirectionDropdown() {
+      if (this.isDirectionDropdownOpen) {
+        this.closeDirectionDropdown();
+        return;
+      }
+      this.directionDropdownScrollPosition = this.getScrollPosition();
+      this.isDirectionDropdownOpen = true;
+    },
+    closeDirectionDropdown(options = {}) {
+      this.isDirectionDropdownOpen = false;
+      if (!options.preserveScrollPosition) {
+        this.directionDropdownScrollPosition = null;
+      }
+    },
+    getScrollPosition() {
+      if (typeof window === "undefined") {
+        return { x: 0, y: 0 };
+      }
+      return {
+        x:
+          window.pageXOffset ||
+          document.documentElement.scrollLeft ||
+          document.body.scrollLeft ||
+          0,
+        y:
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop ||
+          0,
+      };
+    },
+    restoreScrollPosition(position) {
+      if (typeof window === "undefined" || !position) {
+        return;
+      }
+      window.scrollTo(position.x, position.y);
+    },
+    restoreScrollAfterUpdate(position) {
+      this.$nextTick(() => {
+        this.restoreScrollPosition(position);
+        if (typeof window === "undefined") {
+          return;
+        }
+        window.requestAnimationFrame(() => {
+          this.restoreScrollPosition(position);
+          window.setTimeout(() => {
+            this.restoreScrollPosition(position);
+            if (this.directionDropdownScrollPosition === position) {
+              this.directionDropdownScrollPosition = null;
+            }
+          }, 0);
+        });
+      });
+    },
+    onDirectionDropdownKeydown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        this.closeDirectionDropdown();
+        return;
+      }
+
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        this.toggleDirectionDropdown();
+        return;
+      }
+
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+        return;
+      }
+
+      event.preventDefault();
+      const options = this.directionFilterOptions;
+      const currentIndex = Math.max(
+        0,
+        options.findIndex((option) => option.id === this.activeDirectionId)
+      );
+      const step = event.key === "ArrowDown" ? 1 : -1;
+      const nextIndex = (currentIndex + step + options.length) % options.length;
+      if (!this.isDirectionDropdownOpen) {
+        this.directionDropdownScrollPosition = this.getScrollPosition();
+      }
+      this.isDirectionDropdownOpen = true;
+      this.setDirectionFilter(options[nextIndex].id);
+    },
+    setDirectionFilter(tagId) {
+      const scrollPosition =
+        this.directionDropdownScrollPosition || this.getScrollPosition();
+      this.closeDirectionDropdown({ preserveScrollPosition: true });
+      if (!tagId) {
+        this.clearDirection();
+        this.restoreScrollAfterUpdate(scrollPosition);
+        return;
+      }
+      if (!this.isValidTag(tagId) || this.activeDirectionId === tagId) {
+        this.restoreScrollAfterUpdate(scrollPosition);
+        return;
+      }
+      this.activeTags = [tagId];
+      this.restoreScrollAfterUpdate(scrollPosition);
     },
     openTagFilter(tagId) {
       if (!this.isValidTag(tagId)) {
@@ -555,7 +786,7 @@ export default {
 <style lang="less" scoped>
 .research-hero {
   padding-top: 76px;
-  border-bottom: 1px solid var(--lumia-border);
+  padding-bottom: 52px;
 
   .lumia-subtitle {
     max-width: 860px;
@@ -611,7 +842,7 @@ export default {
 }
 
 .research-content {
-  padding-top: 46px;
+  padding-top: 32px;
   text-align: left;
 
   .research-workspace {
@@ -627,9 +858,20 @@ export default {
     gap: 14px;
   }
 
+  .filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    flex: 0 1 clamp(840px, 72vw, 920px);
+    min-width: min(840px, 100%);
+  }
+
   .search-box {
     display: block;
-    min-width: min(560px, 100%);
+    flex: 0 1 clamp(300px, 32vw, 420px);
+    min-width: min(300px, 100%);
+    max-width: clamp(300px, 32vw, 420px);
 
     input {
       width: 100%;
@@ -650,10 +892,165 @@ export default {
     }
   }
 
+  .direction-select {
+    position: relative;
+    display: block;
+    flex: 0 1 216px;
+    min-width: min(208px, 100%);
+    z-index: 4;
+
+    &.is-open {
+      z-index: 18;
+    }
+
+    &.is-open .direction-select-trigger {
+      border-color: rgba(102, 46, 125, 0.56);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+
+      &::after {
+        transform: translateY(2px) rotate(225deg);
+      }
+    }
+
+    .direction-select-trigger {
+      position: relative;
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(102, 46, 125, 0.24);
+      padding: 0 42px 0 14px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--lumia-text);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+      text-align: left;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease,
+        background-color 0.25s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 17px;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid var(--lumia-primary);
+        border-bottom: 2px solid var(--lumia-primary);
+        transform: translateY(-6px) rotate(45deg);
+        transition: transform 0.25s ease;
+      }
+
+      span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &:hover,
+      &:focus-visible {
+        border-color: rgba(102, 46, 125, 0.56);
+        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+      }
+    }
+
+    .direction-select-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: max(100%, 232px);
+      max-width: min(360px, calc(100vw - 32px));
+      padding: 8px;
+      border: 1px solid rgba(102, 46, 125, 0.2);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 18px 34px rgba(102, 46, 125, 0.16);
+      backdrop-filter: blur(10px);
+      display: grid;
+      gap: 4px;
+    }
+
+    .direction-select-option {
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: transparent;
+      color: var(--lumia-primary);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.25;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.2s ease, color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      span {
+        overflow-wrap: anywhere;
+      }
+
+      &:hover,
+      &:focus-visible,
+      &.active {
+        background: var(--lumia-primary);
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(102, 46, 125, 0.12);
+        outline: none;
+      }
+    }
+  }
+
+  .direction-detail-link {
+    min-height: 46px;
+    border: 1.5px solid var(--lumia-primary);
+    border-radius: 999px;
+    padding: 12px 22px;
+    background: transparent;
+    color: var(--lumia-primary);
+    font-family: var(--lumia-heading-font);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: box-shadow 0.25s ease, background-color 0.25s ease,
+      color 0.25s ease, border-color 0.25s ease;
+
+    &::after {
+      content: "↗";
+      font-size: 13px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: var(--lumia-primary);
+      color: var(--lumia-white);
+      border-color: var(--lumia-primary);
+      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      outline: none;
+    }
+  }
+
   .view-switch {
     --switch-width: 112px;
     display: inline-flex;
     position: relative;
+    margin-left: auto;
     padding: 4px;
     border-radius: 999px;
     border: 1px solid rgba(102, 46, 125, 0.24);
@@ -737,6 +1134,12 @@ export default {
         transform 0.2s ease;
       appearance: none;
       -webkit-appearance: none;
+
+      &.active {
+        border-color: var(--lumia-primary);
+        background: var(--lumia-primary);
+        color: #fff;
+      }
 
       &:hover {
         border-color: var(--lumia-primary);
@@ -961,8 +1364,25 @@ export default {
 
 @media (max-width: 999px) {
   .research-content {
-    .search-box {
+    .filter-controls {
+      flex: 1 1 100%;
       min-width: 100%;
+    }
+
+    .search-box {
+      flex-basis: 100%;
+      min-width: 100%;
+      max-width: none;
+    }
+
+    .direction-select {
+      flex: 0 0 216px;
+      min-width: min(216px, 100%);
+    }
+
+    .direction-detail-link {
+      flex: 0 0 auto;
+      width: auto;
     }
 
     .research-section {
@@ -977,10 +1397,59 @@ export default {
   }
 }
 
+@media (max-width: 999px) and (min-width: 700px) {
+  .research-content {
+    .research-toolbar {
+      display: grid;
+      grid-template-columns: 216px auto minmax(0, 1fr) auto;
+      align-items: center;
+      justify-content: stretch;
+      column-gap: 12px;
+      row-gap: 12px;
+    }
+
+    .filter-controls {
+      display: contents;
+      min-width: 0;
+    }
+
+    .search-box {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      width: 100%;
+    }
+
+    .direction-select {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .direction-detail-link {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .view-switch {
+      grid-column: 4;
+      grid-row: 2;
+      justify-self: end;
+    }
+  }
+}
+
 @media (max-width: 649px) {
   .research-content {
     .view-switch {
       width: auto;
+    }
+
+    .direction-select {
+      flex-basis: 100%;
+      min-width: 100%;
+    }
+
+    .direction-detail-link {
+      width: 100%;
     }
 
     .research-section {

@@ -57,7 +57,15 @@ const router = new VueRouter({
   // mode: "history",
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior() {
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    if (to.name === "research" && from.name === "research") {
+      return false;
+    }
+
     return { x: 0, y: 0 };
   },
 });
