@@ -86,6 +86,8 @@ KNOWN_TAGS = {
     "gfn-rl",
     "efficient-lm",
     "graph-learning",
+    "voice-conversion",
+    "trustworthy-ai",
 }
 
 

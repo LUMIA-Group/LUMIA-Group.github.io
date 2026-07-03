@@ -20,6 +20,13 @@ export const peopleData = {
       "homepage": "https://www.linkedin.com/in/jushi-kai-019814336/"
     },
     {
+      "id": "1100",
+      "name": "曾博义",
+      "pic": "./static/people/1100.png",
+      "bio": "大语言模型预训练，隐空间推理（Pondering Language Model 系列），LLM 安全与指纹，上海交通大学计算机学院 21 级博士生",
+      "homepage": "https://scholar.google.com/citations?user=rI5JUvgAAAAJ"
+    },
+    {
       "id": "1037",
       "name": "戴蓓亚",
       "pic": "./static/people/1037.jpg",
@@ -37,29 +44,15 @@ export const peopleData = {
       "id": "1014",
       "name": "王意轩",
       "pic": "./static/people/1014.jpg",
-      "bio": "大模型的预训练方法，KV Cache压缩与高效大模型，AI for Science。实验室集群管理员，上海交通大学计算机学院博士生，上海创智学院联培博士生。Always believe that something wonderful is about to happen.",
+      "bio": "大模型的预训练方法，KV Cache压缩与高效大模型，预训练infra，AI for Science。实验室集群管理员，上海交通大学计算机学院博士生，上海创智学院联培博士生。Always believe that something wonderful is about to happen.",
       "homepage": "https://github.com/LuckySJTU"
-    },
-    {
-      "id": "1047",
-      "name": "王嘉睿",
-      "pic": "./static/people/1047.png",
-      "bio": "大语言模型基础架构，预训练，参数化记忆。上海交通大学计算机学院",
-      "homepage": "https://jruiwang.github.io/"
     },
     {
       "id": "1032",
       "name": "宋士祥",
       "pic": "./static/people/1032.jpg",
       "bio": "大模型新架构的预训练。上海交大，上海创智联培。",
-      "homepage": "https://scholar.google.com/citations?user=HSIJT2gAAAAJ&hl=en"
-    },
-    {
-      "id": "1048",
-      "name": "魏如斌",
-      "pic": "./static/people/1048.png",
-      "bio": "大语言模型预训练，参数化记忆，上海交通大学人工智能学院",
-      "homepage": "https://rubin-wei.github.io/"
+      "homepage": "https://shixiangsong.github.io"
     },
     {
       "id": "1042",
@@ -69,25 +62,11 @@ export const peopleData = {
       "homepage": "https://github.com/DAntyNoel"
     },
     {
-      "id": "1066",
-      "name": "张竣铭",
-      "pic": "./static/people/1066.jpg",
+      "id": "1048",
+      "name": "魏如斌",
+      "pic": "./static/people/1048.png",
       "bio": "大语言模型预训练，参数化记忆，上海交通大学人工智能学院",
-      "homepage": "https://github.com/Hollyming"
-    },
-    {
-      "id": "1078",
-      "name": "杨逸舟",
-      "pic": "./static/people/1078.jpg",
-      "bio": "大语言模型预训练，上海交通大学人工智能学院",
-      "homepage": "https://github.com/Nyancat179"
-    },
-    {
-      "id": "1079",
-      "name": "袁钰涛",
-      "pic": "./static/people/1079.jpg",
-      "bio": "生成流网络、大语言模型后训练，上海交通大学人工智能学院 上海人工智能实验室联培",
-      "homepage": "https://shadowyuan616.github.io/"
+      "homepage": "https://rubin-wei.github.io/"
     },
     {
       "id": "1122",
@@ -97,6 +76,13 @@ export const peopleData = {
       "homepage": "https://junzheshen.github.io/"
     },
     {
+      "id": "1047",
+      "name": "王嘉睿",
+      "pic": "./static/people/1047.png",
+      "bio": "大语言模型基础架构，预训练，参数化记忆。上海交通大学计算机学院",
+      "homepage": "https://jruiwang.github.io/"
+    },
+    {
       "id": "1052",
       "name": "刘玉梁",
       "pic": "./static/people/1052.jpg",
@@ -104,11 +90,25 @@ export const peopleData = {
       "homepage": ""
     },
     {
-      "id": "1100",
-      "name": "曾博义",
-      "pic": "./static/people/1100.png",
-      "bio": "大语言模型预训练，隐空间推理（Pondering Language Model 系列），LLM 安全与指纹，上海交通大学计算机学院 21 级博士生",
-      "homepage": "https://scholar.google.com/citations?user=rI5JUvgAAAAJ"
+      "id": "1079",
+      "name": "袁钰涛",
+      "pic": "./static/people/1079.jpg",
+      "bio": "生成流网络、大语言模型后训练，上海交通大学人工智能学院 上海人工智能实验室联培",
+      "homepage": "https://shadowyuan616.github.io/"
+    },
+    {
+      "id": "1078",
+      "name": "杨逸舟",
+      "pic": "./static/people/1078.jpg",
+      "bio": "大语言模型预训练，上海交通大学人工智能学院",
+      "homepage": "https://github.com/Nyancat179"
+    },
+    {
+      "id": "1066",
+      "name": "张竣铭",
+      "pic": "./static/people/1066.jpg",
+      "bio": "大语言模型预训练，参数化记忆，上海交通大学人工智能学院",
+      "homepage": "https://github.com/Hollyming"
     },
     {
       "id": "1234",
@@ -119,13 +119,6 @@ export const peopleData = {
     }
   ],
   "Master": [
-    {
-      "id": "2333",
-      "name": "曹家齐",
-      "pic": "./static/people/2333.png",
-      "bio": "基础模型架构设计，Algorithm/Infra Co-Design",
-      "homepage": "https://mxmcao.github.io"
-    },
     {
       "id": "9999",
       "name": "尹晓晗",
@@ -141,11 +134,18 @@ export const peopleData = {
       "homepage": "https://github.com/shadowbringer1"
     },
     {
-      "id": "1077",
-      "name": "程序",
-      "pic": "./static/people/1077.jpg",
-      "bio": "大语言模型预训练，参数化记忆，智能体记忆，上海交通大学人工智能学院",
-      "homepage": "https://github.com/cheese1010"
+      "id": "2333",
+      "name": "曹家齐",
+      "pic": "./static/people/2333.png",
+      "bio": "基础模型架构设计，Algorithm/Infra Co-Design",
+      "homepage": "https://mxmcao.github.io"
+    },
+    {
+      "id": "1046",
+      "name": "李贺",
+      "pic": "./static/people/1046.jpg",
+      "bio": "大模型预训练，25级硕士生",
+      "homepage": ""
     },
     {
       "id": "9444",
@@ -155,54 +155,54 @@ export const peopleData = {
       "homepage": ""
     },
     {
-      "id": "1046",
-      "name": "李贺",
-      "pic": "./static/people/1046.jpg",
-      "bio": "大模型预训练，25级硕士生",
-      "homepage": ""
+      "id": "1077",
+      "name": "程序",
+      "pic": "./static/people/1077.jpg",
+      "bio": "大语言模型预训练，参数化记忆，智能体记忆，上海交通大学人工智能学院",
+      "homepage": "https://github.com/cheese1010"
     }
   ],
   "Undergrads": [
     {
-      "id": "1076",
-      "name": "黄佳溢",
-      "pic": "./static/people/1076.png",
-      "bio": "大语言模型预训练，自监督学习。上海人工智能学院联培学生",
-      "homepage": "https://iammi.github.io/"
-    },
-    {
       "id": "1054",
       "name": "王焕宇",
       "pic": "./static/people/1054.jpg",
-      "bio": "高效视觉语言模型，IEEE试点班2026届本科毕业，前往CMU读博",
+      "bio": "I'm currently a Ph.D. student at CMU. I received dual degrees in Computer Science (B.E., IEEE Honor Class) and Applied Mathematics (B.S.) from SJTU in 2026, where I focused on efficient VLMs.",
       "homepage": "https://whyisverysmart.github.io/"
     },
     {
-      "id": "1097",
-      "name": "阮墨文",
-      "pic": "./static/people/1097.jpg",
-      "bio": "大语言模型基础架构、预训练。曾获本科生国家奖学金。",
-      "homepage": "https://github.com/mowenruan"
+      "id": "1053",
+      "name": "石翔",
+      "pic": "./static/people/1053.png",
+      "bio": "大语言模型基础架构、Memory",
+      "homepage": "https://github.com/shixiang123"
     },
     {
-      "id": "1084",
-      "name": "宋飞辰",
-      "pic": "./static/people/1084.jpg",
-      "bio": "LLM新架构的预训练，25届本科生",
-      "homepage": "https://franksfc.github.io/"
+      "id": "1056",
+      "name": "卢黎鸣",
+      "pic": "./static/people/1056.jpg",
+      "bio": "高效大模型，KVcache压缩， 上海交通大学致远学院 John 班",
+      "homepage": "https://elemmire1.github.io"
     },
     {
-      "id": "1092",
-      "name": "孙浩",
-      "pic": "./static/people/1092.png",
-      "bio": "大语言模型基础架构，预训练，Memory新架构，parametric记忆，AI Infra。",
-      "homepage": ""
+      "id": "1099",
+      "name": "吴沛松",
+      "pic": "./static/people/1099.jpg",
+      "bio": "大语言模型参数化记忆",
+      "homepage": "https://github.com/WorldPigSuperman"
     },
     {
-      "id": "1090",
-      "name": "杨知奇",
-      "pic": "./static/people/1090.jpg",
-      "bio": "大语言模型基础架构，Distill，参数化记忆。",
+      "id": "1128",
+      "name": "石清宇",
+      "pic": "./static/people/1128.jpg",
+      "bio": "I am a second-year Computer Science undergraduate at University of Cambridge interested in efficient large language models, with a focus on KV-cache compression.",
+      "homepage": "https://www.linkedin.com/in/qingyu-shi-5a7429369/"
+    },
+    {
+      "id": "1071",
+      "name": "裘凯希",
+      "pic": "./static/people/1071.jpg",
+      "bio": "高效大模型，23级本科生",
       "homepage": ""
     },
     {
@@ -213,41 +213,6 @@ export const peopleData = {
       "homepage": "https://zitongwang018.github.io/"
     },
     {
-      "id": "1086",
-      "name": "熊佳鑫",
-      "pic": "./static/people/1086.jpg",
-      "bio": "大语言模型基础架构、预训练",
-      "homepage": "https://github.com/jxxiong1004"
-    },
-    {
-      "id": "1081",
-      "name": "庄裕旻",
-      "pic": "./static/people/1081.jpg",
-      "bio": "大语言模型基础架构、Memory",
-      "homepage": "https://zhuangyumin.dev/"
-    },
-    {
-      "id": "1088",
-      "name": "仰康羽",
-      "pic": "./static/people/1088.png",
-      "bio": "大语言模型基础架构与预训练",
-      "homepage": "https://github.com/zaathenisaer"
-    },
-    {
-      "id": "1101",
-      "name": "孙思源",
-      "pic": "./static/people/1101.png",
-      "bio": "大模型记忆，信息检索",
-      "homepage": "https://wilsun.io"
-    },
-    {
-      "id": "1056",
-      "name": "卢黎鸣",
-      "pic": "./static/people/1056.jpg",
-      "bio": "高效大模型，KVcache压缩， 上海交通大学致远学院 John 班",
-      "homepage": "https://elemmire1.github.io"
-    },
-    {
       "id": "1074",
       "name": "葛科雯",
       "pic": "./static/people/1074.jpg",
@@ -255,39 +220,11 @@ export const peopleData = {
       "homepage": ""
     },
     {
-      "id": "1093",
-      "name": "张梦溪",
-      "pic": "./static/people/1093.png",
-      "bio": "大语言模型后训练，生成式流网络",
-      "homepage": ""
-    },
-    {
-      "id": "1089",
-      "name": "汪静之",
-      "pic": "./static/people/1089.jpg",
-      "bio": "高效大模型，Memory",
-      "homepage": "https://github.com/JingzhiWang111"
-    },
-    {
-      "id": "1053",
-      "name": "石翔",
-      "pic": "./static/people/1053.png",
+      "id": "1081",
+      "name": "庄裕旻",
+      "pic": "./static/people/1081.jpg",
       "bio": "大语言模型基础架构、Memory",
-      "homepage": "https://github.com/shixiang123"
-    },
-    {
-      "id": "1099",
-      "name": "吴沛松",
-      "pic": "./static/people/1099.jpg",
-      "bio": "大语言模型参数化记忆",
-      "homepage": "https://github.com/WorldPigSuperman"
-    },
-    {
-      "id": "1098",
-      "name": "张乐恒",
-      "pic": "./static/people/1098.png",
-      "bio": "大语言模型后训练，生成式流网络",
-      "homepage": ""
+      "homepage": "https://zhuangyumin.dev/"
     },
     {
       "id": "1083",
@@ -304,18 +241,95 @@ export const peopleData = {
       "homepage": ""
     },
     {
-      "id": "1071",
-      "name": "裘凯希",
-      "pic": "./static/people/1071.jpg",
-      "bio": "高效大模型，23级本科生",
+      "id": "1084",
+      "name": "宋飞辰",
+      "pic": "./static/people/1084.jpg",
+      "bio": "LLM新架构的预训练，25级本科生",
+      "homepage": "https://franksfc.github.io/"
+    },
+    {
+      "id": "1086",
+      "name": "熊佳鑫",
+      "pic": "./static/people/1086.jpg",
+      "bio": "大语言模型基础架构、预训练",
+      "homepage": "https://github.com/jxxiong1004"
+    },
+    {
+      "id": "1088",
+      "name": "仰康羽",
+      "pic": "./static/people/1088.png",
+      "bio": "大语言模型基础架构与预训练",
+      "homepage": "https://github.com/zaathenisaer"
+    },
+    {
+      "id": "1089",
+      "name": "汪静之",
+      "pic": "./static/people/1089.jpg",
+      "bio": "高效大模型，Memory",
+      "homepage": "https://github.com/JingzhiWang111"
+    },
+    {
+      "id": "1092",
+      "name": "孙浩",
+      "pic": "./static/people/1092.png",
+      "bio": "大语言模型基础架构，预训练，Memory新架构，parametric记忆。",
       "homepage": ""
     },
     {
-      "id": "1128",
-      "name": "石清宇",
-      "pic": "./static/people/1128.jpg",
-      "bio": "I am a second-year Computer Science undergraduate at University of Cambridge interested in efficient large language models, with a focus on KV-cache compression.",
-      "homepage": "https://www.linkedin.com/in/qingyu-shi-5a7429369/"
+      "id": "1090",
+      "name": "杨知奇",
+      "pic": "./static/people/1090.jpg",
+      "bio": "大语言模型基础架构，Distill，参数化记忆。",
+      "homepage": ""
+    },
+    {
+      "id": "1093",
+      "name": "张梦溪",
+      "pic": "./static/people/1093.png",
+      "bio": "大语言模型后训练，生成式流网络",
+      "homepage": ""
+    },
+    {
+      "id": "1076",
+      "name": "黄佳溢",
+      "pic": "./static/people/1076.png",
+      "bio": "大语言模型预训练，自监督学习。上海人工智能学院联培学生",
+      "homepage": "https://iammi.github.io/"
+    },
+    {
+      "id": "1097",
+      "name": "阮墨文",
+      "pic": "./static/people/1097.jpg",
+      "bio": "大语言模型基础架构、预训练。曾获本科生国家奖学金。",
+      "homepage": "https://github.com/mowenruan"
+    },
+    {
+      "id": "1098",
+      "name": "张乐恒",
+      "pic": "./static/people/1098.png",
+      "bio": "大语言模型后训练，生成式流网络",
+      "homepage": ""
+    },
+    {
+      "id": "1101",
+      "name": "孙思源",
+      "pic": "./static/people/1101.png",
+      "bio": "大模型记忆，信息检索",
+      "homepage": "https://wilsun.io"
+    },
+    {
+      "id": "1104",
+      "name": "封宇凡",
+      "pic": "./static/people/1104.jpg",
+      "bio": "高效大模型，23级本科生",
+      "homepage": "https://github.com/fyf-spec"
+    },
+    {
+      "id": "1061",
+      "name": "黄煦帆",
+      "pic": "./static/people/1061.jpg",
+      "bio": "大语言模型基础架构、Memory",
+      "homepage": ""
     }
   ],
   "Alumni": [
