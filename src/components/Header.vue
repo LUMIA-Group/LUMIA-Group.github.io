@@ -7,11 +7,16 @@
       <div class="lumia-container main-inner">
         <button class="brand" @click="clickHeader({ value: 'home' })">
           <img
-            class="logo"
+            class="logo logo-base"
             :src="headerData.logo || defaultLogo"
-            alt="LUMIA logo"
+            :alt="brandName"
           />
-          <span class="name">{{ brandName }}</span>
+          <img
+            class="logo logo-lit"
+            :src="headerData.logoHover || hoverLogo"
+            alt=""
+            aria-hidden="true"
+          />
         </button>
 
         <button
@@ -131,7 +136,8 @@ export default {
   data() {
     return {
       headerData,
-      defaultLogo: `${process.env.BASE_URL || "/"}loading-logo.png`,
+      defaultLogo: `${process.env.BASE_URL || "/"}header-logo.svg`,
+      hoverLogo: `${process.env.BASE_URL || "/"}header-logo-color.svg`,
       mobileMenuOpen: false,
       isScrolled: false,
       currentLanguage: "zh",
@@ -345,23 +351,37 @@ export default {
     display: inline-flex;
     align-items: center;
     align-self: center;
-    gap: 12px;
+    position: relative;
+    padding: 0;
     cursor: pointer;
     color: rgba(255, 255, 255, 0.96);
 
     .logo {
-      width: 52px;
-      height: 52px;
+      width: auto;
+      height: 64px;
+      max-width: min(230px, 42vw);
       object-fit: contain;
-      object-position: center;
-      filter: drop-shadow(0 3px 10px rgba(244, 194, 57, 0.3));
+      object-position: left center;
+      transition: opacity 0.22s ease;
     }
 
-    .name {
-      font-family: var(--lumia-heading-font);
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+    .logo-lit {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      .logo-base {
+        opacity: 0;
+      }
+
+      .logo-lit {
+        opacity: 1;
+      }
     }
   }
 
@@ -679,13 +699,9 @@ export default {
       gap: 12px;
     }
 
-    .brand .name {
-      font-size: 18px;
-    }
-
     .brand .logo {
-      width: 44px;
-      height: 44px;
+      height: 56px;
+      max-width: min(200px, 52vw);
     }
 
     .main-nav {
