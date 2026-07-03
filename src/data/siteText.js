@@ -35,7 +35,7 @@ export const siteTextOverrides = {
     "research": {
       "eyebrow": "论文成果",
       "title": "研究",
-      "subtitle": "展示实验室在语言建模、语音生成与转换、图神经网络和可信 AI 方向的代表性论文。"
+      "subtitle": "展示实验室在语言建模、多模态学习、图神经网络和可信 AI 方向的代表性论文。"
     },
     "news": {
       "eyebrow": "动态",
@@ -81,7 +81,7 @@ export const siteTextOverrides = {
     "research": {
       "eyebrow": "PUBLICATIONS",
       "title": "Research",
-      "subtitle": "Selected papers on language modeling, speech generation and conversion, graph neural networks, and trustworthy AI."
+      "subtitle": "Selected papers on language modeling, multimodal learning, graph neural networks, and trustworthy AI."
     },
     "news": {
       "eyebrow": "UPDATES",
