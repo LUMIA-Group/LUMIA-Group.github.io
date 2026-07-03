@@ -42,9 +42,21 @@
   --lumia-white: #ffffff;
   --lumia-border: #ceb3d3;
   --lumia-muted: #e6d9e9;
-  --lumia-card-a: #f4da92;
-  --lumia-card-b: #a1d9e8;
-  --lumia-card-c: #f1c7d8;
+  --lumia-logo-blue: #1e71f2;
+  --lumia-logo-red: #e93c2c;
+  --lumia-logo-purple: #5a39a9;
+  --lumia-logo-yellow: #feb901;
+  --lumia-logo-green: #29a44d;
+  --lumia-card-blue: #e9f1ff;
+  --lumia-card-red: #fde9e7;
+  --lumia-card-purple: #f0ecfb;
+  --lumia-card-yellow: #fff8df;
+  --lumia-card-green: #eaf7ee;
+  --lumia-card-border-blue: #b8cdf8;
+  --lumia-card-border-red: #f4b7af;
+  --lumia-card-border-purple: #c8bde9;
+  --lumia-card-border-yellow: #efd47f;
+  --lumia-card-border-green: #abd9b8;
   --lumia-shadow: 0 18px 40px rgba(102, 46, 125, 0.12);
 }
 

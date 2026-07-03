@@ -760,22 +760,55 @@ export default {
 
 .research-section {
   .row {
+    --paper-card-border: var(--lumia-card-border-blue);
     margin-top: 0 !important;
     margin-bottom: 20px;
     display: grid;
     grid-template-columns: minmax(220px, 320px) 1fr;
     gap: 22px;
     padding: 18px;
-    border: 1px solid rgba(102, 46, 125, 0.18);
+    border: 1px solid var(--paper-card-border);
     border-radius: 22px;
-    background: linear-gradient(160deg, #ffffff 0%, #fdf6ff 100%);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-blue) 100%
+    );
 
-    &:nth-child(3n + 2) {
-      background: linear-gradient(160deg, #ffffff 0%, #eef8fc 100%);
+    &:nth-child(5n + 2) {
+      --paper-card-border: var(--lumia-card-border-red);
+      background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        var(--lumia-card-red) 100%
+      );
     }
 
-    &:nth-child(3n + 3) {
-      background: linear-gradient(160deg, #ffffff 0%, #fff7e8 100%);
+    &:nth-child(5n + 3) {
+      --paper-card-border: var(--lumia-card-border-purple);
+      background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        var(--lumia-card-purple) 100%
+      );
+    }
+
+    &:nth-child(5n + 4) {
+      --paper-card-border: var(--lumia-card-border-yellow);
+      background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        var(--lumia-card-yellow) 100%
+      );
+    }
+
+    &:nth-child(5n + 5) {
+      --paper-card-border: var(--lumia-card-border-green);
+      background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        var(--lumia-card-green) 100%
+      );
     }
 
     &:not(.has-image) {

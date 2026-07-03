@@ -288,29 +288,65 @@ export default {
   display: block;
   min-width: 0;
 
-  &:nth-child(4n + 1) .people-card {
-    background: linear-gradient(160deg, #ffffff 0%, #fff8e6 100%);
+  &:nth-child(5n + 1) .people-card {
+    --people-card-border: var(--lumia-card-border-blue);
+    --people-card-accent: var(--lumia-logo-blue);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-blue) 100%
+    );
   }
 
-  &:nth-child(4n + 2) .people-card {
-    background: linear-gradient(160deg, #ffffff 0%, #ecf8fc 100%);
+  &:nth-child(5n + 2) .people-card {
+    --people-card-border: var(--lumia-card-border-red);
+    --people-card-accent: var(--lumia-logo-red);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-red) 100%
+    );
   }
 
-  &:nth-child(4n + 3) .people-card {
-    background: linear-gradient(160deg, #ffffff 0%, #fff0f7 100%);
+  &:nth-child(5n + 3) .people-card {
+    --people-card-border: var(--lumia-card-border-purple);
+    --people-card-accent: var(--lumia-logo-purple);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-purple) 100%
+    );
   }
 
-  &:nth-child(4n + 4) .people-card {
-    background: linear-gradient(160deg, #ffffff 0%, #f3f0ff 100%);
+  &:nth-child(5n + 4) .people-card {
+    --people-card-border: var(--lumia-card-border-yellow);
+    --people-card-accent: var(--lumia-logo-yellow);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-yellow) 100%
+    );
+  }
+
+  &:nth-child(5n + 5) .people-card {
+    --people-card-border: var(--lumia-card-border-green);
+    --people-card-accent: var(--lumia-logo-green);
+    background: linear-gradient(
+      160deg,
+      #ffffff 0%,
+      var(--lumia-card-green) 100%
+    );
   }
 }
 
 .people-card {
+  --people-card-border: var(--lumia-card-border-blue);
+  --people-card-accent: var(--lumia-logo-blue);
   display: block;
   height: 100%;
   box-sizing: border-box;
   background: var(--lumia-white);
-  border: 1px solid rgba(102, 46, 125, 0.18);
+  border: 1px solid var(--people-card-border);
   border-radius: 24px;
   padding: 16px;
   color: inherit;
@@ -325,7 +361,7 @@ export default {
   &.has-homepage:hover,
   &.has-homepage:focus-visible {
     transform: translateY(-4px);
-    border-color: rgba(102, 46, 125, 0.34);
+    border-color: var(--people-card-accent);
     box-shadow: 0 14px 28px rgba(102, 46, 125, 0.14);
     outline: none;
   }

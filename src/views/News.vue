@@ -153,22 +153,56 @@ export default {
   }
 
   .timeline-item {
+    --timeline-border: var(--lumia-card-border-blue);
     background: var(--lumia-white);
-    border: 1px solid rgba(102, 46, 125, 0.18);
+    border: 1px solid var(--timeline-border);
     border-radius: 20px;
     padding: 18px 20px;
     display: block;
 
-    &:nth-child(3n + 1) {
-      background: linear-gradient(150deg, #ffffff 0%, #fff6df 100%);
+    &:nth-child(5n + 1) {
+      --timeline-border: var(--lumia-card-border-blue);
+      background: linear-gradient(
+        150deg,
+        #ffffff 0%,
+        var(--lumia-card-blue) 100%
+      );
     }
 
-    &:nth-child(3n + 2) {
-      background: linear-gradient(150deg, #ffffff 0%, #eef8fd 100%);
+    &:nth-child(5n + 2) {
+      --timeline-border: var(--lumia-card-border-red);
+      background: linear-gradient(
+        150deg,
+        #ffffff 0%,
+        var(--lumia-card-red) 100%
+      );
     }
 
-    &:nth-child(3n + 3) {
-      background: linear-gradient(150deg, #ffffff 0%, #fff0f5 100%);
+    &:nth-child(5n + 3) {
+      --timeline-border: var(--lumia-card-border-purple);
+      background: linear-gradient(
+        150deg,
+        #ffffff 0%,
+        var(--lumia-card-purple) 100%
+      );
+    }
+
+    &:nth-child(5n + 4) {
+      --timeline-border: var(--lumia-card-border-yellow);
+      background: linear-gradient(
+        150deg,
+        #ffffff 0%,
+        var(--lumia-card-yellow) 100%
+      );
+    }
+
+    &:nth-child(5n + 5) {
+      --timeline-border: var(--lumia-card-border-green);
+      background: linear-gradient(
+        150deg,
+        #ffffff 0%,
+        var(--lumia-card-green) 100%
+      );
     }
 
     .timeline-link {
