@@ -65,12 +65,33 @@ export const RESEARCH_TAGS = [
       en: "Graph neural networks, relational modeling, and structured message passing.",
     },
   },
+  {
+    id: "voice-conversion",
+    name: {
+      zh: "语音生成与转换",
+      en: "Speech Generation & Voice Conversion",
+    },
+    intro: {
+      zh: "研究语音生成、视频到语音合成与跨模态声音身份转换。",
+      en: "Speech generation, video-to-speech synthesis, and cross-modal voice identity conversion.",
+    },
+  },
+  {
+    id: "trustworthy-ai",
+    name: {
+      zh: "可信AI",
+      en: "Trustworthy AI",
+    },
+    intro: {
+      zh: "研究模型指纹、水印、溯源、验证与可信智能系统。",
+      en: "Model fingerprinting, watermarking, provenance, verification, and trustworthy AI systems.",
+    },
+  },
 ];
 
 const LEGACY_RESEARCH_TAG_IDS = {
   "language-models": "higher-level-lm",
   "multimodal-learning": "latent-ponder",
-  "trustworthy-ai": "efficient-lm",
 };
 
 function normalizeResearchTagId(tagId) {

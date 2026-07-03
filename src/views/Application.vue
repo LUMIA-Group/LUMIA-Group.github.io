@@ -310,6 +310,11 @@ const I18N = {
           label: "Graph Learning & Structured Reasoning",
           value: "graph-learning",
         },
+        {
+          label: "Speech Generation & Voice Conversion",
+          value: "voice-conversion",
+        },
+        { label: "Trustworthy AI", value: "trustworthy-ai" },
       ],
       resourceOptions: [
         { label: "Need advisor support", value: "need_mentor" },
@@ -428,6 +433,8 @@ const I18N = {
         { label: "生成流网络与强化学习", value: "gfn-rl" },
         { label: "高效化", value: "efficient-lm" },
         { label: "图学习与结构化推理", value: "graph-learning" },
+        { label: "语音生成与转换", value: "voice-conversion" },
+        { label: "可信AI", value: "trustworthy-ai" },
       ],
       resourceOptions: [
         { label: "需要导师指导", value: "need_mentor" },

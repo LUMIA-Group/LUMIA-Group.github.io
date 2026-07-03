@@ -264,7 +264,7 @@ const I18N = {
     eyebrow: "Publications",
     title: "Research",
     subtitle:
-      "Selected papers across differentiable memory, concept-level language models, latent pondering, generative flow networks and reinforcement learning, LLM efficiency, and graph learning.",
+      "Selected papers across differentiable memory, concept-level language models, latent pondering, generative flow networks and reinforcement learning, LLM efficiency, graph learning, speech generation, and trustworthy AI.",
     searchLabel: "Search",
     searchPlaceholder: "Search any keyword across papers...",
     directionFilterLabel: "Filter by direction",
@@ -281,7 +281,7 @@ const I18N = {
     eyebrow: "论文成果",
     title: "研究",
     subtitle:
-      "展示实验室在可微记忆、概念级语言模型、隐思考机制、生成流网络与强化学习、高效化和图学习方向的代表性论文。",
+      "展示实验室在可微记忆、概念级语言模型、隐思考机制、生成流网络与强化学习、高效化、图学习、语音生成与转换和可信 AI 方向的代表性论文。",
     searchLabel: "搜索",
     searchPlaceholder: "按任意关键词搜索（标题/作者/会议/摘要等）...",
     directionFilterLabel: "按研究方向筛选",
