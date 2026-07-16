@@ -136,6 +136,10 @@ export default {
   },
   watch: {
     "$route.fullPath"() {
+      this.isEnabled = this.shouldEnable();
+      if (getRouteQueryValue("themePanel") === "1") {
+        this.isOpen = true;
+      }
       this.applyRouteTheme();
     },
   },
@@ -147,6 +151,9 @@ export default {
   methods: {
     shouldEnable() {
       if (getRouteQueryValue("themePanel") === "1") {
+        return true;
+      }
+      if (getRouteQueryValue("theme") || getRouteQueryValue("primary")) {
         return true;
       }
       if (typeof window === "undefined") {
