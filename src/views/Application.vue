@@ -773,10 +773,10 @@ export default {
 .form-section {
   .form-shell {
     background: linear-gradient(165deg, #ffffff 0%, #fbf6ff 100%);
-    border: 1px solid rgba(102, 46, 125, 0.22);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.22);
     border-radius: 26px;
     padding: 28px;
-    box-shadow: 0 14px 30px rgba(102, 46, 125, 0.12);
+    box-shadow: 0 14px 30px rgba(var(--lumia-primary-rgb), 0.12);
   }
 }
 
@@ -794,7 +794,7 @@ export default {
 ::v-deep .el-input__inner,
 ::v-deep .el-textarea__inner {
   border-radius: 12px;
-  border-color: rgba(102, 46, 125, 0.25);
+  border-color: rgba(var(--lumia-primary-rgb), 0.25);
   min-height: 44px;
 }
 
@@ -835,11 +835,11 @@ export default {
 ::v-deep .el-button--default {
   border-radius: 999px;
   color: var(--lumia-primary);
-  border-color: rgba(102, 46, 125, 0.4);
+  border-color: rgba(var(--lumia-primary-rgb), 0.4);
 
   &:hover,
   &:focus {
-    background: rgba(102, 46, 125, 0.08);
+    background: rgba(var(--lumia-primary-rgb), 0.08);
     border-color: var(--lumia-primary);
     color: var(--lumia-primary);
   }

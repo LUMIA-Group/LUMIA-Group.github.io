@@ -352,7 +352,7 @@ export default {
       background: var(--lumia-primary);
       color: var(--lumia-white);
       border-color: var(--lumia-primary);
-      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
       outline: none;
       transform: none;
     }
@@ -368,7 +368,7 @@ export default {
   max-width: none;
   box-sizing: border-box;
   padding: 34px;
-  border: 1px solid rgba(102, 46, 125, 0.18);
+  border: 1px solid rgba(var(--lumia-primary-rgb), 0.18);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.82);
 
@@ -395,7 +395,7 @@ export default {
     min-width: 0;
     margin-bottom: 0;
     padding-bottom: 32px;
-    border-bottom: 1px solid rgba(102, 46, 125, 0.14);
+    border-bottom: 1px solid rgba(var(--lumia-primary-rgb), 0.14);
   }
 
   :deep(.direction-body .concept-meta) {
@@ -420,14 +420,14 @@ export default {
   :deep(.direction-body .concept-blog-header .lead) {
     max-width: none;
     margin: 22px 0 0;
-    color: rgba(102, 46, 125, 0.84);
+    color: rgba(var(--lumia-primary-rgb), 0.84);
     font-size: 20px;
     line-height: 1.72;
   }
 
   :deep(.direction-body .concept-blog section) {
     padding: 38px 0;
-    border-bottom: 1px solid rgba(102, 46, 125, 0.12);
+    border-bottom: 1px solid rgba(var(--lumia-primary-rgb), 0.12);
   }
 
   :deep(.direction-body h2),
@@ -469,14 +469,14 @@ export default {
   :deep(.direction-body figure) {
     margin: 24px 0;
     padding: 20px;
-    border: 1px solid rgba(102, 46, 125, 0.14);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.14);
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.7);
   }
 
   :deep(.direction-body figcaption) {
     margin-top: 12px;
-    color: rgba(102, 46, 125, 0.68);
+    color: rgba(var(--lumia-primary-rgb), 0.68);
     font-size: 14px;
     line-height: 1.6;
   }
@@ -493,7 +493,7 @@ export default {
     width: 100%;
     min-width: 760px;
     border-collapse: collapse;
-    border: 1px solid rgba(102, 46, 125, 0.16);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.16);
     border-radius: 14px;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.76);
@@ -504,13 +504,13 @@ export default {
   :deep(.direction-body th),
   :deep(.direction-body td) {
     padding: 13px 14px;
-    border-bottom: 1px solid rgba(102, 46, 125, 0.12);
+    border-bottom: 1px solid rgba(var(--lumia-primary-rgb), 0.12);
     text-align: left;
     vertical-align: top;
   }
 
   :deep(.direction-body th) {
-    background: rgba(102, 46, 125, 0.08);
+    background: rgba(var(--lumia-primary-rgb), 0.08);
     color: var(--lumia-primary-strong);
     font-weight: 700;
   }
@@ -533,7 +533,7 @@ export default {
 
   :deep(.direction-body .label) {
     flex: 0 0 130px;
-    color: rgba(102, 46, 125, 0.68);
+    color: rgba(var(--lumia-primary-rgb), 0.68);
     font-size: 14px;
     font-weight: 700;
   }
@@ -543,7 +543,7 @@ export default {
     align-items: center;
     min-height: 34px;
     padding: 6px 10px;
-    border: 1px solid rgba(102, 46, 125, 0.16);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.16);
     border-radius: 9px;
     background: rgba(244, 245, 241, 0.88);
     color: var(--lumia-primary);
@@ -554,8 +554,8 @@ export default {
   }
 
   :deep(.direction-body .pill.high) {
-    border-color: rgba(102, 46, 125, 0.28);
-    background: rgba(102, 46, 125, 0.08);
+    border-color: rgba(var(--lumia-primary-rgb), 0.28);
+    background: rgba(var(--lumia-primary-rgb), 0.08);
     color: var(--lumia-primary-strong);
   }
 
@@ -579,7 +579,7 @@ export default {
   }
 
   :deep(.direction-body .arrow) {
-    color: rgba(102, 46, 125, 0.5);
+    color: rgba(var(--lumia-primary-rgb), 0.5);
     font-weight: 700;
   }
 
@@ -592,7 +592,7 @@ export default {
 
   :deep(.direction-body .formula-box) {
     padding: 16px;
-    border: 1px solid rgba(102, 46, 125, 0.14);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.14);
     border-radius: 12px;
     background: rgba(244, 245, 241, 0.72);
     overflow-x: auto;
@@ -600,7 +600,7 @@ export default {
 
   :deep(.direction-body .formula-title) {
     margin-bottom: 10px;
-    color: rgba(102, 46, 125, 0.68);
+    color: rgba(var(--lumia-primary-rgb), 0.68);
     font-size: 13px;
     font-weight: 700;
   }
@@ -687,9 +687,9 @@ export default {
   :deep(.direction-body .quote) {
     margin: 22px 0 0;
     padding: 18px 20px;
-    border-left: 4px solid rgba(102, 46, 125, 0.7);
+    border-left: 4px solid rgba(var(--lumia-primary-rgb), 0.7);
     border-radius: 0 12px 12px 0;
-    background: rgba(102, 46, 125, 0.06);
+    background: rgba(var(--lumia-primary-rgb), 0.06);
   }
 
   :deep(.direction-body .quote p) {
@@ -706,7 +706,7 @@ export default {
     color: var(--lumia-primary);
     font-weight: 700;
     text-decoration: underline;
-    text-decoration-color: rgba(102, 46, 125, 0.28);
+    text-decoration-color: rgba(var(--lumia-primary-rgb), 0.28);
     text-underline-offset: 0.24em;
     transition: text-decoration-color 0.2s ease;
 
@@ -744,7 +744,7 @@ export default {
       background: var(--lumia-primary);
       color: var(--lumia-white);
       border-color: var(--lumia-primary);
-      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
       outline: none;
       transform: none;
     }
@@ -915,7 +915,7 @@ export default {
     display: inline-flex;
     align-items: center;
     border-radius: 999px;
-    border: 1px solid rgba(102, 46, 125, 0.24);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
     background: rgba(255, 255, 255, 0.82);
     padding: 4px 10px;
     color: var(--lumia-primary);
@@ -964,7 +964,7 @@ export default {
   margin-top: 12px;
   padding: 16px 18px;
   border-radius: 14px;
-  border: 1px dashed rgba(102, 46, 125, 0.28);
+  border: 1px dashed rgba(var(--lumia-primary-rgb), 0.28);
   background: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   opacity: 0.82;

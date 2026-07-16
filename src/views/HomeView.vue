@@ -443,9 +443,9 @@ export default {
 .home-page {
   --home-surface: rgba(255, 255, 255, 0.62);
   --home-surface-hover: rgba(255, 255, 255, 0.9);
-  --home-border: rgba(102, 46, 125, 0.13);
-  --home-border-hover: rgba(102, 46, 125, 0.4);
-  --home-hover-shadow: 0 8px 18px rgba(102, 46, 125, 0.05);
+  --home-border: rgba(var(--lumia-primary-rgb), 0.13);
+  --home-border-hover: rgba(var(--lumia-primary-rgb), 0.4);
+  --home-hover-shadow: 0 8px 18px rgba(var(--lumia-primary-rgb), 0.05);
 }
 
 .hero {
@@ -465,7 +465,7 @@ export default {
     display: inline-block;
     width: 0.52ch;
     margin-left: 2px;
-    border-right: 2px solid rgba(102, 46, 125, 0.65);
+    border-right: 2px solid rgba(var(--lumia-primary-rgb), 0.65);
     animation: heroTypingBlink 0.9s steps(1, end) infinite;
     transform: translateY(2px);
   }
@@ -498,7 +498,7 @@ export default {
     &:hover {
       background: var(--lumia-primary);
       color: var(--lumia-white);
-      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
     }
   }
 }
@@ -545,7 +545,7 @@ export default {
 .partners-orbit {
   position: relative;
   border-radius: 14px;
-  border: 1px solid rgba(102, 46, 125, 0.09);
+  border: 1px solid rgba(var(--lumia-primary-rgb), 0.09);
   background: rgba(255, 255, 255, 0.42);
   min-height: 390px;
   flex: 1;
@@ -570,7 +570,7 @@ export default {
   height: var(--bubble-render-size);
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  border: 1px solid rgba(102, 46, 125, 0.12);
+  border: 1px solid rgba(var(--lumia-primary-rgb), 0.12);
   background: rgba(255, 255, 255, 0.86);
   box-shadow: none;
   display: flex;
@@ -586,7 +586,7 @@ export default {
     position: absolute;
     inset: 7px;
     border-radius: 999px;
-    border: 1px solid rgba(102, 46, 125, 0.06);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.06);
     pointer-events: none;
   }
 

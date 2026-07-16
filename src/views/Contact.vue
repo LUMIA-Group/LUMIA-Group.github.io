@@ -128,7 +128,7 @@ export default {
 
 .contact-content {
   .contact-card {
-    border: 1px solid rgba(102, 46, 125, 0.2);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.2);
     border-radius: 24px;
     background: var(--lumia-white);
     padding: 26px;

@@ -125,7 +125,7 @@ export default {
 
 .news-detail-content {
   .detail-card {
-    border: 1px solid rgba(102, 46, 125, 0.18);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.18);
     border-radius: 22px;
     background: var(--lumia-white);
     padding: 26px;

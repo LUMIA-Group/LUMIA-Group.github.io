@@ -511,10 +511,10 @@ export default {
         top: calc(100% + 14px);
         min-width: 170px;
         background: #fff;
-        border: 1px solid rgba(102, 46, 125, 0.24);
+        border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
         border-radius: 14px;
         padding: 8px;
-        box-shadow: 0 10px 24px rgba(102, 46, 125, 0.14);
+        box-shadow: 0 10px 24px rgba(var(--lumia-primary-rgb), 0.14);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
@@ -534,7 +534,7 @@ export default {
           cursor: pointer;
 
           &:hover {
-            background: rgba(102, 46, 125, 0.09);
+            background: rgba(var(--lumia-primary-rgb), 0.09);
           }
         }
       }

@@ -827,7 +827,7 @@ export default {
     &.active {
       background: var(--lumia-primary);
       color: var(--lumia-white);
-      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
     }
   }
 
@@ -877,7 +877,7 @@ export default {
       width: 100%;
       min-height: 48px;
       border-radius: 14px;
-      border: 1px solid rgba(102, 46, 125, 0.24);
+      border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
       padding: 0 14px;
       background: rgba(255, 255, 255, 0.88);
       font-size: 15px;
@@ -886,8 +886,8 @@ export default {
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
 
       &:focus {
-        border-color: rgba(102, 46, 125, 0.56);
-        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+        border-color: rgba(var(--lumia-primary-rgb), 0.56);
+        box-shadow: 0 0 0 3px rgba(var(--lumia-primary-rgb), 0.12);
       }
     }
   }
@@ -904,9 +904,9 @@ export default {
     }
 
     &.is-open .direction-select-trigger {
-      border-color: rgba(102, 46, 125, 0.56);
+      border-color: rgba(var(--lumia-primary-rgb), 0.56);
       background: #fff;
-      box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+      box-shadow: 0 0 0 3px rgba(var(--lumia-primary-rgb), 0.12);
 
       &::after {
         transform: translateY(2px) rotate(225deg);
@@ -918,7 +918,7 @@ export default {
       width: 100%;
       min-height: 48px;
       border-radius: 14px;
-      border: 1px solid rgba(102, 46, 125, 0.24);
+      border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
       padding: 0 42px 0 14px;
       background: rgba(255, 255, 255, 0.88);
       color: var(--lumia-text);
@@ -955,8 +955,8 @@ export default {
 
       &:hover,
       &:focus-visible {
-        border-color: rgba(102, 46, 125, 0.56);
-        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+        border-color: rgba(var(--lumia-primary-rgb), 0.56);
+        box-shadow: 0 0 0 3px rgba(var(--lumia-primary-rgb), 0.12);
       }
     }
 
@@ -967,10 +967,10 @@ export default {
       width: max(100%, 232px);
       max-width: min(360px, calc(100vw - 32px));
       padding: 8px;
-      border: 1px solid rgba(102, 46, 125, 0.2);
+      border: 1px solid rgba(var(--lumia-primary-rgb), 0.2);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.96);
-      box-shadow: 0 18px 34px rgba(102, 46, 125, 0.16);
+      box-shadow: 0 18px 34px rgba(var(--lumia-primary-rgb), 0.16);
       backdrop-filter: blur(10px);
       display: grid;
       gap: 4px;
@@ -1003,7 +1003,7 @@ export default {
       &.active {
         background: var(--lumia-primary);
         color: #fff;
-        box-shadow: 0 8px 18px rgba(102, 46, 125, 0.12);
+        box-shadow: 0 8px 18px rgba(var(--lumia-primary-rgb), 0.12);
         outline: none;
       }
     }
@@ -1041,7 +1041,7 @@ export default {
       background: var(--lumia-primary);
       color: var(--lumia-white);
       border-color: var(--lumia-primary);
-      box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+      box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
       outline: none;
     }
   }
@@ -1053,7 +1053,7 @@ export default {
     margin-left: auto;
     padding: 4px;
     border-radius: 999px;
-    border: 1px solid rgba(102, 46, 125, 0.24);
+    border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
     background: rgba(255, 255, 255, 0.8);
     overflow: hidden;
 
@@ -1105,7 +1105,7 @@ export default {
   }
 
   :deep(mark.search-hit) {
-    background: rgba(102, 46, 125, 0.22);
+    background: rgba(var(--lumia-primary-rgb), 0.22);
     color: var(--lumia-primary-strong);
     border-radius: 4px;
     padding: 0 2px;
@@ -1120,7 +1120,7 @@ export default {
       display: inline-flex;
       align-items: center;
       border-radius: 999px;
-      border: 1px solid rgba(102, 46, 125, 0.24);
+      border: 1px solid rgba(var(--lumia-primary-rgb), 0.24);
       background: rgba(255, 255, 255, 0.82);
       padding: 4px 10px;
       font-size: 12px;
@@ -1217,13 +1217,13 @@ export default {
 
     .compact-item {
       padding: 16px 18px;
-      border: 1px solid rgba(102, 46, 125, 0.18);
+      border: 1px solid rgba(var(--lumia-primary-rgb), 0.18);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.9);
 
       &.is-target-paper {
         border-color: var(--lumia-primary);
-        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+        box-shadow: 0 0 0 3px rgba(var(--lumia-primary-rgb), 0.12);
       }
 
       h3 {
@@ -1260,7 +1260,7 @@ export default {
     margin-top: 12px;
     padding: 16px 18px;
     border-radius: 14px;
-    border: 1px dashed rgba(102, 46, 125, 0.28);
+    border: 1px dashed rgba(var(--lumia-primary-rgb), 0.28);
     background: rgba(255, 255, 255, 0.7);
     font-size: 14px;
     opacity: 0.82;
@@ -1321,7 +1321,7 @@ export default {
 
       &.is-target-paper {
         border-color: var(--lumia-primary);
-        box-shadow: 0 0 0 3px rgba(102, 46, 125, 0.12);
+        box-shadow: 0 0 0 3px rgba(var(--lumia-primary-rgb), 0.12);
       }
     }
 

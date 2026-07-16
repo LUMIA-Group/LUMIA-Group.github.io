@@ -4,6 +4,7 @@
     <main class="site-main">
       <router-view />
     </main>
+    <theme-switcher />
     <footer v-if="!hideHeaderList.includes($route.name)" class="site-footer">
       <div class="lumia-container">
         <div class="footer-top lumia-fade-up" style="--delay: 80ms">
@@ -33,6 +34,7 @@
 
 <script>
 import appHeader from "@/components/Header.vue";
+import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import { siteTextOverrides } from "@/data/siteText";
 
 const I18N = {
@@ -61,6 +63,7 @@ const I18N = {
 export default {
   components: {
     appHeader,
+    ThemeSwitcher,
   },
   data() {
     return {

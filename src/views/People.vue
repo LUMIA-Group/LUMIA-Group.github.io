@@ -238,7 +238,7 @@ export default {
   &:focus-visible {
     background: var(--lumia-primary);
     color: var(--lumia-white);
-    box-shadow: 0 10px 26px rgba(102, 46, 125, 0.14);
+    box-shadow: 0 10px 26px rgba(var(--lumia-primary-rgb), 0.14);
     outline: none;
   }
 }
@@ -253,7 +253,7 @@ export default {
   }
 
   + .people-section {
-    border-top: 1px solid rgba(102, 46, 125, 0.16);
+    border-top: 1px solid rgba(var(--lumia-primary-rgb), 0.16);
   }
 }
 
@@ -362,7 +362,7 @@ export default {
   &.has-homepage:focus-visible {
     transform: translateY(-4px);
     border-color: var(--people-card-accent);
-    box-shadow: 0 14px 28px rgba(102, 46, 125, 0.14);
+    box-shadow: 0 14px 28px rgba(var(--lumia-primary-rgb), 0.14);
     outline: none;
   }
 
