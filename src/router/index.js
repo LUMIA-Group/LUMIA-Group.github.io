@@ -8,6 +8,7 @@ import News from "../views/News.vue";
 import NewsDetail from "../views/NewsDetail.vue";
 import Contact from "../views/Contact.vue";
 import Application from "../views/Application.vue";
+import BrandAssets from "../views/BrandAssets.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
     path: "/application",
     name: "application",
     component: Application,
+  },
+  {
+    path: "/vi",
+    name: "brand-assets",
+    component: BrandAssets,
   },
 ];
 
