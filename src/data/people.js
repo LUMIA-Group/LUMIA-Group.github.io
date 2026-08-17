@@ -160,6 +160,20 @@ export const peopleData = {
       "pic": "./static/people/1077.jpg",
       "bio": "大语言模型预训练，参数化记忆，智能体记忆，上海交通大学人工智能学院",
       "homepage": "https://github.com/cheese1010"
+    },
+    {
+      "id": "1072",
+      "name": "王玺权",
+      "pic": "./static/people/1072.jpg",
+      "bio": "大语言模型预训练，参数化记忆，上海交通大学人工智能学院",
+      "homepage": "https://github.com/merdft"
+    },
+    {
+      "id": "1001",
+      "name": "陈霖",
+      "pic": "./static/people/1001.png",
+      "bio": "大语言模型后训练，大模型指纹，GFlowNets",
+      "homepage": "https://charlie-chenlin.github.io/"
     }
   ],
   "Undergrads": [
@@ -321,7 +335,7 @@ export const peopleData = {
       "id": "1104",
       "name": "封宇凡",
       "pic": "./static/people/1104.jpg",
-      "bio": "高效大模型，23级本科生",
+      "bio": "高效大模型，24级本科生",
       "homepage": "https://github.com/fyf-spec"
     },
     {
@@ -330,6 +344,13 @@ export const peopleData = {
       "pic": "./static/people/1061.jpg",
       "bio": "大语言模型基础架构、Memory",
       "homepage": ""
+    },
+    {
+      "id": "1105",
+      "name": "蒋勃琛",
+      "pic": "./static/people/1105.jpg",
+      "bio": "Memory,rag",
+      "homepage": "https://tavisj.top"
     }
   ],
   "Alumni": [
@@ -338,7 +359,11 @@ export const peopleData = {
       "name": "宋昀翀",
       "pic": "./static/people/1111.jpg",
       "bio": "I graduated with a PhD in 2025. I’m now a researcher at Shanghai AI Lab, focusing on next-generation LLM architecture design.",
-      "homepage": "https://github.com/realCrush"
+      "homepage": "https://github.com/realCrush",
+      "sections": [
+        "Alumni",
+        "Faculty"
+      ]
     }
   ]
 };
