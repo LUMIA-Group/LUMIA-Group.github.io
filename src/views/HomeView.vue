@@ -71,20 +71,27 @@
         <h2 class="section-title lumia-fade-up" style="--delay: 120ms">
           {{ text.partnerTitle }}
         </h2>
-        <div class="partners-panel lumia-fade-up" style="--delay: 160ms">
+        <p class="partners-note lumia-fade-up" style="--delay: 140ms">
+          {{ text.partnerNote }}
+        </p>
+        <div class="partners-panel lumia-fade-up" style="--delay: 180ms">
           <div
-            class="partners-orbit"
+            class="partners-grid"
             role="list"
             :aria-label="text.partnerEyebrow"
           >
             <article
               v-for="item in partnerLogos"
               :key="item.id"
-              class="partner-bubble"
-              :style="bubbleStyle(item)"
+              class="partner-tile"
               role="listitem"
             >
-              <img :src="item.logo" :alt="item.name" loading="lazy" />
+              <img
+                :src="item.logo"
+                :alt="item.name"
+                loading="lazy"
+                :style="{ '--logo-scale': item.logoScale || 1 }"
+              />
             </article>
           </div>
         </div>
@@ -106,6 +113,8 @@ import njuLogo from "@/assets/partners/南京大学-logo.svg";
 import horizonLogo from "@/assets/partners/horizonrobotics.png";
 import shaiLabLogo from "@/assets/partners/shailab.png";
 import siiLogo from "@/assets/partners/sii.png";
+import ubiquantLogo from "@/assets/partners/九坤logo.svg";
+import xiaomiLogo from "@/assets/partners/小米logo.svg";
 
 const I18N = {
   en: {
@@ -125,6 +134,7 @@ const I18N = {
     contactUs: "Contact Us (Collab/Admissions)",
     partnerEyebrow: "Partners",
     partnerTitle: "Academic & Industry Collaborators",
+    partnerNote: "Listed in no particular order",
   },
   zh: {
     siteLabel: "上海交通大学",
@@ -143,6 +153,7 @@ const I18N = {
     contactUs: "联系我们（合作/招生）",
     partnerEyebrow: "合作伙伴",
     partnerTitle: "学术与产业合作网络",
+    partnerNote: "排名不分先后",
   },
 };
 
@@ -160,10 +171,17 @@ export default {
   },
   computed: {
     text() {
-      return {
+      const mergedText = {
         ...(I18N[this.currentLanguage] || I18N.zh),
         ...((siteTextOverrides[this.currentLanguage] || {}).home || {}),
       };
+
+      mergedText.siteLabel =
+        this.currentLanguage === "zh"
+          ? "上海交通大学人工智能学院"
+          : "SJTU School of Artificial Intelligence";
+
+      return mergedText;
     },
     featuredCards() {
       return getLocalizedResearchTags(this.currentLanguage).slice(0, 4);
@@ -174,118 +192,67 @@ export default {
           id: "partner-01",
           name: "Tsinghua University",
           logo: tsinghuaLogo,
-          x: 17,
-          y: 19,
-          size: 102,
-          duration: 5.6,
-          delay: 0.2,
-          lift: 14,
-          sway: 3,
           logoScale: 1.35,
         },
         {
           id: "partner-02",
           name: "Nanjing University",
           logo: njuLogo,
-          x: 44,
-          y: 14,
-          size: 102,
-          duration: 6.0,
-          delay: 0.6,
-          lift: 12,
-          sway: 2,
           logoScale: 1.35,
         },
         {
           id: "partner-03",
           name: "Huawei",
           logo: huaweiLogo,
-          x: 80,
-          y: 22,
-          size: 102,
-          duration: 5.4,
-          delay: 1.1,
-          lift: 16,
-          sway: 4,
           logoScale: 1.1,
         },
         {
           id: "partner-04",
           name: "Tencent",
           logo: tencentLogo,
-          x: 15,
-          y: 49,
-          size: 102,
-          duration: 6.3,
-          delay: 0.8,
-          lift: 11,
-          sway: 2,
           logoScale: 1.8,
         },
         {
           id: "partner-05",
           name: "Alipay",
           logo: alipayLogo,
-          x: 57,
-          y: 43,
-          size: 102,
-          duration: 5.2,
-          delay: 0.1,
-          lift: 15,
-          sway: 3,
-          logoScale: 1.6,
+          logoScale: 1.42,
         },
         {
           id: "partner-06",
           name: "Horizon Robotics",
           logo: horizonLogo,
-          x: 85,
-          y: 53,
-          size: 102,
-          duration: 6.1,
-          delay: 1.3,
-          lift: 12,
-          sway: 3,
-          logoScale: 1.55,
+          logoScale: 1.72,
         },
         {
           id: "partner-07",
           name: "SHAI Lab",
           logo: shaiLabLogo,
-          x: 23,
-          y: 80,
-          size: 102,
-          duration: 5.8,
-          delay: 0.5,
-          lift: 14,
-          sway: 4,
           logoScale: 1.35,
         },
         {
           id: "partner-08",
           name: "SII",
           logo: siiLogo,
-          x: 50,
-          y: 84,
-          size: 102,
-          duration: 6.4,
-          delay: 0.9,
-          lift: 13,
-          sway: 2,
           logoScale: 1.1,
         },
         {
           id: "partner-09",
           name: "Alibaba",
           logo: alibabaLogo,
-          x: 75,
-          y: 74,
-          size: 102,
-          duration: 5.5,
-          delay: 1.0,
-          lift: 16,
-          sway: 3,
           logoScale: 1.65,
+        },
+        {
+          id: "partner-10",
+          name: "Ubiquant",
+          logo: ubiquantLogo,
+          logoScale: 1.62,
+        },
+        {
+          id: "partner-11",
+          name: "Xiaomi",
+          logo: xiaomiLogo,
+          logoScale: 1.5,
         },
       ];
     },
@@ -422,19 +389,6 @@ export default {
         })
         .catch(() => {});
     },
-    bubbleStyle(item) {
-      return {
-        "--x": `${item.x}%`,
-        "--y": `${item.y}%`,
-        "--size": `${item.size}px`,
-        "--duration": `${item.duration}s`,
-        "--delay": `${item.delay}s`,
-        "--lift": `${item.lift}px`,
-        "--lift-mid": `${Math.round(item.lift * 0.58)}px`,
-        "--sway": `${item.sway}px`,
-        "--logo-scale": `${item.logoScale || 1}`,
-      };
-    },
   },
 };
 </script>
@@ -515,15 +469,8 @@ export default {
 }
 
 .partners-panel {
-  border: 1px solid var(--home-border);
-  border-radius: 18px;
-  background: var(--home-surface);
-  min-height: 520px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
+  padding: 0;
+  overflow: visible;
 }
 
 .featured-section,
@@ -534,7 +481,14 @@ export default {
 
 .partners-section {
   .section-title {
-    margin: 12px 0 30px;
+    margin: 12px 0 8px;
+  }
+
+  .partners-note {
+    margin: 0 0 40px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(var(--lumia-primary-rgb), 0.68);
   }
 
   .partners-panel {
@@ -542,60 +496,24 @@ export default {
   }
 }
 
-.partners-orbit {
-  position: relative;
-  border-radius: 14px;
-  border: 1px solid rgba(var(--lumia-primary-rgb), 0.09);
-  background: rgba(255, 255, 255, 0.42);
-  min-height: 390px;
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
+.partners-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 28px 42px;
+  max-width: 822px;
+  margin: 0 auto;
 }
 
-.partner-bubble {
-  --bubble-scale: 1;
-  --bubble-hover-scale: 1.08;
-  --bubble-render-size: calc(var(--size) * var(--bubble-scale));
-  --bubble-hover-size: calc(
-    var(--size) * var(--bubble-scale) * var(--bubble-hover-scale)
-  );
-  --bubble-safe-x: calc((var(--bubble-hover-size) * 0.5) + var(--sway) + 16px);
-  --bubble-safe-y: calc((var(--bubble-hover-size) * 0.5) + var(--lift) + 18px);
-  position: absolute;
-  left: clamp(var(--bubble-safe-x), var(--x), calc(100% - var(--bubble-safe-x)));
-  top: clamp(var(--bubble-safe-y), var(--y), calc(100% - var(--bubble-safe-y)));
-  width: var(--bubble-render-size);
-  height: var(--bubble-render-size);
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  border: 1px solid rgba(var(--lumia-primary-rgb), 0.12);
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: none;
+.partner-tile {
+  width: 102px;
+  height: 102px;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: partnerFloat var(--duration) cubic-bezier(0.37, 0.01, 0.29, 1)
-    infinite;
-  animation-delay: var(--delay);
-  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 7px;
-    border-radius: 999px;
-    border: 1px solid rgba(var(--lumia-primary-rgb), 0.06);
-    pointer-events: none;
-  }
-
-  &:hover {
-    width: var(--bubble-hover-size);
-    height: var(--bubble-hover-size);
-    border-color: var(--home-border-hover);
-    z-index: 2;
-  }
+  padding: 0;
+  overflow: visible;
 
   img {
     width: 76%;
@@ -604,30 +522,7 @@ export default {
     display: block;
     opacity: 1;
     filter: none;
-    transition: transform 0.25s ease;
     transform: scale(var(--logo-scale, 1));
-  }
-
-  &:hover img {
-    transform: scale(calc(var(--logo-scale, 1) * 1.09));
-  }
-}
-
-@keyframes partnerFloat {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) translateY(0);
-  }
-  25% {
-    transform: translate(-50%, -50%)
-      translate(var(--sway), calc(var(--lift-mid) * -1));
-  }
-  50% {
-    transform: translate(-50%, -50%) translateY(calc(var(--lift) * -1));
-  }
-  75% {
-    transform: translate(-50%, -50%)
-      translate(calc(var(--sway) * -1), calc(var(--lift-mid) * -1));
   }
 }
 
@@ -708,6 +603,11 @@ export default {
     padding-top: 62px;
   }
 
+  .partners-grid {
+    gap: 24px 36px;
+    max-width: 516px;
+  }
+
   .featured-section {
     .lumia-grid-3 {
       grid-template-columns: 1fr;
@@ -723,17 +623,17 @@ export default {
   }
 
   .partners-panel {
-    min-height: 420px;
-    padding: 18px;
+    padding: 0;
   }
 
-  .partners-orbit {
-    min-height: 320px;
+  .partners-grid {
+    gap: 20px 30px;
+    max-width: 306px;
   }
 
-  .partner-bubble {
-    --bubble-scale: 0.78;
-    --bubble-hover-scale: 1.05;
+  .partner-tile {
+    width: 82px;
+    height: 82px;
   }
 
   .featured-section {

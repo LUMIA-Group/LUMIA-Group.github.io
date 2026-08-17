@@ -71,6 +71,43 @@ import { peopleData } from "@/data/people";
 import { siteTextOverrides } from "@/data/siteText";
 import defaultImg from "@/assets/default.jpg";
 
+const SECTION_ORDER = ["Faculty", "PhD", "Master", "Undergrads", "Alumni"];
+
+const SECTION_ALIASES = {
+  faculty: "Faculty",
+  "教师": "Faculty",
+  phd: "PhD",
+  "phd students": "PhD",
+  "博士生": "PhD",
+  master: "Master",
+  "master students": "Master",
+  "硕士生": "Master",
+  undergrad: "Undergrads",
+  undergrads: "Undergrads",
+  "undergraduate students": "Undergrads",
+  "本科生": "Undergrads",
+  alumni: "Alumni",
+  "毕业生": "Alumni",
+};
+
+function normalizeSectionName(value) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return "";
+  }
+  return SECTION_ALIASES[raw.toLowerCase()] || SECTION_ALIASES[raw] || raw;
+}
+
+function splitSectionNames(value) {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  return String(value || "")
+    .split(/[,，;；、/|\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 const I18N = {
   en: {
     eyebrow: "Directory",
@@ -124,8 +161,36 @@ export default {
       };
     },
     peopleSections() {
-      return Object.entries(this.peopleData)
-        .filter(([, value]) => Array.isArray(value) && value.length > 0)
+      const sections = new Map();
+      const ensureSection = (key) => {
+        if (!sections.has(key)) {
+          sections.set(key, []);
+        }
+      };
+
+      SECTION_ORDER.forEach(ensureSection);
+
+      Object.entries(this.peopleData).forEach(([sourceKey, list]) => {
+        if (!Array.isArray(list)) {
+          return;
+        }
+
+        const normalizedSourceKey = normalizeSectionName(sourceKey);
+        ensureSection(normalizedSourceKey);
+
+        list.forEach((item) => {
+          this.memberSections(item, normalizedSourceKey).forEach((key) => {
+            ensureSection(key);
+            const sectionList = sections.get(key);
+            if (!sectionList.some((current) => this.sameMember(current, item))) {
+              sectionList.push(item);
+            }
+          });
+        });
+      });
+
+      return [...sections.entries()]
+        .filter(([, list]) => list.length > 0)
         .map(([title, list]) => ({
           key: title,
           displayTitle: this.text.sectionTitles[title] || title,
@@ -133,7 +198,7 @@ export default {
         }));
     },
     peopleJumpLinks() {
-      return ["Faculty", "PhD", "Master", "Undergrads", "Alumni"].map((key) => ({
+      return SECTION_ORDER.map((key) => ({
         key,
         label: this.text.sectionTitles[key] || key,
       }));
@@ -167,6 +232,44 @@ export default {
         return `${count} ${this.text.members}`;
       }
       return `${count} ${this.text.members}`;
+    },
+    memberSections(item, fallbackKey) {
+      const candidates = [
+        item && item.sections,
+        item && item.categories,
+        item && item.groups,
+        item && item.section,
+        item && item.category,
+        item && item.group,
+      ];
+      const seen = new Set();
+      const result = [];
+
+      candidates.forEach((value) => {
+        splitSectionNames(value).forEach((name) => {
+          const normalized = normalizeSectionName(name);
+          if (!normalized || seen.has(normalized)) {
+            return;
+          }
+          seen.add(normalized);
+          result.push(normalized);
+        });
+      });
+
+      if (fallbackKey && !seen.has(fallbackKey)) {
+        result.unshift(fallbackKey);
+      }
+
+      return result.length > 0 ? result : [fallbackKey];
+    },
+    sameMember(left, right) {
+      if (!left || !right) {
+        return false;
+      }
+      if (left.id && right.id) {
+        return left.id === right.id;
+      }
+      return left.name && right.name && left.name === right.name;
     },
     sectionAnchor(key) {
       return `people-${String(key).toLowerCase()}`;

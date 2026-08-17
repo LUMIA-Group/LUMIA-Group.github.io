@@ -358,8 +358,8 @@ export default {
 
     .logo {
       width: auto;
-      height: 64px;
-      max-width: min(230px, 42vw);
+      height: 70px;
+      max-width: min(260px, 44vw);
       object-fit: contain;
       object-position: left center;
       transition: opacity 0.22s ease;
@@ -700,8 +700,8 @@ export default {
     }
 
     .brand .logo {
-      height: 56px;
-      max-width: min(200px, 52vw);
+      height: 60px;
+      max-width: min(220px, 56vw);
     }
 
     .main-nav {

@@ -77,6 +77,7 @@ GRADE_TO_SECTION = {
     "alumni": "Alumni",
 }
 
+SECTION_SPLIT_RE = re.compile(r"[,，;；、/|\n]+")
 SECTION_ORDER = ["Faculty", "PhD", "Master", "Undergrads", "Alumni"]
 
 KNOWN_TAGS = {
@@ -93,6 +94,31 @@ KNOWN_TAGS = {
 
 def warn(message):
     print(f"[sync-local-sheet] warning: {message}", file=sys.stderr)
+
+
+def normalize_people_section(value):
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    return GRADE_TO_SECTION.get(text) or GRADE_TO_SECTION.get(text.lower()) or ""
+
+
+def split_people_sections(value):
+    parts = [part.strip() for part in SECTION_SPLIT_RE.split(str(value or ""))]
+    sections = []
+    seen = set()
+    for part in parts:
+        if not part:
+            continue
+        section = normalize_people_section(part)
+        if not section:
+            warn(f"Ignored unknown member category: {part}")
+            continue
+        if section in seen:
+            continue
+        seen.add(section)
+        sections.append(section)
+    return sections
 
 
 def col_to_index(cell_ref):
@@ -397,10 +423,10 @@ def build_people(zip_file, people_sheet):
         if not member_id or not name:
             continue
 
-        section = GRADE_TO_SECTION.get(grade) or GRADE_TO_SECTION.get(grade.lower())
-        if not section:
+        sections = split_people_sections(grade)
+        if not sections:
             warn(f"Unknown grade for member {name}: {grade}; placed in Undergrads.")
-            section = "Undergrads"
+            sections = ["Undergrads"]
 
         stem = safe_stem(member_id)
         if stem != member_id:
@@ -423,15 +449,17 @@ def build_people(zip_file, people_sheet):
             if existing:
                 pic = f"./static/people/{existing.name}"
 
-        data[section].append(
-            {
-                "id": member_id,
-                "name": name,
-                "pic": pic,
-                "bio": bio,
-                "homepage": homepage,
-            }
-        )
+        member = {
+            "id": member_id,
+            "name": name,
+            "pic": pic,
+            "bio": bio,
+            "homepage": homepage,
+        }
+        if len(sections) > 1:
+            member["sections"] = sections
+
+        data[sections[0]].append(member)
 
     clean_stale_numeric_people_images(generated_stems)
     return data
