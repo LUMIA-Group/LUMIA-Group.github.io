@@ -34,6 +34,13 @@ export const peopleData = {
       "homepage": ""
     },
     {
+      "id": "1073",
+      "name": "朱学凯",
+      "pic": "./static/people/1073.jpg",
+      "bio": "大语言模型后训练，RL，数据分布覆盖研究",
+      "homepage": "https://xuekai-zhu.github.io/Xuekai-Zhu/"
+    },
+    {
       "id": "1067",
       "name": "刘一凡",
       "pic": "./static/people/1067.png",
