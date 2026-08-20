@@ -150,7 +150,7 @@ export const peopleData = {
     {
       "id": "9444",
       "name": "唐思琪",
-      "pic": "",
+      "pic": "./static/people/9444.jpg",
       "bio": "大语言模型预训练，参数化长期记忆，上海交通大学人工智能学院",
       "homepage": ""
     },
