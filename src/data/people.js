@@ -188,6 +188,13 @@ export const peopleData = {
       "pic": "./static/people/1001.png",
       "bio": "大语言模型后训练，大模型指纹，GFlowNets。",
       "homepage": "https://charlie-chenlin.github.io/"
+    },
+    {
+      "id": "1034",
+      "name": "焦旸",
+      "pic": "./static/people/1034.png",
+      "bio": "26级硕士 关注合成中训练后训练数据方向",
+      "homepage": ""
     }
   ],
   "Undergrads": [
@@ -378,6 +385,20 @@ export const peopleData = {
       "name": "孙康为",
       "pic": "./static/people/1102.jpg",
       "bio": "大语言模型预训练，24级本科生。",
+      "homepage": ""
+    },
+    {
+      "id": "1107",
+      "name": "段沫冉",
+      "pic": "./static/people/1107.png",
+      "bio": "大语言模型预训练，Memory，25级本科生",
+      "homepage": ""
+    },
+    {
+      "id": "1112",
+      "name": "徐可",
+      "pic": "./static/people/1112.png",
+      "bio": "大语言模型基础架构、预训练，25级本科生。",
       "homepage": ""
     }
   ],
