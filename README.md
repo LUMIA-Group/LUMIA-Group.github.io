@@ -26,8 +26,8 @@ npm run build
 
 当前主要需要外部维护的内容数据包括：
 
-- 成员：`src/data/people.js`
-- 论文与研究方向：`src/data/publications.js`、`src/data/researchTags.js`、`src/data/researchDirections/`
+- 成员：从本地表格的“成员页面”工作表同步到 `src/data/people.js`
+- 论文与研究方向：通过 PR 维护 `src/data/publications.js`、`src/data/researchTags.js`、`src/data/researchDirections/`
 - 新闻：`src/data/news.js`
 
 其他较少改动的站点配置包括：
@@ -38,6 +38,8 @@ npm run build
 - 首页合作伙伴 Logo：`src/views/HomeView.vue`、`src/assets/partners/`
 
 `src/data/research.js` 是旧版研究页数据文件，当前 `/research` 页面不再从这里读取论文数据。
+
+成员表格更新后运行 `npm run sync:sheet`。该命令只更新成员数据及头像，不再读取论文、网页文案工作表，也不会覆盖论文列表、论文配图或 `src/data/siteText.js`。
 
 ## 三、维护后检查
 
@@ -54,4 +56,10 @@ npm run build
 
 ```bash
 npm run build
+```
+
+修改表格同步脚本后，还需运行回归测试：
+
+```bash
+python3 -m unittest discover -s scripts/tests
 ```

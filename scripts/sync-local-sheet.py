@@ -27,39 +27,6 @@ GENERATED_HEADER = "\n".join(
     ]
 )
 
-STATIC_TEXT_MAP = {
-    "主页页眉": ("home", "siteLabel"),
-    "主页主标题": ("home", "labName"),
-    "主页副标题": ("home", "heroDesc"),
-    "主页跳转按钮1": ("home", "seeResearch"),
-    "主页跳转按钮2": ("home", "meetPeople"),
-    "主页跳转按钮3": ("home", "latestNewsLink"),
-    "主页跳转按钮4": ("home", "contactUs"),
-    "研究模块页眉": ("home", "featured"),
-    "研究模块标题": ("home", "focusAreas"),
-    "合作模块页眉": ("home", "partnerEyebrow"),
-    "合作模块标题": ("home", "partnerTitle"),
-    "底页小标题": ("app", "groupName"),
-    "底页大标题": ("app", "footerHeadline"),
-    "成员页页眉": ("people", "eyebrow"),
-    "成员页标题": ("people", "title"),
-    "成员页副标题": ("people", "subtitle"),
-    "成员页教师标题": ("people", "sectionTitles.Faculty"),
-    "成员页博士生标题": ("people", "sectionTitles.PhD"),
-    "成员页硕士生标题": ("people", "sectionTitles.Master"),
-    "成员页本科生标题": ("people", "sectionTitles.Undergrads"),
-    "成员页毕业生标题": ("people", "sectionTitles.Alumni"),
-    "研究页页眉": ("research", "eyebrow"),
-    "研究页标题": ("research", "title"),
-    "研究页副标题": ("research", "subtitle"),
-    "新闻页页眉": ("news", "eyebrow"),
-    "新闻页标题": ("news", "title"),
-    "新闻页副标题": ("news", "subtitle"),
-    "联系页页眉": ("contact", "eyebrow"),
-    "联系页标题": ("contact", "title"),
-    "联系页副标题": ("contact", "subtitle"),
-}
-
 GRADE_TO_SECTION = {
     "教师": "Faculty",
     "faculty": "Faculty",
@@ -79,17 +46,6 @@ GRADE_TO_SECTION = {
 
 SECTION_SPLIT_RE = re.compile(r"[,，;；、/|\n]+")
 SECTION_ORDER = ["Faculty", "PhD", "Master", "Undergrads", "Alumni"]
-
-KNOWN_TAGS = {
-    "differentiable-memory",
-    "higher-level-lm",
-    "latent-ponder",
-    "gfn-rl",
-    "efficient-lm",
-    "graph-learning",
-    "voice-conversion",
-    "trustworthy-ai",
-}
 
 
 def warn(message):
@@ -177,13 +133,15 @@ def resolve_zip_path(base, target):
     return normalize_zip_path(posixpath.join(posixpath.dirname(base), target))
 
 
-def read_sheets(zip_file):
+def read_sheets(zip_file, sheet_names):
     shared_strings = read_shared_strings(zip_file)
     workbook = ET.fromstring(zip_file.read("xl/workbook.xml"))
     workbook_rels = read_relationships(zip_file, "xl/_rels/workbook.xml.rels")
     sheets = {}
 
     for sheet in workbook.findall(".//m:sheet", NS):
+        if sheet.get("name") not in sheet_names:
+            continue
         rel_id = sheet.get(f"{{{NS['r']}}}id")
         target = workbook_rels[rel_id]
         sheet_path = normalize_zip_path(posixpath.join("xl", target))
@@ -275,39 +233,6 @@ def row_cell(sheet, row_number, col_index, prefer_hyperlink=False):
     if prefer_hyperlink and hyperlink:
         return hyperlink
     return value
-
-
-def set_nested(target, path_text, value):
-    cursor = target
-    parts = path_text.split(".")
-    for part in parts[:-1]:
-        cursor = cursor.setdefault(part, {})
-    cursor[parts[-1]] = value
-
-
-def build_site_text(static_sheet):
-    overrides = {"zh": {}, "en": {}}
-    for row_number in sorted(static_sheet["rows"]):
-        label = row_cell(static_sheet, row_number, 0)
-        if label not in STATIC_TEXT_MAP:
-            continue
-
-        zh_value = row_cell(static_sheet, row_number, 4) or row_cell(
-            static_sheet, row_number, 2
-        )
-        en_value = row_cell(static_sheet, row_number, 5) or row_cell(
-            static_sheet, row_number, 3
-        )
-        page, key_path = STATIC_TEXT_MAP[label]
-
-        if zh_value:
-            overrides["zh"].setdefault(page, {})
-            set_nested(overrides["zh"][page], key_path, zh_value)
-        if en_value:
-            overrides["en"].setdefault(page, {})
-            set_nested(overrides["en"][page], key_path, en_value)
-
-    return overrides
 
 
 def normalize_id(value):
@@ -465,119 +390,8 @@ def build_people(zip_file, people_sheet):
     return data
 
 
-def split_tags(value):
-    tags = [
-        tag.strip()
-        for tag in re.split(r"[,，;；\s]+", str(value or ""))
-        if tag.strip()
-    ]
-    seen = set()
-    result = []
-    for tag in tags:
-        if tag in seen:
-            continue
-        seen.add(tag)
-        if tag not in KNOWN_TAGS:
-            warn(f"Ignored unknown publication tag: {tag}")
-            continue
-        result.append(tag)
-    return result
-
-
-def import_name(slug):
-    parts = re.split(r"[^A-Za-z0-9]+", slug)
-    name = "".join(part[:1].upper() + part[1:] for part in parts if part)
-    return f"{name or 'Paper'}Image"
-
-
-def existing_research_image(stem):
-    directory = ROOT / "src/assets/research"
-    for ext in [".jpg", ".jpeg", ".png", ".webp"]:
-        candidate = directory / f"{stem}{ext}"
-        if candidate.exists():
-            return candidate
-    return None
-
-
-def build_publications(zip_file, publications_sheet):
-    images_by_row = {
-        image["row"]: image
-        for image in publications_sheet["images"]
-        if image["col"] == 5
-    }
-    publications = []
-
-    start_row = None
-    for row_number in sorted(publications_sheet["rows"]):
-        if "请在下方添加论文" in row_cell(publications_sheet, row_number, 0):
-            start_row = row_number + 1
-            break
-    if start_row is None:
-        start_row = 19
-
-    for row_number in sorted(publications_sheet["rows"]):
-        if row_number < start_row:
-            continue
-
-        slug = row_cell(publications_sheet, row_number, 0)
-        title = row_cell(publications_sheet, row_number, 1)
-        authors = row_cell(publications_sheet, row_number, 2)
-        if not slug or not title or not authors:
-            continue
-
-        stem = safe_stem(slug)
-        image_path = ""
-        image = images_by_row.get(row_number)
-        if image:
-            destination = copy_image(
-                zip_file,
-                image["media"],
-                stem,
-                ROOT / "src/assets/research",
-            )
-            image_path = destination
-        else:
-            image_path = existing_research_image(stem) or ""
-
-        publications.append(
-            {
-                "id": slug,
-                "title": title,
-                "authors": authors,
-                "venue": row_cell(publications_sheet, row_number, 3),
-                "imagePath": str(image_path) if image_path else "",
-                "pdf": normalize_url(row_cell(publications_sheet, row_number, 5, True)),
-                "github": normalize_url(
-                    row_cell(publications_sheet, row_number, 6, True)
-                ),
-                "huggingface": normalize_url(
-                    row_cell(publications_sheet, row_number, 7, True)
-                ),
-                "homepage": normalize_url(
-                    row_cell(publications_sheet, row_number, 8, True)
-                ),
-                "tagIds": split_tags(row_cell(publications_sheet, row_number, 9)),
-                "abstract": row_cell(publications_sheet, row_number, 10),
-            }
-        )
-
-    return publications
-
-
-def js_string(value):
-    return json.dumps(value, ensure_ascii=False)
-
-
 def js_value(value):
     return json.dumps(value, ensure_ascii=False, indent=2)
-
-
-def write_site_text(site_text):
-    content = (
-        f"{GENERATED_HEADER}\n\n"
-        f"export const siteTextOverrides = {js_value(site_text)};\n"
-    )
-    (ROOT / "src/data/siteText.js").write_text(content, encoding="utf-8")
 
 
 def write_people(people):
@@ -588,81 +402,22 @@ def write_people(people):
     (ROOT / "src/data/people.js").write_text(content, encoding="utf-8")
 
 
-def relative_src_import(path_text):
-    path = Path(path_text)
-    rel = path.relative_to(ROOT / "src").as_posix()
-    return f"@/{rel}"
-
-
-def write_publications(publications):
-    imports = []
-    import_by_path = {}
-    for paper in publications:
-        image_path = paper.get("imagePath")
-        if not image_path:
-            continue
-        specifier = relative_src_import(image_path)
-        if specifier not in import_by_path:
-            import_by_path[specifier] = import_name(paper["id"])
-            imports.append(f'import {import_by_path[specifier]} from "{specifier}";')
-
-    objects = []
-    for paper in publications:
-        image_expr = '""'
-        if paper.get("imagePath"):
-            image_expr = import_by_path[relative_src_import(paper["imagePath"])]
-
-        objects.append(
-            "\n".join(
-                [
-                    "  {",
-                    f"    id: {js_string(paper['id'])},",
-                    f"    title: {js_string(paper['title'])},",
-                    f"    authors: {js_string(paper['authors'])},",
-                    f"    venue: {js_string(paper['venue'])},",
-                    f"    image: {image_expr},",
-                    f"    pdf: {js_string(paper['pdf'])},",
-                    f"    github: {js_string(paper['github'])},",
-                    f"    huggingface: {js_string(paper['huggingface'])},",
-                    f"    homepage: {js_string(paper['homepage'])},",
-                    f"    tagIds: {js_value(paper['tagIds']).replace(chr(10), chr(10) + '    ')},",
-                    f"    abstract: {js_string(paper['abstract'])},",
-                    "  }",
-                ]
-            )
-        )
-
-    content = ""
-    if imports:
-        content += "\n".join(imports) + "\n\n"
-    content += f"{GENERATED_HEADER}\n\nexport const publications = [\n"
-    content += ",\n".join(objects)
-    content += "\n];\n"
-    (ROOT / "src/data/publications.js").write_text(content, encoding="utf-8")
-
-
 def main():
     if not WORKBOOK.exists():
         raise SystemExit(f"Workbook not found: {WORKBOOK}")
 
     with ZipFile(WORKBOOK) as zip_file:
-        sheets = read_sheets(zip_file)
-        required = ["网页主要文本", "成员页面", "研究和论文"]
-        missing = [name for name in required if name not in sheets]
-        if missing:
-            raise SystemExit(f"Missing sheet(s): {', '.join(missing)}")
+        sheets = read_sheets(zip_file, {"成员页面"})
+        if "成员页面" not in sheets:
+            raise SystemExit("Missing sheet(s): 成员页面")
 
-        site_text = build_site_text(sheets["网页主要文本"])
         people = build_people(zip_file, sheets["成员页面"])
-        publications = build_publications(zip_file, sheets["研究和论文"])
 
-    write_site_text(site_text)
     write_people(people)
-    write_publications(publications)
 
     people_count = sum(len(items) for items in people.values())
     print(
-        f"Synced {people_count} people and {len(publications)} publications from {WORKBOOK.name}."
+        f"Synced {people_count} people from {WORKBOOK.name}."
     )
 
 

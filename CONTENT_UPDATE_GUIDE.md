@@ -6,6 +6,8 @@
 - 论文与研究方向：`src/data/publications.js`、`src/data/researchTags.js`
 - 新闻：`src/data/news.js`
 
+成员数据由本地 `实验室网站文本内容收集.xlsx` 的“成员页面”工作表生成，运行 `npm run sync:sheet` 更新成员及头像。此命令不再读取“研究和论文”或“网页主要文本”，也不会改写论文列表、论文配图或站点文案。论文和研究方向直接在仓库中修改并通过 PR 更新，无需回填到表格。
+
 另外还有一些较少改动的站点配置或页面文案数据，例如 `src/data/home.js`、`src/data/contact.js`、`src/data/header.js`，以及首页合作伙伴 Logo 配置在 `src/views/HomeView.vue`。`src/data/research.js` 是旧版研究页数据文件，当前 `/research` 页面不再从这里读取论文数据。
 
 ## 提交 PR 的流程
@@ -13,7 +15,7 @@
 1. 从最新主分支创建新分支。
 
 ```bash
-git checkout main
+git checkout master
 git pull
 git checkout -b content/update-something
 ```
@@ -62,14 +64,15 @@ PR 描述建议包含：
 
 - 不要提交 `node_modules/`。
 - 没有改依赖时，不需要修改 `package.json` 或 `package-lock.json`。
-- 不要直接向 `main` 分支提交内容更新。
+- 不要直接向 `master` 分支提交内容更新。
 
 ## 成员数据
 
 ### 修改文件
 
-- 成员数据：`src/data/people.js`
-- 成员头像：`public/static/people/`
+- 成员来源：本地 `实验室网站文本内容收集.xlsx` 的“成员页面”工作表
+- 生成的成员数据：`src/data/people.js`，不要手工编辑
+- 生成的成员头像：`public/static/people/`
 
 ### 分组
 
@@ -81,7 +84,7 @@ PR 描述建议包含：
 - `Undergrads`：本科生
 - `Alumni`：毕业生
 
-页面会自动展示非空分组。一般情况下，一个成员只放在一个分组中；学生毕业后，应从原学生分组移动到 `Alumni`，避免重复展示。
+页面会自动展示非空分组。成员可以同时属于多个分组，例如在表格分类列填写 `教师/毕业生`。同步脚本会生成 `sections` 字段，页面会在对应分组中分别展示该成员。
 
 ### 成员格式
 
@@ -105,26 +108,20 @@ PR 描述建议包含：
 
 ### 新增成员示例
 
-1. 将头像保存到 `public/static/people/16.jpg`。
-2. 在对应分组数组中新增成员对象。
+1. 在本地表格“成员页面”中新增成员行，填写 ID、姓名、分类、简介、主页，并按表格格式插入头像。
+2. 运行同步命令并检查成员页。
 
-```js
-Master: [
-  {
-    id: "16",
-    name: "张三",
-    pic: "./static/people/16.jpg",
-    bio: "自然语言处理、大语言模型",
-    homepage: "https://example.com",
-  },
-],
+```bash
+npm run sync:sheet
 ```
+
+3. 提交生成的 `src/data/people.js` 和相关头像文件。该命令不会更新论文和站点文案。
 
 ### 新增成员分组
 
 如果现有分组不够用，需要同时修改：
 
-- `src/data/people.js`：新增分组数组。
+- `scripts/sync-local-sheet.py`：在 `GRADE_TO_SECTION` 和 `SECTION_ORDER` 中增加分类映射与顺序。
 - `src/views/People.vue`：在 `I18N.sectionTitles` 中增加中英文分组标题。
 - `src/views/People.vue`：如果该分组需要出现在页眉跳转按钮中，也要加入 `peopleJumpLinks()`。
 
@@ -138,6 +135,8 @@ Master: [
 - 论文配图：`src/assets/research/`
 
 当前研究页、论文搜索、论文卡片链接、研究方向筛选都从这些数据文件读取。首页“当前研究重点”也从 `src/data/researchTags.js` 读取。
+
+论文只通过 PR 更新：直接修改论文数据及配图，不使用 `npm run sync:sheet`，也不需要修改本地表格。
 
 ### 论文格式
 
