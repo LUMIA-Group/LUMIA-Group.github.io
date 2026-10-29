@@ -835,6 +835,11 @@ export default {
     }
   }
 
+  .row[data-paper-id="memsft"] .paper-image-col img,
+  .row[data-paper-id="intern-s2-preview"] .paper-image-col img {
+    object-fit: contain;
+  }
+
   .paper-copy {
     width: 100%;
     padding-left: 0;

@@ -99,6 +99,31 @@ export default {
           </figure>
 
           <p>MLP Memory 的核心价值在于：它把原本需要庞大 datastore 和在线近邻搜索的 retrieval behavior，压缩成一个紧凑的参数化函数。这使得长期记忆可以以更低延迟、更易部署的方式参与语言模型推理。</p>
+
+          <h3 id="memsft">MemSFT</h3>
+          <p><strong>MemSFT</strong> 将领域监督微调放到独立的 memory 中，并引入<strong>动态记忆注入器</strong>，在主模型参数冻结的情况下，按需调用领域知识，保护后训练 LLM 已有的强通用能力。</p>
+          <p>Memory 通过 token-level 检索监督与语言建模目标学习领域知识，注入器则逐 token 决定 memory 与 backbone 的融合权重：需要专业知识时增强 memory 的贡献，通用推理与表达时更多依赖 backbone，减少领域记忆对原有能力的干扰。实验覆盖生物、地球科学和法律领域，在提升领域表现的同时有效缓解 alignment tax。</p>
+
+          <figure>
+            <div class="flow">
+              <div class="row">
+                <span class="label">MemSFT</span>
+                <span class="pill">Domain SFT Data</span>
+                <span class="arrow">→</span>
+                <span class="pill">Memory Fine-tuning</span>
+                <span class="arrow">→</span>
+                <span class="pill high">Dynamic Memory Injector</span>
+              </div>
+            </div>
+            <figcaption>动态注入器按需调用领域 memory，减少对后训练 LLM 通用能力的干扰。</figcaption>
+          </figure>
+
+          <p><a href="https://arxiv.org/abs/2607.25614" target="_blank" rel="noopener noreferrer">arXiv</a> · <a href="https://github.com/LUMIA-Group/MemSFT" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+
+          <h3 id="intern-memory">Intern-S2-Preview 的 Memory 扩展</h3>
+          <p>我们进一步将 MemSFT 方法接入 <strong>Intern-S2-Preview-397B</strong>。这一 397B 级前沿模型已在技术报告的 Biology-Instructions 对比评测中达到顶尖水平；独立的 <strong>Intern-MemDec-4B</strong> 通过动态记忆注入，在冻结主模型的基础上进一步增强生物领域能力。</p>
+          <p>在 Biology-Instructions 的 21 项任务上，平均分从 <strong>56.92 提升至 60.32（+3.40）</strong>，这一增益<strong>接近 Intern-S1-Pro 到 Intern-S2-Preview 的代际提升</strong>，同时通用与多模态评测表现总体保持相近。这说明，可插拔 memory 能够在已有强领域能力的前沿模型上，继续带来可观的专业能力增益。</p>
+          <p><a href="https://arxiv.org/abs/2608.13505" target="_blank" rel="noopener noreferrer">Technical Report</a> · <a href="https://huggingface.co/internlm/Intern-MemDec-4B" target="_blank" rel="noopener noreferrer">Hugging Face</a> · <a href="https://github.com/InternLM/Intern-S1" target="_blank" rel="noopener noreferrer">GitHub</a></p>
         </section>
 
         <section>
@@ -125,6 +150,18 @@ export default {
                   <td>如何更高效地压缩 retrieval behavior</td>
                   <td>All-MLP memory module</td>
                   <td>用低延迟参数化函数替代在线检索</td>
+                </tr>
+                <tr>
+                  <td>MemSFT</td>
+                  <td>如何缓解领域微调带来的 alignment tax</td>
+                  <td>Memory SFT + 动态记忆注入</td>
+                  <td>提升领域表现，保持通用能力</td>
+                </tr>
+                <tr>
+                  <td>Intern-S2-Preview Memory</td>
+                  <td>如何为 397B 级前沿模型补充领域能力</td>
+                  <td>冻结的 397B backbone + 4B memory</td>
+                  <td>在强科学模型上进一步增强生物领域表现</td>
                 </tr>
                 <tr>
                   <td>Parametric Long-term Memory</td>
