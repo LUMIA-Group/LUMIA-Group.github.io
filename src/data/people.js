@@ -130,6 +130,13 @@ export const peopleData = {
       "pic": "./static/people/1026.jpg",
       "bio": "LLM架构，Looped Transformer",
       "homepage": ""
+    },
+    {
+      "id": "1120",
+      "name": "匡鹏昊",
+      "pic": "./static/people/1120.png",
+      "bio": "大语言模型预训练，参数化记忆。上海交通大学人工智能学院27级博士生",
+      "homepage": "https://github.com/kuangpenghao"
     }
   ],
   "Master": [
@@ -399,6 +406,20 @@ export const peopleData = {
       "name": "徐可",
       "pic": "./static/people/1112.png",
       "bio": "大语言模型基础架构、预训练，25级本科生。",
+      "homepage": ""
+    },
+    {
+      "id": "1117",
+      "name": "赵奕涵",
+      "pic": "./static/people/1117.png",
+      "bio": "上海交通大学人工智能学院24级本科生，参加NCP相关工作",
+      "homepage": ""
+    },
+    {
+      "id": "81122",
+      "name": "冯羽翔",
+      "pic": "./static/people/81122.png",
+      "bio": "Looped Transformer",
       "homepage": ""
     }
   ],
