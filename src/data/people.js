@@ -137,6 +137,20 @@ export const peopleData = {
       "pic": "./static/people/1120.png",
       "bio": "大语言模型预训练，参数化记忆。上海交通大学人工智能学院27级博士生",
       "homepage": "https://github.com/kuangpenghao"
+    },
+    {
+      "id": "1123",
+      "name": "徐柯帅",
+      "pic": "./static/people/1123.png",
+      "bio": "大语言模型基础架构，后训练，上海交通大学人工智能学院，上海人工智能实验室联培",
+      "homepage": ""
+    },
+    {
+      "id": "1119",
+      "name": "冉镇宁",
+      "pic": "./static/people/1119.png",
+      "bio": "大模型预训练，数据配方，上海交通大学27级计算机学院博士生",
+      "homepage": "https://ginger-233.github.io/"
     }
   ],
   "Master": [
@@ -420,6 +434,13 @@ export const peopleData = {
       "name": "冯羽翔",
       "pic": "./static/people/81122.png",
       "bio": "Looped Transformer",
+      "homepage": ""
+    },
+    {
+      "id": "1125",
+      "name": "罗镜天",
+      "pic": "./static/people/1125.png",
+      "bio": "Memory,24级本科生",
       "homepage": ""
     }
   ],
